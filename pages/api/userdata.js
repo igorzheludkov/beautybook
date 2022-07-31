@@ -14,17 +14,18 @@ export default async function UserData(req, res) {
     await client.connect()
     const db = client.db(dbName)
     const collection = db.collection('user_public')
-    console.log('Connected successfully to server')
+    console.log('Searching for user...')
     const findUser = await collection.findOne({
       email: userEmail,
     })
-
+    await client.close()
+    console.log(findUser)
     res.status(200).json(findUser)
   } else if (req.method === 'POST') {
     await client.connect()
     const db = client.db(dbName)
     const collection = db.collection('user_public')
-    console.log('Connected successfully to server')
+    console.log('Updating user profile')
     const filter = { email: req.body.email }
     console.log(filter + 'filter')
     const options = { upsert: true }
@@ -34,6 +35,8 @@ export default async function UserData(req, res) {
       },
     }
     const result = await collection.updateOne(filter, updateDoc, options)
+    await client.close()
+
     console.log(result)
 
     res.status(200).json({ result: '' })
@@ -51,10 +54,14 @@ export default async function UserData(req, res) {
     console.log(findUser)
     if (findUser === null) {
       const result = await collection.insertOne(newUser)
+      await client.close()
       res.status(200).json({ message: 'user registered success', result: findUser })
     } else if (findUser.email === req.body.email) {
       res.status(200).json({ result: 'such user allready registered' })
     }
+
+    
+
   }
 
   return 'done.'

@@ -46,7 +46,7 @@ export default function DashNav({ source }) {
               <Link href='/master'>Сертифікати</Link>
             </button>
             <button className={dash.nav_sub_button}>
-              <Link href='/profile/personal-page'>Особиста інформація</Link>
+              <Link href='/master/personal-page'>Особиста інформація</Link>
             </button>
           </div>
         </>

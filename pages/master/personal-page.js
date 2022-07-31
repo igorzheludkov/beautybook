@@ -72,7 +72,7 @@ export default function PersonalPage() {
       <DashNav source='master' />
       <h1>Персональна сторінка</h1>
       <p>Адреса вашої сторінки {userPublic?._id}</p>
-      <Link href={`/master/${userPublic?._id}`}>
+      <Link href={`/catalog/${userPublic?._id}`}>
         <a>Відкрити</a>
       </Link>
       <p>Додайте інформацію про себе</p>
