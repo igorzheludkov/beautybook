@@ -19,7 +19,7 @@ export default NextAuth({
   jwt: {
     encryption: true,
   },
-  secret: 'd339ab14c0829f1e4ecf94196f2a743d',
+  secret: process.env.NEXT_PUBLIC_SECRET,
 
   callbacks: {
     async jwt(token, user, account, profile, isNewUser) {
