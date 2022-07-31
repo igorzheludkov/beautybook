@@ -30,3 +30,7 @@
     border-radius: 5px;
 
 }
+
+.label {
+    display: block;
+}

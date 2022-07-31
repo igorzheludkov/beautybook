@@ -15,28 +15,46 @@ export default async function UserData(req, res) {
     const db = client.db(dbName)
     const collection = db.collection('user_public')
     console.log('Connected successfully to server')
-    const findUser = await collection
-      .find({
-        email: userEmail,
-      })
-      .toArray()
-    res.status(200).json({ ...findUser })
+    const findUser = await collection.findOne({
+      email: userEmail,
+    })
+
+    res.status(200).json(findUser)
   } else if (req.method === 'POST') {
     await client.connect()
     const db = client.db(dbName)
     const collection = db.collection('user_public')
     console.log('Connected successfully to server')
     const filter = { email: req.body.email }
+    console.log(filter + 'filter')
     const options = { upsert: true }
     const updateDoc = {
       $set: {
-        userData: req.body,
+        userData: req.body.userData,
       },
     }
     const result = await collection.updateOne(filter, updateDoc, options)
     console.log(result)
 
     res.status(200).json({ result: '' })
+  } else if (req.method === 'PUT') {
+    await client.connect()
+    const db = client.db(dbName)
+    const collection = db.collection('user_public')
+    const findUser = await collection.findOne({
+      email: req.body.email,
+    })
+
+    // console.log('Connected successfully to server')
+    const newUser = req.body
+    // console.log(newUser)
+    console.log(findUser)
+    if (findUser === null) {
+      const result = await collection.insertOne(newUser)
+      res.status(200).json({ message: 'user registered success', result: findUser })
+    } else if (findUser.email === req.body.email) {
+      res.status(200).json({ result: 'such user allready registered' })
+    }
   }
 
   return 'done.'
