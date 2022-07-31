@@ -25,7 +25,7 @@ export default function PersonalPage() {
         })
   }, [session])
 
-    
+  console.log(session)
 
   function formHandler(e) {
     let key = e.target.id
