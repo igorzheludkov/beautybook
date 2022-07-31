@@ -30,12 +30,19 @@ export default NextAuth({
   // secret: 'd339ab14c0829f1e4ecf94196f2a743d',
 
   callbacks: {
-    async jwt(token, user, account, profile, isNewUser) {
-      if (account?.accessToken) {
-        token.accessToken = account.accessToken
+    async jwt({ token, account }) {
+      // Persist the OAuth access_token to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token
       }
-      console.log(user)
       return token
     },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    }
   },
 })
