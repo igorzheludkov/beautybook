@@ -25,9 +25,9 @@ export default NextAuth({
   //   async encode() {},
   //   async decode() {},
   // }
-  // jwt: {
-  //   encryption: true,
-  // },
+  jwt: {
+    encryption: true,
+  },
   // secret: 'd339ab14c0829f1e4ecf94196f2a743d',
 
   callbacks: {
