@@ -4,6 +4,7 @@ import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import clientPromise from '../../../lib/mongodb'
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
@@ -19,7 +20,6 @@ export default NextAuth({
   jwt: {
     encryption: true,
   },
-  secret: process.env.NEXTAUTH_SECRET,
   // secret: 'd339ab14c0829f1e4ecf94196f2a743d',
 
   callbacks: {
