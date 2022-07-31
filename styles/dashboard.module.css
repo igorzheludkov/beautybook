@@ -1,0 +1,32 @@
+.container {
+    width: 100%;
+}
+
+.nav_button {
+    height: 30px;
+    background-color: #A6EAFF;
+    border-radius: 5px;
+    border: none;
+    margin: 5px;
+}
+.nav_sub_button {
+    height: 30px;
+    background-color: white;
+    border-radius: 50px;
+    border: 2px solid #b1b1b1;
+    margin: 3px 2px;
+}
+
+.submit_btn {
+    height: 30px;
+    background-color: var(--submit-buttons-color);
+    border-radius: 5px;
+    border: none;
+    margin: 5px;
+}
+
+.input_text {
+    height: 30px;
+    border-radius: 5px;
+
+}
