@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../components/layout'
-import s from '../styles/login.module.css'
-import dash from '../styles/dashboard.module.css'
+import Layout from '../../components/layout'
+import s from '../../styles/login.module.css'
+import dash from '../../styles/dashboard.module.css'
 import { getSession } from 'next-auth/react'
-import DashNav from '../components/dashnav'
+import DashNav from '../../components/dashnav'
 
 
 export async function getServerSideProps(context) {
@@ -28,7 +28,7 @@ export default function User() {
         <title>Профіль клієнта</title>
       </Head>
 
-      <DashNav source='user'/>
+      <DashNav />
     </>
   )
 }

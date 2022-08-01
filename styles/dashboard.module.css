@@ -2,6 +2,15 @@
     width: 100%;
 }
 
+.masterNav {
+    margin-bottom: 20px;
+}
+
+.avatar {
+    float: left;
+    margin-right: 10px;
+}
+
 .nav_button {
     height: 30px;
     background-color: #A6EAFF;
@@ -17,6 +26,8 @@
     margin: 3px 2px;
 }
 
+
+
 .submit_btn {
     height: 30px;
     background-color: var(--submit-buttons-color);
@@ -25,12 +36,19 @@
     margin: 5px;
 }
 
+.input_item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
 .input_text {
     height: 30px;
     border-radius: 5px;
+    border: 1px solid var(--light-border-color);
 
 }
 
 .label {
-    display: block;
+    color: var(--faded-text-color);
 }

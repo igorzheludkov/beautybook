@@ -1,5 +1,7 @@
 :root {
     --main-text-color: #303030;
+    --faded-text-color: #616161;
+    --light-border-color: #adadad;
     --submit-buttons-color: #A2FEC2;
     --main-yellow-color: #FFCC00;
     --secondary-yellow-color: #FFF6A7;

@@ -1,10 +1,12 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../components/layout'
+import Layout from '../../components/layout'
 import { getSession } from 'next-auth/react'
-import s from '../styles/login.module.css'
-import dash from '../styles/dashboard.module.css'
-import DashNav from '../components/dashnav'
+import s from '../../styles/login.module.css'
+import dash from '../../styles/dashboard.module.css'
+import DashNav from '../../components/dashnav'
+import MasterNav from '../../components/masternav'
+
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
@@ -26,7 +28,8 @@ export default function User() {
       <Head>
         <title>Профіль майстра</title>
       </Head>
-      <DashNav source='master'/>
+      <DashNav/>
+      <MasterNav path='/master/'/>
     </>
   )
 }
