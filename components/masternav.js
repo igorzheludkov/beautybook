@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import dash from '../styles/dashboard.module.css'
+import dash from '../styles/dash.module.css'
 import { useRouter } from 'next/router'
 
 

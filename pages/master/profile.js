@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { getSession } from 'next-auth/react'
 import DashNav from '../../components/dashnav'
 import MasterNav from '../../components/masternav'
-import dash from '../../styles/dashboard.module.css'
+import dash from '../../styles/dash.module.css'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Script from 'next/script'
@@ -33,8 +33,8 @@ export default function PersonalPage() {
   })
   const [avatar, setAvatar] = useState('')
 
-  console.log(`Аватар завантажено ${JSON.stringify(avatar.secure_url)}`)
-  console.log(form);
+  console.log(avatar)
+  console.log(form)
 
   useEffect(() => {
     if (session?.user.email) {
@@ -86,7 +86,7 @@ export default function PersonalPage() {
 
   function avatarHandler(result) {
     setAvatar(result)
-    setForm(()=> ({...form, photo: result.secure_url}))
+    setForm(() => ({ ...form, photo: result.secure_url }))
   }
 
   const personalInfo = [
@@ -123,7 +123,7 @@ export default function PersonalPage() {
       </div>
       <Cloudinary uploadHandler={avatarHandler} />
       <div className={dash.avatar}>
-        <Image width={130} height={130} src={form.photo} alt='avatar' />
+        <Image layout='responsive' objectFit='cover' width={150} height={150} src={form.photo} alt='avatar' />
       </div>
 
       {personalInfo?.map((i) => (

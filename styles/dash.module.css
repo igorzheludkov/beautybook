@@ -9,6 +9,11 @@
 .avatar {
     float: left;
     margin-right: 10px;
+    width: 150px;
+    height: 150px;
+    display: block;
+    position: relative;
+    border-radius: 50%;
 }
 
 .nav_button {
