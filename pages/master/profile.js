@@ -122,8 +122,18 @@ export default function PersonalPage() {
         </Link>
       </div>
       <Cloudinary uploadHandler={avatarHandler} />
-      <div className={dash.avatar}>
-        <Image layout='responsive' objectFit='cover' width={150} height={150} src={form.photo} alt='avatar' />
+      <div className={dash.avatar_container}>
+        <Image
+          className={dash.avatar_img}
+          placeholder='blur'
+          blurDataURL='iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAEUlEQVR42mPcX8+AARiHsiAAjvgMd/AF3igAAAAASUVORK5CYII='
+          layout='responsive'
+          objectFit='cover'
+          width={150}
+          height={150}
+          src={form.photo ? form.photo : '/images/userplaceholder.png'}
+          alt='avatar'
+        />
       </div>
 
       {personalInfo?.map((i) => (
