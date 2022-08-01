@@ -19,11 +19,11 @@ export default function MasterPage({ user }) {
   console.log(user)
   return (
     <div>
-      <div className={s.profile}>
-        <div className={s.avater}>
-          <Image width={130} height={130} src='/images/userplaceholder.png' alt='avatar' />
+      <div  className={s.header}>
+        <div className={s.avatar}>
+          <Image width={150} height={150} src='/images/userplaceholder.png' alt='avatar' />
         </div>
-        <div>
+        <div className={s.block}>
           <div className={s.title}>{user.userData.name}</div>
           <div className={s.title}>{user.userData.surname}</div>
           <div className={s.spec}>{user.userData.specialization_1}</div>

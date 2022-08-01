@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 export default function MasterNav({ path, status }) {
 
   const route = useRouter()
-  console.log(path);
 
   const menuItems = [
     {title: 'Панель', url: '/user'},

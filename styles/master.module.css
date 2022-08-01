@@ -1,0 +1,13 @@
+.header {
+    display: flex;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.avatar {
+    margin-right: 10px;
+}
+

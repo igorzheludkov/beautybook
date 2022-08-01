@@ -7,11 +7,34 @@ import MasterNav from '../../components/masternav'
 import dash from '../../styles/dashboard.module.css'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import Script from 'next/script'
+import Cloudinary from '../../lib/cloudinary'
 
 export default function PersonalPage() {
   const { data: session, status } = useSession()
   const [userPublic, setUserPublic] = useState('0')
-  const [form, setForm] = useState({ about_me: '', city: '', email: '', location: '', name: '', phone: '', social_1: '', social_2: '', specialization_1: '', specialization_2: '', specialization_3: '', street: '', surname: '', work_begin: '', work_end: '' })
+  const [form, setForm] = useState({
+    photo: '',
+    about_me: '',
+    city: '',
+    email: '',
+    location: '',
+    name: '',
+    phone: '',
+    social_1: '',
+    social_2: '',
+    specialization_1: '',
+    specialization_2: '',
+    specialization_3: '',
+    street: '',
+    surname: '',
+    work_begin: '',
+    work_end: '',
+  })
+  const [avatar, setAvatar] = useState('')
+
+  console.log(`Аватар завантажено ${JSON.stringify(avatar.secure_url)}`)
+  console.log(form);
 
   useEffect(() => {
     if (session?.user.email) {
@@ -61,6 +84,11 @@ export default function PersonalPage() {
     console.log('Sended')
   }
 
+  function avatarHandler(result) {
+    setAvatar(result)
+    setForm(()=> ({...form, photo: result.secure_url}))
+  }
+
   const personalInfo = [
     { id: 'name', tp: 'text', vl: 'Ваше ім`я' },
     { id: 'phone', tp: 'text', vl: 'Ваше номер телефону' },
@@ -83,19 +111,19 @@ export default function PersonalPage() {
       <Head>
         <title>Персональна сторінка</title>
       </Head>
+      <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
       <DashNav />
       <MasterNav path='/' status='active_tab' />
 
-      <p>Тут можна додайти або відредагувати інформацію про себе</p>
-      <div>
-        <p>Адреса вашої сторінки {userPublic?._id}</p>
+      <div className={dash.link}>
         <Link href={`/catalog/${userPublic?._id}`}>
-          <a>Відкрити</a>
+          <a>Відкрити вашу сторінку</a>
         </Link>
       </div>
+      <Cloudinary uploadHandler={avatarHandler} />
       <div className={dash.avatar}>
-        <Image width={130} height={130} src='/images/userplaceholder.png' alt='avatar' />
+        <Image width={130} height={130} src={form.photo} alt='avatar' />
       </div>
 
       {personalInfo?.map((i) => (
@@ -103,7 +131,7 @@ export default function PersonalPage() {
           <label className={dash.label} htmlFor={i.id}>
             {i.vl}
           </label>
-          <input className={dash.input_text} id={i.id} value={form[i.id]} onChange={inputHandler} type={i.tp}  />
+          <input className={dash.input_text} id={i.id} value={form[i.id]} onChange={inputHandler} type={i.tp} />
         </span>
       ))}
 
