@@ -56,7 +56,7 @@ export default function Navbar() {
               </span>
               <Link href='/user'>
                 <a className={s.link}>
-                  <img className={s.login_image} src={session.user.image} alt='logo' />
+                  <Image width={50} height={50} className={s.login_image} src={session.user.image} alt='logo' />
                 </a>
               </Link>
             </div>

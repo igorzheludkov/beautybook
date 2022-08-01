@@ -44,3 +44,12 @@ a {
   border-color: #1dd2ff !important;
   pointer-events:none;
 }
+
+.uploadButton {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50px;
+  background-color: var(--submit-buttons-color);
+  border: none;
+
+}

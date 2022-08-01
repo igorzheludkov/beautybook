@@ -9,8 +9,8 @@
 .avatar_container {
     float: left;
     margin-right: 10px;
-    width: 190px;
-    height: 190px;
+    width: 150px;
+    height: 150px;
     display: block;
     position: relative;
     border-radius: 50%;
@@ -18,6 +18,7 @@
 
 .avatar_img {
     border-radius: 50%;
+    transition: 1s;
 }
 
 .nav_button {

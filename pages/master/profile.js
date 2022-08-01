@@ -93,8 +93,8 @@ export default function PersonalPage() {
     { id: 'name', tp: 'text', vl: 'Ваше ім`я' },
     { id: 'phone', tp: 'text', vl: 'Ваше номер телефону' },
     { id: 'surname', tp: 'text', vl: 'Ваше прізвище' },
-    { id: 'solial_1', tp: 'text', vl: 'Ваш акаунт в instagram' },
-    { id: 'solial_2', tp: 'text', vl: 'Ваш акаунт в telegram' },
+    { id: 'social_1', tp: 'text', vl: 'Ваш акаунт в instagram' },
+    { id: 'social_2', tp: 'text', vl: 'Ваш акаунт в telegram' },
     { id: 'spec_1', tp: 'text', vl: 'Ваша основна спеціальність' },
     { id: 'spec_2', tp: 'text', vl: 'Ваша додаткова спеціальність' },
     { id: 'spec_3', tp: 'text', vl: 'Ваша додаткова спеціальність' },
@@ -121,7 +121,7 @@ export default function PersonalPage() {
           <a>Відкрити вашу сторінку</a>
         </Link>
       </div>
-      <Cloudinary uploadHandler={avatarHandler} />
+      
       <div className={dash.avatar_container}>
         <Image
           className={dash.avatar_img}
@@ -134,6 +134,7 @@ export default function PersonalPage() {
           src={form.photo ? form.photo : '/images/userplaceholder.png'}
           alt='avatar'
         />
+        <Cloudinary uploadHandler={avatarHandler} />
       </div>
 
       {personalInfo?.map((i) => (
