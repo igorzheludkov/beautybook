@@ -1,0 +1,54 @@
+.input {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 20px;
+  height: 35px;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+}
+
+.input::before {
+  content: '';
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  content: '';
+  width: 100%;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--main-blue);
+  position: absolute;
+  bottom: 0;
+}
+
+.input:checked::before {
+  transform: scale(1);
+}
+
+.wrapper {
+  display: flex;
+  overflow-x: scroll;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.checkButton {
+  display: flex;
+  position: relative;
+  margin: 5px;
+}
+
+.category {
+  position: absolute;
+  top: 0;
+  height: 35px;
+  padding: 7px;
+}

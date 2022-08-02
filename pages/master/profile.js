@@ -108,6 +108,7 @@ export default function PersonalPage({ user, data }) {
     { id: 'work_end', tp: 'text', vl: 'Коли закінчуєте робочий день?' },
   ]
 
+
   return (
     <>
       <Head>
