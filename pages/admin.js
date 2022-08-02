@@ -3,22 +3,27 @@ import Link from 'next/link'
 import Layout from '../components/layout'
 import s from '../styles/login.module.css'
 import { getSession } from "next-auth/react";
+import { useSession } from 'next-auth/react'
+
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
+  const session = await getSession(context)
   if (!session) {
-    context.res.writeHead(302, { Location: "/login" });
-    context.res.end();
-    return {};
+    context.res.writeHead(302, { Location: '/login' })
+    context.res.end()
+    return {}
   }
   return {
     props: {
       user: session.user,
+      data: 'user data'
     },
-  };
+  }
 }
 
-export default function User() {
+export default function Admin({user, data}) {
+
+  console.log(user);
   return (
     <>
       <Head>

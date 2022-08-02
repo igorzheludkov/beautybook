@@ -9,8 +9,10 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Script from 'next/script'
 import Cloudinary from '../../lib/cloudinary'
+import { server } from '../../config/index'
+import ScrollBox from '../../components/scrollbox'
 
-export default function PersonalPage() {
+export default function PersonalPage({ user, data }) {
   const { data: session, status } = useSession()
   const [userPublic, setUserPublic] = useState('0')
   const [form, setForm] = useState({
@@ -23,9 +25,7 @@ export default function PersonalPage() {
     phone: '',
     social_1: '',
     social_2: '',
-    specialization_1: '',
-    specialization_2: '',
-    specialization_3: '',
+    categories: [''],
     street: '',
     surname: '',
     work_begin: '',
@@ -33,8 +33,7 @@ export default function PersonalPage() {
   })
   const [avatar, setAvatar] = useState('')
 
-  console.log(avatar)
-  console.log(form)
+  const categories = data.categories
 
   useEffect(() => {
     if (session?.user.email) {
@@ -71,6 +70,12 @@ export default function PersonalPage() {
     setForm({ ...form, [key]: e.target.value })
   }
 
+  function checkboxToggle(e) {
+    e.target.checked
+      ? setForm({ ...form, categories: [...form.categories, e.target.value] })
+      : setForm({ ...form, categories: form.categories.filter((i) => i !== e.target.value) })
+  }
+
   async function buttonHandler(e) {
     e.preventDefault(e)
     const response = await fetch('/api/userdata', {
@@ -95,9 +100,6 @@ export default function PersonalPage() {
     { id: 'surname', tp: 'text', vl: 'Ваше прізвище' },
     { id: 'social_1', tp: 'text', vl: 'Ваш акаунт в instagram' },
     { id: 'social_2', tp: 'text', vl: 'Ваш акаунт в telegram' },
-    { id: 'spec_1', tp: 'text', vl: 'Ваша основна спеціальність' },
-    { id: 'spec_2', tp: 'text', vl: 'Ваша додаткова спеціальність' },
-    { id: 'spec_3', tp: 'text', vl: 'Ваша друга додаткова спеціальність' },
     { id: 'about_me', tp: 'text', vl: 'Розкажіть трохи про себе' },
     { id: 'city', tp: 'text', vl: 'Ваше місто' },
     { id: 'street', tp: 'text', vl: 'Вулиця' },
@@ -125,8 +127,6 @@ export default function PersonalPage() {
       <div className={dash.avatar_container}>
         <Image
           className={dash.avatar_img}
-          placeholder='blur'
-          blurDataURL='iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAEUlEQVR42mPcX8+AARiHsiAAjvgMd/AF3igAAAAASUVORK5CYII='
           layout='responsive'
           objectFit='cover'
           width={150}
@@ -134,7 +134,7 @@ export default function PersonalPage() {
           src={form.photo ? form.photo : '/images/userplaceholder.png'}
           alt='avatar'
         />
-        <Cloudinary uploadHandler={avatarHandler} multiple={false}/>
+        <Cloudinary uploadHandler={avatarHandler} multiple={false} />
       </div>
 
       {personalInfo?.map((i) => (
@@ -145,6 +145,10 @@ export default function PersonalPage() {
           <input className={dash.input_text} id={i.id} value={form[i.id]} onChange={inputHandler} type={i.tp} />
         </span>
       ))}
+      <p>Виберіть до трьох спеціальностей</p>
+      <div>
+        <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
+      </div>
 
       <button onClick={buttonHandler} className={dash.submit_btn}>
         Зберегти
@@ -160,9 +164,14 @@ export async function getServerSideProps(context) {
     context.res.end()
     return {}
   }
+  const res = await fetch(`${server}/api/categories`, {
+    method: 'GET',
+  })
+  const cat = await res.json()
   return {
     props: {
       user: session.user,
+      data: cat,
     },
   }
 }

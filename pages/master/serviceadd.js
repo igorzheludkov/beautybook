@@ -10,9 +10,14 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Script from 'next/script'
 import Cloudinary from '../../lib/cloudinary'
+import { server } from '../../config/index'
 
-export default function ServicesPage() {
-  const { data: session, status } = useSession()
+
+export default function ServicesPage({user, data}) {
+
+  const categories = data.catigories
+  const poslugi = data.poslugi
+  console.log(data);
 
   const servicesModel = {
     owner: '',
@@ -50,8 +55,8 @@ export default function ServicesPage() {
       <Head>
         <title>Додати послугу</title>
       </Head>
-      <DashNav/>
-      <MasterNav/>
+      <DashNav />
+      <MasterNav />
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
       <h4>Виберіть розділ</h4>
@@ -102,9 +107,14 @@ export async function getServerSideProps(context) {
     context.res.end()
     return {}
   }
+  const res = await fetch(`${server}/api/categories`, {
+    method: 'GET',
+  })
+  const cat = await res.json()
   return {
     props: {
       user: session.user,
+      data: cat,
     },
   }
 }
