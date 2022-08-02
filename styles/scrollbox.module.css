@@ -18,13 +18,14 @@
   transform: scale(0);
   transition: 120ms transform ease-in-out;
   content: '';
-  width: 100%;
-  height: 0.65em;
+  width: 102%;
+  height: 10px;
   transform: scale(0);
   transition: 120ms transform ease-in-out;
   box-shadow: inset 1em 1em var(--main-blue);
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
+  left: -1px;
 }
 
 .input:checked::before {
