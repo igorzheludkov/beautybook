@@ -116,32 +116,34 @@ export default function PersonalPage({ user, data }) {
       <DashNav />
       <MasterNav path='/' status='active_tab' />
 
-      <div className={dash.link}>
-        <Link href={`/catalog/${userPublic?._id}`}>
-          <a>Відкрити вашу сторінку</a>
-        </Link>
-      </div>
+      <div className='container'>
+        <div className={dash.link}>
+          <Link href={`/catalog/${userPublic?._id}`}>
+            <a>Відкрити вашу сторінку</a>
+          </Link>
+        </div>
 
-      <div className={dash.avatar_container}>
-        <Image className={dash.avatar_img} layout='responsive' objectFit='cover' width={150} height={150} src={form.photo ? form.photo : '/images/userplaceholder.png'} alt='avatar' />
-        <Cloudinary uploadHandler={avatarHandler} multiple={false} />
-      </div>
+        <div className={dash.avatar_container}>
+          <Image className={dash.avatar_img} layout='responsive' objectFit='cover' width={150} height={150} src={form.photo ? form.photo : '/images/userplaceholder.png'} alt='avatar' />
+          <Cloudinary uploadHandler={avatarHandler} multiple={false} />
+        </div>
 
-      {personalInfo?.map((i) => (
-        <span className={dash.input_item} key={i.id}>
-          <label className={dash.label} htmlFor={i.id}>
-            {i.vl}
-          </label>
-          <input className={dash.input_text} id={i.id} value={form[i.id]} onChange={inputHandler} type={i.tp} />
-        </span>
-      ))}
-      <p>Виберіть до трьох спеціальностей</p>
+        {personalInfo?.map((i) => (
+          <span className={dash.input_item} key={i.id}>
+            <label className={dash.label} htmlFor={i.id}>
+              {i.vl}
+            </label>
+            <input className={dash.input_text} id={i.id} value={form[i.id]} onChange={inputHandler} type={i.tp} />
+          </span>
+        ))}
+        <p>Виберіть до трьох спеціальностей</p>
+      </div>
       <div>
         <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
       </div>
 
       <div style={{ height: '150px', width: '100%', display: 'flex' }}>
-        <button style={{ width: '100px', margin: 'auto'}} onClick={buttonHandler} className={dash.submit_btn}>
+        <button style={{ width: '100px', margin: 'auto' }} onClick={buttonHandler} className={dash.submit_btn}>
           Зберегти
         </button>
       </div>
