@@ -71,9 +71,7 @@ export default function PersonalPage({ user, data }) {
   }
 
   function checkboxToggle(e) {
-    e.target.checked
-      ? setForm({ ...form, categories: [...form.categories, e.target.value] })
-      : setForm({ ...form, categories: form.categories.filter((i) => i !== e.target.value) })
+    e.target.checked ? setForm({ ...form, categories: [...form.categories, e.target.value] }) : setForm({ ...form, categories: form.categories.filter((i) => i !== e.target.value) })
   }
 
   async function buttonHandler(e) {
@@ -108,7 +106,6 @@ export default function PersonalPage({ user, data }) {
     { id: 'work_end', tp: 'text', vl: 'Коли закінчуєте робочий день?' },
   ]
 
-
   return (
     <>
       <Head>
@@ -126,15 +123,7 @@ export default function PersonalPage({ user, data }) {
       </div>
 
       <div className={dash.avatar_container}>
-        <Image
-          className={dash.avatar_img}
-          layout='responsive'
-          objectFit='cover'
-          width={150}
-          height={150}
-          src={form.photo ? form.photo : '/images/userplaceholder.png'}
-          alt='avatar'
-        />
+        <Image className={dash.avatar_img} layout='responsive' objectFit='cover' width={150} height={150} src={form.photo ? form.photo : '/images/userplaceholder.png'} alt='avatar' />
         <Cloudinary uploadHandler={avatarHandler} multiple={false} />
       </div>
 
@@ -151,9 +140,11 @@ export default function PersonalPage({ user, data }) {
         <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
       </div>
 
-      <button onClick={buttonHandler} className={dash.submit_btn}>
-        Зберегти
-      </button>
+      <div style={{ height: '150px', width: '100%', display: 'flex' }}>
+        <button style={{ width: '100px', margin: 'auto'}} onClick={buttonHandler} className={dash.submit_btn}>
+          Зберегти
+        </button>
+      </div>
     </>
   )
 }

@@ -33,7 +33,6 @@
 }
 
 .wrapper {
-  display: flex;
   overflow-x: scroll;
 }
 
@@ -52,4 +51,18 @@
   top: 0;
   height: 35px;
   padding: 7px;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+@media (max-width: 500px) {
+    .container {
+        width: 900px;
+        flex-wrap: wrap;
+    }
 }
