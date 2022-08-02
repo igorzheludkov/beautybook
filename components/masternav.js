@@ -28,7 +28,7 @@ export default function MasterNav({ path, status }) {
             <Link href='/master'>Бронювання</Link>
           </button>
           <button className={dash.nav_sub_button}>
-            <Link href='/master'>Послуги</Link>
+            <Link href='/master/serviceadd'>Послуги</Link>
           </button>
           <button className={dash.nav_sub_button}>
             <Link href='/master'>Акції</Link>
@@ -40,7 +40,7 @@ export default function MasterNav({ path, status }) {
             <Link href='/master'>Сертифікати</Link>
           </button>
           <button className={[`${dash.nav_sub_button} ${status}`]}>
-            <Link href={`${path}profile`}>Особиста інформація</Link>
+            <Link href='/master/profile'>Особиста інформація</Link>
           </button>
         </div>
     

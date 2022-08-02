@@ -1,12 +1,10 @@
 let Services = [
   {
-    _id: '',
     title: 'Масаж',
     cat_parent: 'services',
     url: 'massage',
     description: 'Опис категорії',
     parent_cat: 'poslugi',
-    popularity: '',
     img_url: [],
   },
 ]
@@ -15,47 +13,41 @@ let Subcategories = [
   {
     title: 'Класичний масаж',
     cat_parent: 'massage',
-    url: 'massage_classic',
+    id: 'massage_classic',
     description: 'Опис категорії',
-    popularity: '',
     img_url: [],
+    sub_cat: [
+      { title: 'Класичний масаж всього тіла', description: 'Опис категорії', id: 'classic_vsogo_tila', img_url: ''},
+      { title: 'Масаж спини', description: 'Опис категорії', id: 'massage_spina', img_url: ''}
+    ]
   },
   {
     title: 'Спортивний масаж',
     cat_parent: 'massage',
     url: 'massage_sport',
-    popularity: '',
     img_url: [],
+  },
+  {
+    title: 'Антицилюлітний масаж',
+    cat_parent: 'massage',
+    url: 'massage_anticilulit',
+    img_url: [],
+    sub_cat: [
+      { title: 'Ручний антицилюлітний', description: 'Опис категорії', id: 'anticilulit_hand', img_url: ''},
+      { title: 'LPG антицилюлітний', description: 'Опис категорії', id: 'anticilulit_lpg', img_url: ''}
+    ]
   },
 ]
 
-let ChildCategory = [
-  {
-    title: 'Класичний масаж всього тіла',
-    cat_main: 'massage',
-    cat_parent: 'massage_classic',
-    url: 'classic_vsogo_tila',
-    description: 'Опис категорії',
-    popularity: '',
-    img_url: [],
-  },
-  {
-    title: 'Масаж спини',
-    parent_cat: 'massage_classic',
-    url: 'massage_spina',
-    description: 'Опис категорії',
-    popularity: '',
-    img_url: [],
-  },
-]
+
 
 let Products = [
   {
     _id: '',
-    owner: 'Current User id',
-    cat_main: 'classic_vsogo_tila',
-    cat_parent: 'massage_classic',
+    owner: 'Current User email',
     cat_top: 'Massage',
+    cat_parent: 'massage_classic',
+    cat_main: 'classic_vsogo_tila',
     title: 'Масаж всього тіла класичний',
     item_basic: { id: '', title: '', price: '', dur: '' },
     item_opt_1: { id: '', title: '', price: '', dur: '' },
