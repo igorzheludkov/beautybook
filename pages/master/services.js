@@ -1,3 +1,4 @@
+import { useStoreContext } from '../../context/store'
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -12,6 +13,7 @@ import Script from 'next/script'
 import Cloudinary from '../../lib/cloudinary'
 import { server } from '../../config/index'
 import ScrollBox from '../../components/scrollbox'
+
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
@@ -33,6 +35,11 @@ export async function getServerSideProps(context) {
 }
 
 export default function Services({ user, data }) {
+    const [store, setStore] = useStoreContext()
+
+    const userProfile = store.userProfile.userData
+    const services = store.services
+
     const serv = data
 
     return (
@@ -48,7 +55,7 @@ export default function Services({ user, data }) {
                 </div>
                 <div> </div>
                 <div className='serv_wrapper'>
-                    {serv.result.map((i) => (
+                    {services.map((i) => (
                         <div key={i._id} className={s.serv_inner}>
                             <div className={s.serv_item}>
                                 <span className={s.serv_title}>{i.item_1.name}</span>

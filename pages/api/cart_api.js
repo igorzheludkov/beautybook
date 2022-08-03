@@ -10,10 +10,11 @@ const dbName = 'beautybook'
 export default async function UserData(req, res) {
   await client.connect()
   const db = client.db(dbName)
-  const collection = db.collection('user_services')
+  const collection = db.collection('user_cart')
   const method = req.method
   const data = req.body
   const query = req.query.q
+  console.log(data)
 
   switch (method) {
     case 'GET':
