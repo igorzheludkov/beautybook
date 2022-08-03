@@ -22,7 +22,7 @@
   height: 10px;
   transform: scale(0);
   transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--main-blue);
+  box-shadow: inset 2em 2em var(--main-blue);
   position: absolute;
   bottom: -1px;
   left: -1px;

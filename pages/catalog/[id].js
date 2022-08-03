@@ -19,7 +19,7 @@ export async function getServerSideProps(context) {
 export default function MasterPage({ user }) {
   console.log(user.userData)
   return (
-    <div>
+    <div className='container'>
       <div className={s.header}>
         <div className={s.avatar_container}>
           <div className={s.avatar_img_inner}>

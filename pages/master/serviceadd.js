@@ -11,16 +11,14 @@ import { useSession } from 'next-auth/react'
 import Script from 'next/script'
 import Cloudinary from '../../lib/cloudinary'
 import { server } from '../../config/index'
+import ScrollBox from '../../components/scrollbox'
 
-
-export default function ServicesPage({user, data}) {
-
-  const categories = data.catigories
+export default function ServicesAddPage({ user, data }) {
+  const categories = data.categories
   const poslugi = data.poslugi
-  console.log(data);
 
   const servicesModel = {
-    owner: '',
+    owner: user.email,
     cat_top: '',
     cat_parent: '',
     cat_service: '',
@@ -32,9 +30,11 @@ export default function ServicesPage({user, data}) {
     pic: [],
   }
   const [serv, setServ] = useState(servicesModel)
-  const [photo, setPhoto] = useState([])
   console.log(serv)
-  // console.log(photo)
+
+  function checkboxToggle(e) {
+    e.target.checked ? setServ({ ...serv, cat_top: [...serv.cat_top, e.target.value] }) : setServ({ ...serv, cat_top: serv.cat_top.filter((i) => i !== e.target.value) })
+  }
 
   function inputHandler(e) {
     let id = e.target.id
@@ -45,9 +45,21 @@ export default function ServicesPage({user, data}) {
   }
 
   function photoHandler(result) {
-    // console.log(result);
-    // setPhoto(items => [...items, result.secure_url])
     setServ((items) => ({ ...items, pic: [...items.pic, result.secure_url] }))
+  }
+
+  async function pushData(e) {
+    e.preventDefault(e)
+    const response = await fetch('/api/services_api', {
+      method: 'POST',
+      body: JSON.stringify(serv),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    console.log('Sended')
+    console.log(data)
   }
 
   return (
@@ -59,42 +71,47 @@ export default function ServicesPage({user, data}) {
       <MasterNav />
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
-      <h4>Виберіть розділ</h4>
-      <div className='specialization'></div>
-      <h4>Виберіть підкатегорію</h4>
-      <div className='sub_cat'></div>
-      <h4>Виберіть стандартну назву послуги</h4>
-      <div className='sub_main'></div>
-      <p>Вкажіть нижче назву послуги своїми словами. Якщо не вказувати, то буде стандартна назва:</p>
-      <div className={s.form}>
-        <span className={s.serv_item}>
-          <input className={s.input_serv} id='item_1' data-type='name' onChange={inputHandler} placeholder='Введіть назву' />
-          <input className={s.input_serv} id='item_1' data-type='price' onChange={inputHandler} placeholder='Ціна' />
-          <input className={s.input_serv} id='item_1' data-type='dur' onChange={inputHandler} placeholder='Хв' />
-        </span>
-        <p>Додайте варіації, якщо є. Якщо змінюється тільки тривалість, то вкажіть тільки тривалість і вартість.</p>
-        <span className={s.serv_item}>
-          <input className={s.input_serv} id='item_2' data-type='name' onChange={inputHandler} placeholder='Введіть назву' />
-          <input className={s.input_serv} id='item_2' data-type='price' onChange={inputHandler} placeholder='Ціна' />
-          <input className={s.input_serv} id='item_2' data-type='dur' onChange={inputHandler} placeholder='Хв' />
-        </span>
-        <span className={s.serv_item}>
-          <input className={s.input_serv} id='item_3' data-type='name' onChange={inputHandler} placeholder='Введіть назву' />
-          <input className={s.input_serv} id='item_3' data-type='price' onChange={inputHandler} placeholder='Ціна' />
-          <input className={s.input_serv} id='item_3' data-type='dur' onChange={inputHandler} />
-        </span>
-        <input className={s.input_desc} id='about' data-type='description' onChange={inputHandler} placeholder='Додайте коротки опис' />
-        <p>Додайте фото (до 8 шт)</p>
-        <div className={s.photo_wrapper}>
-          {serv.pic.map((i) => (
-            <div key={i} className={s.photo_container}>
-              <Image className={dash.photo_serv} layout='responsive' objectFit='cover' width={80} height={80} src={i ? i : '/images/userplaceholder.png'} alt='serv_pic' />
-            </div>
-          ))}
+      <div className='container'>
+        <h4>Виберіть розділ</h4>
+        <div className='specialization'>
+          <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={serv.cat_top} />
         </div>
-        <div className={s.images_wrapper}>
-          <Cloudinary uploadHandler={photoHandler} multiple={true} />
+        <h4>Виберіть підкатегорію</h4>
+        <div className='sub_cat'></div>
+        <h4>Виберіть стандартну назву послуги</h4>
+        <div className='sub_main'></div>
+        <p>Вкажіть нижче назву послуги своїми словами. Якщо не вказувати, то буде стандартна назва:</p>
+        <div className={s.form}>
+          <span className={s.serv_item}>
+            <input className={s.input_serv} id='item_1' data-type='name' onChange={inputHandler} placeholder='Введіть назву' />
+            <input className={s.input_serv} id='item_1' data-type='price' onChange={inputHandler} placeholder='Ціна' />
+            <input className={s.input_serv} id='item_1' data-type='dur' onChange={inputHandler} placeholder='Хв' />
+          </span>
+          <p>Додайте варіації, якщо є. Якщо змінюється тільки тривалість, то вкажіть тільки тривалість і вартість.</p>
+          <span className={s.serv_item}>
+            <input className={s.input_serv} id='item_2' data-type='name' onChange={inputHandler} placeholder='Введіть назву' />
+            <input className={s.input_serv} id='item_2' data-type='price' onChange={inputHandler} placeholder='Ціна' />
+            <input className={s.input_serv} id='item_2' data-type='dur' onChange={inputHandler} placeholder='Хв' />
+          </span>
+          <span className={s.serv_item}>
+            <input className={s.input_serv} id='item_3' data-type='name' onChange={inputHandler} placeholder='Введіть назву' />
+            <input className={s.input_serv} id='item_3' data-type='price' onChange={inputHandler} placeholder='Ціна' />
+            <input className={s.input_serv} id='item_3' data-type='dur' onChange={inputHandler} />
+          </span>
+          <input className={s.input_desc} id='about' data-type='description' onChange={inputHandler} placeholder='Додайте коротки опис' />
+          <p>Додайте фото (до 8 шт)</p>
+          <div className={s.photo_wrapper}>
+            {serv.pic.map((i) => (
+              <div key={i} className={s.photo_container}>
+                <Image className={dash.photo_serv} layout='responsive' objectFit='cover' width={80} height={80} src={i ? i : '/images/userplaceholder.png'} alt='serv_pic' />
+              </div>
+            ))}
+          </div>
+          <div className={s.images_wrapper}>
+            <Cloudinary uploadHandler={photoHandler} multiple={true} />
+          </div>
         </div>
+        <button onClick={pushData}>Додати послугу</button>
       </div>
     </div>
   )

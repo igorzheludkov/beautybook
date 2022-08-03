@@ -32,9 +32,9 @@ export default function PersonalPage({ user, data }) {
     work_end: '',
   })
   const [avatar, setAvatar] = useState('')
-
+  
   const categories = data.categories
-
+  
   useEffect(() => {
     if (session?.user.email) {
       fetch(`/api/userdata?q=${session.user.email}`, {
@@ -54,6 +54,7 @@ export default function PersonalPage({ user, data }) {
     }
   }, [session])
 
+  console.log(form);
   async function newUser() {
     const response = await fetch('/api/userdata', {
       method: 'PUT',
