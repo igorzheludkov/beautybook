@@ -15,10 +15,8 @@ export default async function GetData(req, res) {
     const collection = db.collection('user_public')
     console.log('Searching for user...')
     const findUser = await collection.find({}).toArray()
-    console.log(findUser)
     await client.close()
 // }
 res.status(200).json({user: findUser})
 
-//   return 'done.'
 }
