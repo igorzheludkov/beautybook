@@ -1,0 +1,42 @@
+.master_info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.master_inner {
+    display: flex;
+    align-items: center;
+}
+
+.master_adress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+}
+.master_adressLogo {
+width: 30px;
+}
+
+.avatar {
+    margin-right: 10px;
+}
+
+.master_name, .master_surName {
+font-size: 12px;
+text-transform: uppercase;
+}
+.serv {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 60px 60px;
+    background-color: #fff;
+    color: #444;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .serv_name {
+    font-weight: 800;
+  }

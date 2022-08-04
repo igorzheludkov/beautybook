@@ -17,7 +17,7 @@ a {
   box-sizing: border-box;
   font-family: Nunito, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    font-size: 14px;
+    /* font-size: 14px; */
 }
 
 @media (prefers-color-scheme: dark) {

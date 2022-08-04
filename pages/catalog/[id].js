@@ -78,7 +78,7 @@ export default function MasterPage() {
             <div className={s.adress_info}>
                 <div className={s.info_a}>
                     <div className={s.info_a_logo}>
-                        <Image width={20} height={20} src='/images/adress.png' alt='instagram' />
+                        <Image width={20} height={20} src='/images/adress.png' alt='adress' />
                     </div>
                     <div className={s.info_a_text}>
                         {usr.city}
@@ -107,7 +107,7 @@ export default function MasterPage() {
                 <h1 className={s.title_h2}>Послуги</h1>
                 <div className='serv_wrapper'>
                     {srv.map((i) => (
-                        <ServiceItem key={i._id} data={i} />
+                        <ServiceItem key={i._id} data={i} user={user} />
                     ))}
                 </div>
             </section>

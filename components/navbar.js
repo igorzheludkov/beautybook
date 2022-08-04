@@ -3,12 +3,12 @@ import Link from 'next/link'
 import s from './navbar.module.css'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useStoreContext } from '../context/store'
+import Avatar from './avatar'
 
 export default function Navbar() {
     const [store, setStore] = useStoreContext()
     const { data: session, status } = useSession()
     const loading = status === 'loading'
-
 
     return (
         <div className={s.wrapper}>
@@ -66,7 +66,8 @@ export default function Navbar() {
                             </span>
                             <Link href='/user'>
                                 <a className={s.link}>
-                                    <Image width={50} height={50} className={s.login_image} src={session.user.image} alt='logo' />
+                                    <Avatar h={40} w={40} src={session.user.image} />
+                                    {/* <Image width={50} height={50} className={s.login_image} src={session.user.image} alt='logo' /> */}
                                 </a>
                             </Link>
                         </div>
