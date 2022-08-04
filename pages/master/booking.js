@@ -14,7 +14,7 @@ import Cloudinary from '../../lib/cloudinary'
 import { server } from '../../config/index'
 import ScrollBox from '../../components/scrollbox'
 import useSWR from 'swr'
-
+import BookingItem from '../../components/bookingitem'
 
 
 export async function getServerSideProps(context) {
@@ -24,32 +24,20 @@ export async function getServerSideProps(context) {
         context.res.end()
         return {}
     }
-    // const res = await fetch(`${server}/api/services_api?q=${session.user.email}`, {
-    //     method: 'GET',
-    // })
-    // const serv = await res.json()
     return {
         props: {
             user: session.user,
-            // data: serv,
         },
     }
 }
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function Booking({ user, data }) {
+    
     const [store, setStore] = useStoreContext()
-    const { data: services } = useSWR(user ? `/api/orders?q=${user.email}` : null, fetcher)
+    const { data: booking } = useSWR(user ? `/api/order?q=${user.email}` : null, fetcher)
 
-    if (!services) return <div>Loading...</div>
-
-    const srv = services.services
-
-    console.log('booking',services);
-
-
-
-
+    if (!booking) return <div>Loading...</div>
 
     return (
         <div>
@@ -62,6 +50,9 @@ export default function Booking({ user, data }) {
                         <button>Додати бронювання</button>
                     </Link>
                 </div>
+                {booking.orders.map((i) => (
+                    <BookingItem key={i.orderId} item={i} />
+                ))}
                 
             </div>
         </div>

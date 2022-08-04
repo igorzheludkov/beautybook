@@ -11,30 +11,13 @@ import { useStoreContext } from '../context/store'
 import { useSession } from 'next-auth/react'
 import Order from '../components/orderitem'
 
-export default function MasterPage({ user, userInfo }) {
+export default function MasterPage() {
     const { data: session, status } = useSession()
     const [store, setStore] = useStoreContext()
 
     if (!session) return <div>Для можливості бронювання послуг увійдіть будь-ласка на сайт через ваш аккаунт Google</div>
 
-
-
-    console.log('orders', store.orders);
-
-
-    async function orderHandler (e) {
-        e.preventDefault(e)
-    const response = await fetch(`/api/orders/`, {
-      method: 'POST',
-      body: JSON.stringify(store.orders),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const data = await response.json()
-    console.log('Sended')
-    console.log(data)
-    }
+   
 
     return (
         <>
@@ -45,12 +28,8 @@ export default function MasterPage({ user, userInfo }) {
                 <h1>Ваші замовлення</h1>
 
                 {store.orders.map((i) => (
-                    <Order key={i.orderId} data={i} user={user}/>
+                    <Order key={i.orderId} item={i}  />
                 ))}
-
-                <button onClick={orderHandler}>
-                    Підтвердити бронювання
-                </button>
             </div>
         </>
     )

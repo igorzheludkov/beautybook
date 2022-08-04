@@ -1,3 +1,7 @@
+.orders_wrapper {
+    margin-bottom: 50px;
+}
+
 .master_info {
     display: flex;
     justify-content: space-between;

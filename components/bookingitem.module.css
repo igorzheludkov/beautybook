@@ -1,0 +1,70 @@
+.booking_wrapper {
+    margin-bottom: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-weight: 800;
+    color: var(--strong-blue);
+}
+
+.title_info {
+    display: flex;
+    justify-content: space-between;
+    width: 110px;
+}
+
+.time {
+    background: rgb(255, 254, 167);
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+.phone {
+    background: rgb(189, 189, 189);
+    padding: 2px 10px;
+    border-radius: 20px;
+}
+.booking_details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.date{margin: 0 10px;}
+
+.date_time {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.contacts {
+    display: flex;
+    align-items: center;
+}
+
+.name{margin: 0 10px;}
+
+.buttons {
+    width: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cancel {
+    height: 30px;
+    background: pink;
+    border: none;
+    border-radius: 5px;
+}
+.shift {
+    height: 30px;
+    background: var(--main-blue);
+    border: none;
+    border-radius: 5px;
+}

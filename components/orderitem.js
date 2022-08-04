@@ -6,16 +6,31 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import Avatar from './avatar'
 
-export default function OrderItem({ data, user }) {
+export default function OrderItem({ item, user }) {
     const [store, setStore] = useStoreContext()
     const { data: session, status } = useSession()
-    const [checked, setChecked] = useState()
+    const [contacts, setContacts] = useState({ clientName: '', clientPhone: '', suggestions: '' })
 
-    function orderHandler(e) {
-        e.preventDefault()
-        setStore({ ...store, orders: [...store.orders, { orderId: Date.now().toString(), masterEmail: user.email, serviceId: data._id, masterId: user._id, title: data.item_1.name, masterName: user.userData.name, masterSurname: user.userData.surname, street: user.userData.street, city: user.userData.city, location: user.userData.location, photo: user.userData.photo, option: checked }] })
-        // setStore({ ...store, orders: [...store.orders, e.target.value] })
+    let mergedData= {...item, ...contacts}
+
+    function clientContactsHandler(e) {
+        setContacts({...contacts, [e.target.id]: e.target.value})
     }
+
+    async function orderHandler(e) {
+        e.preventDefault(e)
+        const response = await fetch(`/api/order/`, {
+            method: 'POST',
+            body: JSON.stringify(mergedData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const res = await response.json()
+        console.log('Sended')
+    }
+    // console.log('orderItem', form)
+    console.log('orderItem', mergedData)
 
     function removeHandler(e) {
         e.preventDefault()
@@ -27,12 +42,12 @@ export default function OrderItem({ data, user }) {
             <div className={s.master_info}>
                 <div className={s.master_inner}>
                     <div className={s.avatar}>
-                        <Avatar w={50} h={50} src={data.photo} />
+                        <Avatar w={50} h={50} src={item.photo} />
                     </div>
                     <div>
-                        <div className={s.master_name}>{data.masterName}</div>
+                        <div className={s.master_name}>{item.masterName}</div>
 
-                        <div className={s.master_name}>{data.masterSurname}</div>
+                        <div className={s.master_name}>{item.masterSurname}</div>
                     </div>
                 </div>
                 <div className={s.master_adress}>
@@ -41,25 +56,36 @@ export default function OrderItem({ data, user }) {
                     </div>
 
                     <div>
-                        <div>{data.city}</div>
-                        <div>{data.street}</div>
-                        <div>{data.location}</div>
+                        <div>{item.city}</div>
+                        <div>{item.street}</div>
+                        <div>{item.location}</div>
                     </div>
                 </div>
             </div>
             <div className={s.serv}>
-                <div className={s.serv_name}>{data.option.name}</div>
-                <div className={s.serv_price}>{data.option.price} грн
-                <button value={data.orderId} onClick={removeHandler}>
-                        Видалити
-                    </button></div>
+                <div className={s.serv_name}>{item.option.name}</div>
+                <div className={s.serv_price}>{item.option.price} грн</div>
                 <div className={s.serv_dur}>
-                    {data.option.dur} хв{' '}
-                    <button value={data.orderId} >
-                        Підтвердити
-                    </button>
+                    {item.option.dur} хв{' '}
+                    
                 </div>
             </div>
+
+                <input id='suggestions' value={contacts.suggestions} onChange={clientContactsHandler} placeholder='Додайте побажання щодо послуги'/>
+                <div>
+                <div>Час</div>
+                <div>Дата</div>
+                <button value={item.orderId} onClick={removeHandler}>
+                        Відмінити
+                    </button>
+                </div>
+            <form>
+                <input id='clientName' value={contacts.clientName} onChange={clientContactsHandler} placeholder='Ваше ім`я'/>
+                <input id='clientPhone' value={contacts.clientPhone} onChange={clientContactsHandler} placeholder='Ваш номер телефону'/>
+                <button value={item.orderId} onClick={orderHandler}>
+                    Підтвердити
+                </button>
+            </form>
         </div>
     )
 }

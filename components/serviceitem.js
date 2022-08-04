@@ -15,8 +15,6 @@ export default function ServiceItem({ data, user }) {
         // setStore({ ...store, orders: [...store.orders, e.target.value] })
     }
 
-    console.log('serv item',user.email)
-
     return (
         <form>
             <div className={s.serv_inner}>
