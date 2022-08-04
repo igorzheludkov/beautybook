@@ -20,7 +20,7 @@ export default function MasterNav({ path, status }) {
                 <Link href=''>Панель</Link>
             </button>
             <button className={dash.nav_sub_button}>
-                <Link href=''>Бронювання</Link>
+                <Link href='/master/booking'>Бронювання</Link>
             </button>
             <button className={dash.nav_sub_button}>
                 <Link href='/master/services'>Послуги</Link>

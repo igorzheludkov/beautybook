@@ -18,7 +18,22 @@ export default function MasterPage({ user, userInfo }) {
 
     function removeHandler(e) {
         e.preventDefault()
-        setStore({ ...store, orders: store.orders.filter((i) => e.target.value !== i.orderId)})
+        setStore({ ...store, orders: store.orders.filter((i) => e.target.value !== i.orderId) })
+    }
+
+    console.log('orders', store.orders);
+    async function orderHandler (e) {
+        e.preventDefault(e)
+    const response = await fetch(`/api/orders/`, {
+      method: 'POST',
+      body: JSON.stringify(store.orders),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    console.log('Sended')
+    console.log(data)
     }
 
     return (
@@ -66,6 +81,10 @@ export default function MasterPage({ user, userInfo }) {
                         </div>
                     </div>
                 ))}
+
+                <button onClick={orderHandler}>
+                    Підтвердити бронювання
+                </button>
             </div>
         </>
     )
