@@ -55,6 +55,7 @@ export default function PersonalPage({ user, data }) {
   }, [session])
 
   console.log(form);
+  
   async function newUser() {
     const response = await fetch('/api/userdata', {
       method: 'PUT',

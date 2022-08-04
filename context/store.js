@@ -5,6 +5,8 @@ const Context = createContext()
 export function StoreProvider({ children }) {
     const [store, setStore] = useState({orders: [], admin: [], userProfile: [], services: []})
 
+    console.log('CART', store.orders);
+
     return <Context.Provider value={[store, setStore]}>{children}</Context.Provider>
 }
 

@@ -18,6 +18,7 @@ export default function ServicesAddPage({ user, data }) {
   const poslugi = data.poslugi
 
   const servicesModel = {
+    // ownerId: 
     owner: user.email,
     cat_top: '',
     cat_parent: '',
@@ -41,7 +42,7 @@ export default function ServicesAddPage({ user, data }) {
     let type = e.target.dataset.type
     let value = e.target.value
 
-    setServ({ ...serv, [id]: { ...serv[id], [type]: value } })
+    setServ({ ...serv, [id]: { ...serv[id], opt: id, [type]: value } })
   }
 
   function photoHandler(result) {

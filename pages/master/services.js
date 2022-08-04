@@ -13,6 +13,8 @@ import Script from 'next/script'
 import Cloudinary from '../../lib/cloudinary'
 import { server } from '../../config/index'
 import ScrollBox from '../../components/scrollbox'
+import useSWR from 'swr'
+
 
 
 export async function getServerSideProps(context) {
@@ -22,25 +24,30 @@ export async function getServerSideProps(context) {
         context.res.end()
         return {}
     }
-    const res = await fetch(`${server}/api/services_api?q=${session.user.email}`, {
-        method: 'GET',
-    })
-    const serv = await res.json()
+    // const res = await fetch(`${server}/api/services_api?q=${session.user.email}`, {
+    //     method: 'GET',
+    // })
+    // const serv = await res.json()
     return {
         props: {
             user: session.user,
-            data: serv,
+            // data: serv,
         },
     }
 }
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function Services({ user, data }) {
     const [store, setStore] = useStoreContext()
+    const { data: services } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
 
-    const userProfile = store.userProfile.userData
-    const services = store.services
+    if (!services) return <div>Loading...</div>
 
-    const serv = data
+    const srv = services.services
+
+
+
+
 
     return (
         <div>
@@ -48,14 +55,14 @@ export default function Services({ user, data }) {
             <MasterNav />
             <div className='container'>
                 <div className={s.header}>
-                    <h1 className='title'>Послуги</h1>
+                <h1 className={s.title_h2}>Послуги</h1>
                     <Link href='serviceadd'>
                         <button>Додати послугу</button>
                     </Link>
                 </div>
                 <div> </div>
                 <div className='serv_wrapper'>
-                    {services.map((i) => (
+                    {srv.map((i) => (
                         <div key={i._id} className={s.serv_inner}>
                             <div className={s.serv_item}>
                                 <span className={s.serv_title}>{i.item_1.name}</span>

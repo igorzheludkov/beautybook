@@ -9,7 +9,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
     return (
         <SessionProvider session={session}>
             <StoreProvider>
-                <FetchData />
+                {/* <FetchData /> */}
                 <Layout>
                     <Component {...pageProps} />
                 </Layout>
