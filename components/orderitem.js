@@ -8,28 +8,25 @@ import AvalTime from './avaltime'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-
 export default function OrderItem({ item, user }) {
     // const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
     const { data: booking } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
 
     const [store, setStore] = useStoreContext()
 
-    
-    const [contacts, setContacts] = useState({ clientName: '', clientPhone: '', suggestions: ''})
-    const orderDur = item.option.dur 
-    const [choosenTime, setChoosenTime] = useState({visitDur: '', visitDateTime:''})
+    const [contacts, setContacts] = useState({ clientName: '', clientPhone: '', suggestions: '' })
+    const orderDur = item.option.dur
+    const [choosenTime, setChoosenTime] = useState({ visitDur: '', visitDateTime: '' })
 
     let mergedData = { ...item, ...contacts, ...choosenTime }
 
     // console.log('order item component', mergedData);
-    console.log('booked time', booking);
-    
-    
+    console.log('booked time - order item', booking);
+
     // Із функції повинна прийти дата бронювання у вигляді timestamp
-    function visitHandler (e) {
-        setChoosenTime({...choosenTime, visitDateTime: +e.target.value, visitDur: +orderDur,})
-        console.log('Дата і час візиту', +e.target.value);
+    function visitHandler(e) {
+        setChoosenTime({ ...choosenTime, visitDateTime: +e.target.value, visitDur: +orderDur })
+        console.log('Дата і час візиту', +e.target.value)
     }
 
     function clientContactsHandler(e) {
@@ -53,8 +50,8 @@ export default function OrderItem({ item, user }) {
         e.preventDefault()
         setStore({ ...store, orders: store.orders.filter((i) => e.target.value !== i.orderId) })
     }
-    // if (!booking) return <div>Loading...</div>
-    
+    if (!booking) return <div>Loading...</div>
+
     return (
         <div className={s.orders_wrapper}>
             <div className={s.master_info}>
@@ -85,7 +82,7 @@ export default function OrderItem({ item, user }) {
                 <div className={s.serv_price}>{item.option.price} грн</div>
                 <div className={s.serv_dur}>{item.option.dur} хв </div>
             </div>
-            <AvalTime visitHandler={visitHandler} orderDur={orderDur}/>
+            <AvalTime visitHandler={visitHandler} orderDur={orderDur} booking={booking.orders} />
 
             <input id='suggestions' value={contacts.suggestions} onChange={clientContactsHandler} placeholder='Додайте побажання щодо послуги' />
             <div>
