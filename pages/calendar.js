@@ -2,21 +2,26 @@ import { useEffect, useState } from 'react'
 import { useStoreContext } from '../context/store'
 import Head from 'next/head'
 
-export default function BookingCalendar() {
+export default function DayCalendar() {
     const [store, setStore] = useStoreContext()
-    let hoursCalendar = []
-    let avaliableTime = []
-    let timeInterval = 30
-    let beginHours = 9 * 60
-    let endHours = 18 * 60
-    let orderTime = 570
-    let orderTime2 = 810
-    let orderDuration = 40
-    let orderEnd = orderTime + orderDuration
+    const [dayShedule, setDayShedule] = useState(0)
 
-    const [checkedTime, setCheckedTime] = useState(0)
-    const [avalTime, setAvalTime] = useState(hoursCalendar)
-    const [booking, setBooking] = useState([])
+    const dayBegin = new Date(2022,7,6)
+    dayBegin.setHours('9', '00', '00')
+    const dayEnd = new Date(2022,7,6)
+    dayEnd.setHours('18', '00', '00')
+    const orderTime = new Date(2022,7,6,12,0,0)
+
+    const servInterval = 40 * 60 * 1000
+
+    useEffect(() => {
+        setDayShedule([dayBegin.getTime(), dayEnd.getTime()])
+    }, [])
+
+    console.log((dayShedule[1] - dayShedule[0]) / 1000 / 60)
+    console.log(orderTime.getTime() )
+
+    const dateTime = new Date(dayShedule[0])
 
     function bookingListGenerator(start, dur) {
         const orderEnd = start + dur
@@ -24,34 +29,10 @@ export default function BookingCalendar() {
         return orderParams
     }
 
-    // console.log('booking', booking)
-
-    useEffect(() => {
-        setBooking(bookingListGenerator(570, 40))
-        // setAvalTime([...hoursCalendar.filter(i => i < orderTime), ...hoursCalendar.filter(i => i > orderEnd)])
-    }, [])
-
-    function timeConvert(n) {
-        let num = n
-        const rhours = Math.floor(num / 60)
-        const rminutes = Math.round((num / 60 - rhours) * 60)
-        return rminutes > 0 ? `${rhours}:${rminutes}` : `${rhours}`
-    }
-
-    do {
-        hoursCalendar.push(beginHours)
-        beginHours = beginHours + timeInterval
-    } while (beginHours < endHours)
-
-    // console.log('hoursCalendar', hoursCalendar)
-    // console.log(
-    //     'hoursCalendar_converted',
-    //     hoursCalendar.map((i) => timeConvert(i))
-    // )
-    // console.log(
-    //     'avalTime',
-    //     avalTime.map((i) => timeConvert(i))
-    // )
+    // do {
+    //     hoursCalendar.push(beginHours)
+    //     beginHours = beginHours + timeInterval
+    // } while (beginHours < endHours)
 
     const style = {
         width: '60px',
@@ -74,23 +55,22 @@ export default function BookingCalendar() {
         setCheckedTime(e.target.value)
         console.log(e)
     }
-    console.log(checkedTime)
 
     return (
         <>
             <Head>
-                <title>Booking Calendar</title>
+                <title>Day Calendar</title>
             </Head>
             <div className='container'>
                 <div style={{ width: '360px', height: '500px' }}>
-                    {avalTime.map((i) => (
+                    {/* {avalTime.map((i) => (
                         <div key={i}>
                             <label style={style} htmlFor='calendar'>
                                 <input onChange={buttonHandler} name='calendar' value={i} type='radio' />
                                 {timeConvert(i)}
                             </label>
                         </div>
-                    ))}
+                    ))} */}
                 </div>
             </div>
         </>

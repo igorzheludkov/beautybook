@@ -11,8 +11,7 @@ export default function ServiceItem({ data, user }) {
 
     function cartHandler(e) {
         e.preventDefault()
-        setStore({ ...store, orders: [...store.orders, {orderId: Date.now().toString(), masterEmail: user.email, serviceId: data._id, masterId: user._id, title: data.item_1.name, masterName: user.userData.name, masterSurname: user.userData.surname, street: user.userData.street, city: user.userData.city, location: user.userData.location, photo: user.userData.photo, option: checked }] })
-        // setStore({ ...store, orders: [...store.orders, e.target.value] })
+        setStore({ ...store, orders: [...store.orders, {orderId: Date.now(), masterEmail: user.email, serviceId: data._id, masterId: user._id, title: data.item_1.name, masterName: user.userData.name, masterSurname: user.userData.surname, street: user.userData.street, city: user.userData.city, location: user.userData.location, photo: user.userData.photo, option: checked }] })
     }
 
     return (

@@ -37,7 +37,6 @@ export default function MasterPage() {
     const usr = user.userData
     const srv = services.services
 
-    console.log(srv)
 
     return (
         <div className='container'>

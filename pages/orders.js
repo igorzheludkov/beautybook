@@ -9,7 +9,7 @@ import { server } from '../config/index'
 import { getSession } from 'next-auth/react'
 import { useStoreContext } from '../context/store'
 import { useSession } from 'next-auth/react'
-import Order from '../components/orderitem'
+import OrderItem from '../components/orderitem'
 
 export default function MasterPage() {
     const { data: session, status } = useSession()
@@ -28,7 +28,7 @@ export default function MasterPage() {
                 <h1>Ваші замовлення</h1>
 
                 {store.orders.map((i) => (
-                    <Order key={i.orderId} item={i}  />
+                    <OrderItem key={i.orderId} item={i}  />
                 ))}
             </div>
         </>

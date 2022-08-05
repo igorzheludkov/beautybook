@@ -14,7 +14,7 @@ export default async function UserData(req, res) {
     await client.connect()
     const db = client.db(dbName)
     const collection = db.collection('user_public')
-    console.log('Searching for user...')
+    console.log('userdata - Searching for user...')
     const findUser = await collection.findOne({
       email: userEmail,
     })
