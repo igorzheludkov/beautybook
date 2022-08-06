@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 export default function CheckboxHorizontal({ data, checkboxToggle, checkStatus }) {
   const categories = data
 
+
   return (
     <div className={s.wrapper}>
       <div className={s.container}>
@@ -13,9 +14,9 @@ export default function CheckboxHorizontal({ data, checkboxToggle, checkStatus }
             <input
               style={{ width: `${i.spec.length * 10}px` }}
               className={s.input}
-              name='position'
+              name='spec'
               id={i.spec}
-              checked={checkStatus.includes(i.spec)}
+              checked={checkStatus?.includes(i.spec)}
               value={i.spec}
               type='checkbox'
               onChange={checkboxToggle}

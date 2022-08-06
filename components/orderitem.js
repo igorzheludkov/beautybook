@@ -4,34 +4,38 @@ import Image from 'next/image'
 import { useStoreContext } from '../context/store'
 import { useState } from 'react'
 import Avatar from './avatar'
-import AvalTime from './avaltime'
+import Calendar from './calendar'
+
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function OrderItem({ item, user }) {
-    // const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
+export default function OrderItem({ item }) {
+    const { data: user } = useSWR(item ? `/api/userpublic?q=${item.masterEmail} ` : null, fetcher)
     const { data: booking } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
 
     const [store, setStore] = useStoreContext()
 
     const [contacts, setContacts] = useState({ clientName: '', clientPhone: '', suggestions: '' })
-    const orderDur = item.option.dur
     const [choosenTime, setChoosenTime] = useState({ visitDur: '', visitDateTime: '' })
+
+    const orderDur = item.option.dur
 
     let mergedData = { ...item, ...contacts, ...choosenTime }
 
-    // console.log('order item component', mergedData);
-    console.log('booked time - order item', booking);
+    // console.log('user data from order item component via api/userpublic', user)
+    // console.log('booking data from order item component via api/bookeditem', booking)
 
     // Із функції повинна прийти дата бронювання у вигляді timestamp
     function visitHandler(e) {
-        setChoosenTime({ ...choosenTime, visitDateTime: +e.target.value, visitDur: +orderDur })
+        setChoosenTime({ ...choosenTime, visitDateTime: +e.target.value})
         console.log('Дата і час візиту', +e.target.value)
     }
 
     function clientContactsHandler(e) {
-        setContacts({ ...contacts, [e.target.id]: e.target.value })
+        setContacts({ ...contacts, [e.target.id]: e.target.value, visitDur: +orderDur  })
     }
+
+    console.log('merged', mergedData);
 
     async function orderHandler(e) {
         e.preventDefault(e)
@@ -82,7 +86,8 @@ export default function OrderItem({ item, user }) {
                 <div className={s.serv_price}>{item.option.price} грн</div>
                 <div className={s.serv_dur}>{item.option.dur} хв </div>
             </div>
-            <AvalTime visitHandler={visitHandler} orderDur={orderDur} booking={booking.orders} />
+
+            <Calendar props={{visitHandler, orderDur, user, booking}} />
 
             <input id='suggestions' value={contacts.suggestions} onChange={clientContactsHandler} placeholder='Додайте побажання щодо послуги' />
             <div>

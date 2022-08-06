@@ -9,24 +9,11 @@ import { useStoreContext } from '../../context/store'
 import useSWR from 'swr'
 import ServiceItem from '../../components/serviceitem'
 
-// export async function getServerSideProps(context) {
-//     const session = await getSession(context)
-//     const { id } = context.query
-//     const res = await fetch(`${server}/api/getdata?q=${id}`, {
-//         method: 'GET',
-//     })
-//     const user = await res.json()
-
-//     const data = await fetch(`${server}/api/services_api?q=${session.user.email}`, {
-//         method: 'GET',
-//     })
-//     const userInfo = await data.json()
-
-//     return { props: { user, userInfo } }
-// }
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function MasterPage() {
+    const [store, setStore] = useStoreContext()
+
     const router = useRouter()
 
     const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
@@ -36,6 +23,15 @@ export default function MasterPage() {
 
     const usr = user.userData
     const srv = services.services
+
+//     useEffect(() => {
+//  setStore(
+//     setStore({ ...store, masterInfo: [...store.orders, {orderId: Date.now(), masterEmail: user.email, serviceId: data._id, masterId: user._id, title: data.item_1.name, masterName: user.userData.name, masterSurname: user.userData.surname, street: user.userData.street, city: user.userData.city, location: user.userData.location, photo: user.userData.photo, option: checked }] })
+
+//  )
+
+//     }, [user])
+    
 
 
     return (

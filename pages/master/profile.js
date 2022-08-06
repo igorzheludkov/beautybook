@@ -25,13 +25,18 @@ export default function PersonalPage({ user, data }) {
     phone: '',
     social_1: '',
     social_2: '',
-    categories: [''],
+    categories: [],
     street: '',
     surname: '',
     work_begin: '',
     work_end: '',
+    interval: 10,
+    horizon: 3
+
   })
   const [avatar, setAvatar] = useState('')
+
+  console.log('profile.js - form.categories' , form);
   
   const categories = data.categories
   
@@ -54,7 +59,6 @@ export default function PersonalPage({ user, data }) {
     }
   }, [session])
 
-  console.log(form);
   
   async function newUser() {
     const response = await fetch('/api/userdata', {
@@ -73,7 +77,13 @@ export default function PersonalPage({ user, data }) {
   }
 
   function checkboxToggle(e) {
-    e.target.checked ? setForm({ ...form, categories: [...form.categories, e.target.value] }) : setForm({ ...form, categories: form.categories.filter((i) => i !== e.target.value) })
+    if(form.categories) {
+      e.target.checked ? setForm({ ...form, categories: [...form.categories, e.target.value] }) : setForm({ ...form, categories: form.categories.filter((i) => i !== e.target.value) })
+    } else {
+      setForm({...form, categories: [e.target.value]})
+    }
+
+    
   }
 
   async function buttonHandler(e) {
@@ -106,7 +116,11 @@ export default function PersonalPage({ user, data }) {
     { id: 'location', tp: 'text', vl: 'Будівля або салон для орієнтиру' },
     { id: 'work_begin', tp: 'text', vl: 'О котрій годині починаєте працювати?' },
     { id: 'work_end', tp: 'text', vl: 'Коли закінчуєте робочий день?' },
+    { id: 'interval', tp: 'text', vl: 'Скільки хвилин має бути перерва між прийомом клієнтів?' },
+    { id: 'horizon', tp: 'text', vl: 'На скільки місяців наперед можуть записуватись люди?' },
   ]
+
+  if (!form) return <div>Loading...</div>
 
   return (
     <>
