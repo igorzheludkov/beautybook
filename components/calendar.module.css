@@ -3,7 +3,7 @@
 .wrapper_month {
     display: flex;
     margin-bottom: 5px;
-    overflow-x: clip;
+    overflow-x: auto;
 }
 
 .container_month {
@@ -74,7 +74,7 @@
 .wrapper_day {
     display: flex;
     margin-bottom: 10px;
-    overflow-x: clip;
+    overflow-x: auto;
 }
 
 .container_day {
@@ -147,7 +147,7 @@
 .wrapper_time {
     display: flex;
     margin-bottom: 20px;
-    overflow-x: clip;
+    overflow-x: auto;
 }
 
 .container_time {
