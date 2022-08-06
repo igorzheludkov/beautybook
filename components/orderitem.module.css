@@ -16,31 +16,108 @@
 .master_adress {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 13px;
+    justify-content: flex-start;
+    font-size: 12px;
+    width: 172px;
+    color: grey;
 }
 .master_adressLogo {
-width: 30px;
+    width: 30px;
 }
 
 .avatar {
     margin-right: 10px;
 }
 
-.master_name, .master_surName {
-font-size: 12px;
-text-transform: uppercase;
+.master_name,
+.master_surName {
+    font-size: 12px;
+    text-transform: uppercase;
 }
 .serv {
     display: grid;
+    align-items: center;
     grid-gap: 10px;
     grid-template-columns: 1fr 60px 60px;
     background-color: #fff;
     color: #444;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     font-size: 14px;
-  }
+}
 
-  .serv_name {
+.serv_name {
     font-weight: 800;
-  }
+    font-size: 18px;
+}
+
+.suggestions {
+    width: 100%;
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid rgb(182, 182, 182);
+    padding: 0 10px;
+    margin-bottom: 10px;
+}
+.daytime {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.time_wrapper {
+    display: flex;
+    align-items: center;
+    width: 70px;
+    background: #fffead;
+    border-radius: 10px;
+    padding-left: 5px;
+    
+}
+.time {font-size: 14px;
+    margin-left: 5px;
+    padding: 2px 0;
+
+}
+.date_wrapper {
+    display: flex;
+    align-items: center;
+    width: 130px;
+    border-radius: 10px;
+    padding-left: 5px;
+    
+}
+.date {font-size: 14px;
+    margin-left: 5px;
+    padding: 2px 0;
+
+}
+
+.cancel_btn {
+    border: none;
+    border-radius: 10px;
+    color: grey;
+}
+
+.contacts {
+    display: flex;
+    align-items: center;
+    border-radius: 100px;
+    padding: 5px 15px;
+
+    background-color: #A2FEC2;
+
+}
+
+
+.clientName, .clientPhone {
+    width: 95%;
+    border-radius: 10px;
+    border: 2px solid #61f595;
+}
+
+.submit_btn {
+    border: none;
+font-weight: 800;
+    background-color: #A2FEC2;
+}

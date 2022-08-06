@@ -50,7 +50,7 @@ export default function Calendar({ props }) {
     for (let i = +currentTime.getMonth() + 1; i <= +user.userData.horizon + currentTime.getMonth() + 1; i++) {
         generatedMonths.push(i)
     }
-    for (let i = +currentTime.getDay(); i <= getDays(2022, 8); i++) {
+    for (let i = +currentTime.getDate(); i <= getDays(2022, 8); i++) {
         generatedDays.push(i)
     }
 
@@ -91,10 +91,14 @@ export default function Calendar({ props }) {
         borderRadius: '10px',
     }
     const timeStyle = {
+        fontSize: '13px',
         height: '30px',
+        width: '50px',
         borderRadius: '7px',
+        padding: '0',
     }
 
+    
     return (
         <>
             <form className={s.wrapper_month}>
@@ -121,9 +125,10 @@ export default function Calendar({ props }) {
                     </div>
                 ))}
             </form>
-            <form className={s.wrapper_time}>
-                {generatedTime.map((i) => (
-                    <div key={Math.random()}>
+
+            <form id='time' className={s.wrapper_time}>
+                {generatedTime.map((i, index) => (
+                    <div key={index}>
                         <label style={timeStyle} className={s.container_time}>
                             <input
                                 name='radio'

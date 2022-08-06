@@ -5,10 +5,15 @@ import { useStoreContext } from '../context/store'
 import { useState } from 'react'
 import Avatar from './avatar'
 import Calendar from './calendar'
+import { useSession } from 'next-auth/react'
+
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function OrderItem({ item }) {
+    const { data: session, status } = useSession()
+    console.log(session.user.name);
+
     const currentTime = new Date()
     const { data: user } = useSWR(item ? `/api/userpublic?q=${item.masterEmail} ` : null, fetcher)
     const { data: booking } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
@@ -18,21 +23,19 @@ export default function OrderItem({ item }) {
     const defaultTime = {
         year: currentTime.getFullYear().toString(),
         month: currentTime.getMonth() + 1 < 10 ? '0' + (currentTime.getMonth() + 1).toString() : (currentTime.getMonth() + 1).toString(),
-        day: currentTime.getDay() < 10 ? '0' + currentTime.getDay().toString() : currentTime.getDay().toString(),
+        day: currentTime.getDate() < 10 ? '0' + currentTime.getDate().toString() : currentTime.getDate().toString(),
         hour: currentTime.getHours() < 10 ? '0' + currentTime.getHours().toString() : currentTime.getHours().toString(),
         minute: '00',
     }
 
-    const [contacts, setContacts] = useState({ clientName: '', clientPhone: '', suggestions: '' })
+    const [contacts, setContacts] = useState({ clientName: session.user.name, clientPhone: '', suggestions: '' })
     const [dayTime, setDayTime] = useState(defaultTime)
     const orderDur = item.option.dur
     const choosenTime = new Date(`${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`)
     let mergedData = { ...item, ...contacts, visitDateTime: choosenTime.getTime(), visitDur: orderDur }
 
-
     // Із функції повинна прийти дата бронювання у вигляді timestamp
     function visitHandler(e) {
-
         const typeMinute = e.target.dataset.typeIndexminutes < 10 ? '0' + e.target.dataset.typeIndexminutes : e.target.dataset.typeIndexminutes
         const minuteField = e.target.dataset.typeFieldminutes
         const typeIndex = e.target.dataset.typeIndex < 10 ? '0' + e.target.dataset.typeIndex : e.target.dataset.typeIndex
@@ -50,8 +53,10 @@ export default function OrderItem({ item }) {
     // console.log('merged', mergedData);
     const bookingTime = new Date(`2022-08-07T22:06:00`)
 
-    console.log('choosenTime', choosenTime.getTime())
-    console.log('mergedData', mergedData)
+    console.log('dayTime', dayTime)
+    console.log('dayTime.day', dayTime.day)
+    console.log('currentTime', currentTime.getDay())
+    // console.log('mergedData', mergedData)
 
     async function orderHandler(e) {
         e.preventDefault(e)
@@ -105,18 +110,44 @@ export default function OrderItem({ item }) {
 
             <Calendar props={{ visitHandler, orderDur, user, booking }} />
 
-            <input id='suggestions' value={contacts.suggestions} onChange={clientContactsHandler} placeholder='Додайте побажання щодо послуги' />
-            <div>
-                <div>Час</div>
-                <div>Дата</div>
-                <button value={item.orderId} onClick={removeHandler}>
+            <input
+                className={s.suggestions}
+                id='suggestions'
+                value={contacts.suggestions}
+                onChange={clientContactsHandler}
+                placeholder='Додайте побажання щодо послуги'
+            />
+            <div className={s.daytime}>
+                <div className={s.time_wrapper}>
+                    <Image width={15} height={15} src='/images/orders.png' alt='time' />
+                    <div className={s.time}>{choosenTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                </div>
+                <div className={s.date_wrapper}>
+                    <Image width={15} height={15} src='/images/booking.png' alt='time' />
+                    <div className={s.date}>{choosenTime.toLocaleDateString('uk-UA', { day: 'numeric', year: 'numeric', month: 'short' })}</div>
+                </div>
+                <button className={s.cancel_btn} value={item.orderId} onClick={removeHandler}>
                     Відмінити
                 </button>
             </div>
-            <form>
-                <input id='clientName' value={contacts.clientName} onChange={clientContactsHandler} placeholder='Ваше ім`я' />
-                <input id='clientPhone' value={contacts.clientPhone} onChange={clientContactsHandler} placeholder='Ваш номер телефону' />
-                <button value={item.orderId} onClick={orderHandler}>
+            <form className={s.contacts}>
+                <div>
+                    <input
+                        className={s.clientName}
+                        id='clientName'
+                        value={contacts.clientName}
+                        onChange={clientContactsHandler}
+                        placeholder='Ваше ім`я'
+                    />
+                    <input
+                        className={s.clientPhone}
+                        id='clientPhone'
+                        value={contacts.clientPhone}
+                        onChange={clientContactsHandler}
+                        placeholder='Ваш номер телефону'
+                    />
+                </div>
+                <button className={s.submit_btn} value={item.orderId} onClick={orderHandler}>
                     Підтвердити
                 </button>
             </form>

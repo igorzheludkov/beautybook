@@ -4,7 +4,12 @@
     display: flex;
     margin-bottom: 5px;
     overflow-x: auto;
+    
 }
+
+/* .container_month:focus-within {
+    color: white;
+} */
 
 .container_month {
     display: block;
@@ -18,19 +23,17 @@
     user-select: none;
     /* height: var(--month-height); */
     margin: 3px;
-    color: grey;
+    color: rgb(148, 148, 148);
 }
 
 .name_month {
     position: relative;
     z-index: 100;
-    /* height: var(--month-height); */
     display: flex;
     align-items: center;
     justify-content: center;
-    /* width: 100%; */
-
 }
+
 
 /* Hide the browser's default checkbox */
 .container_month input {
@@ -51,7 +54,7 @@
     width: 100%;
     background-color: rgb(255, 255, 255);
     /* border-radius: var(--month-border-radius); */
-    border: 1px solid rgb(230, 230, 230);
+    border: 1px solid rgb(255, 255, 255);
 
 }
 
@@ -63,8 +66,9 @@
 
 /* When the checkbox is checked, add a blue background */
 .container_month input:checked ~ .checkmark_month {
-    /* background-color: #2196f3; */
-    border: 2px solid #2196f3;
+
+    /* background-color: #7bc3ff; */
+    border: 2px solid #A6EAFF;
 
 }
 
@@ -146,8 +150,9 @@
 
 .wrapper_time {
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 20px;
-    overflow-x: auto;
+    /* overflow-x: auto; */
 }
 
 .container_time {
@@ -192,15 +197,15 @@
     left: 0;
     height: var(--time-height);
     width: 100%;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(245, 245, 245);
     border-radius: var(--time-border-radius);
-    border: 2px solid rgb(230, 230, 230);
+    /* border: 2px solid rgb(230, 230, 230); */
 
 }
 
 /* On mouse-over, add a grey background color */
 .container_time:hover input ~ .checkmark_time {
-    /* background-color: rgb(235, 235, 235); */
+    background-color: rgb(235, 235, 235);
     border: 2px solid grey;
 }
 
@@ -211,30 +216,7 @@
 
 }
 
-/* Create the checkmark/indicator (hidden when not checked) */
-/* .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-} */
 
-/* Show the checkmark when checked */
-/* .container input:checked ~ .checkmark:after {
-    display: block;
-} */
-
-/* Style the checkmark/indicator */
-/* .container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  } */
 
 
  
