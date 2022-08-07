@@ -5,7 +5,7 @@ export default function Calendar({ props }) {
     const { visitHandler, orderDur, user, booking } = props
     const currentTime = new Date()
     const currentTimeInMinutes = currentTime.getHours() * 60 + currentTime.getMinutes()
-    const [date, setDate] = useState(currentTime.getMonth())
+    const [date, setDate] = useState(currentTime.getMonth() + 1)
     let generatedMonths = []
     let generatedDays = []
     let generatedTime = []
@@ -16,13 +16,6 @@ export default function Calendar({ props }) {
         endTime: +user.userData.work_end * 60 ?? 18 * 60,
         interval: +user.userData.interval ?? 20,
         except: '',
-    }
-
-    function dayTimeHandler(e) {
-        console.log(e.target.dataset)
-        const typeIndex = e.target.dataset.typeIndex
-        const fieldType = e.target.dataset.typeField
-        setDayTime({ ...dayTime, [fieldType]: +typeIndex })
     }
 
     const daysLabel = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П`ятниця', 'Субота', 'Неділя']
@@ -51,8 +44,15 @@ export default function Calendar({ props }) {
     for (let i = +currentTime.getMonth() + 1; i <= +user.userData.horizon + currentTime.getMonth() + 1; i++) {
         generatedMonths.push(i)
     }
-    for (let i = 1; i <= getDays(2022, date); i++) {
-        generatedDays.push(i)
+
+    if (+currentTime.getMonth() + 1 === +date) {
+        for (let i = currentTime.getDate(); i <= getDays(2022, date); i++) {
+            generatedDays.push(i)
+        }
+    } else {
+        for (let i = 1; i <= getDays(2022, date); i++) {
+            generatedDays.push(i)
+        }
     }
 
     if (currentTimeInMinutes < work.startTime || currentTimeInMinutes > work.endTime) {
@@ -65,10 +65,7 @@ export default function Calendar({ props }) {
         }
     }
 
-    let timeEx = 590
-    console.log(...generatedTime)
-    console.log('basic time', timeConvert(timeEx))
-    console.log('static time', timeConvert(getRoundedInterval(timeEx)))
+    console.log('date', date)
 
     function monthHandler(e) {
         console.log(e.target.value)
@@ -131,7 +128,13 @@ export default function Calendar({ props }) {
                 {generatedDays.map((i) => (
                     <div key={i}>
                         <label style={dayStyle} className={s.container_day}>
-                            <input name='radio' type='radio' onChange={visitHandler} data-type-index={i} data-type-field='day' />
+                            <input
+                                name='radio'
+                                type='radio'
+                                onChange={visitHandler}
+                                data-type-index={i}
+                                data-type-field='day'
+                            />
                             <span style={dayStyle} className={s.name_day}>
                                 {i}
                             </span>

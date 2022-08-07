@@ -20,23 +20,42 @@ export default function OrderItem({ item }) {
 
     const defaultTime = {
         year: currentTime.getFullYear().toString(),
-        month: currentTime.getMonth() + 1 < 10 ? '0' + (currentTime.getMonth() + 1).toString() : (currentTime.getMonth() + 1).toString(),
-        day: currentTime.getDate() < 10 ? '0' + currentTime.getDate().toString() : currentTime.getDate().toString(),
-        hour: currentTime.getHours() < 10 ? '0' + currentTime.getHours().toString() : currentTime.getHours().toString(),
+        month:
+            currentTime.getMonth() + 1 < 10
+                ? '0' + (currentTime.getMonth() + 1).toString()
+                : (currentTime.getMonth() + 1).toString(),
+        day:
+            currentTime.getDate() < 10
+                ? '0' + currentTime.getDate().toString()
+                : currentTime.getDate().toString(),
+        hour:
+            currentTime.getHours() < 10
+                ? '0' + currentTime.getHours().toString()
+                : currentTime.getHours().toString(),
         minute: '00',
     }
 
-    const [contacts, setContacts] = useState({ clientName: session.user.name, clientPhone: '', suggestions: '' })
+    const [contacts, setContacts] = useState({
+        clientName: session.user.name,
+        clientPhone: '',
+        suggestions: '',
+    })
     const [dayTime, setDayTime] = useState(defaultTime)
     const orderDur = item.option.dur
-    const choosenTime = new Date(`${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`)
+    const choosenTime = new Date(
+        `${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`
+    )
     let mergedData = { ...item, ...contacts, visitDateTime: choosenTime.getTime(), visitDur: orderDur }
 
     // Із функції повинна прийти дата бронювання у вигляді timestamp
     function visitHandler(e) {
-        const typeMinute = e.target.dataset.typeIndexminutes < 10 ? '0' + e.target.dataset.typeIndexminutes : e.target.dataset.typeIndexminutes
+        const typeMinute =
+            e.target.dataset.typeIndexminutes < 10
+                ? '0' + e.target.dataset.typeIndexminutes
+                : e.target.dataset.typeIndexminutes
         const minuteField = e.target.dataset.typeFieldminutes
-        const typeIndex = e.target.dataset.typeIndex < 10 ? '0' + e.target.dataset.typeIndex : e.target.dataset.typeIndex
+        const typeIndex =
+            e.target.dataset.typeIndex < 10 ? '0' + e.target.dataset.typeIndex : e.target.dataset.typeIndex
         const fieldType = e.target.dataset.typeField
 
         minuteField
@@ -119,11 +138,19 @@ export default function OrderItem({ item }) {
             <div className={s.daytime}>
                 <div className={s.time_wrapper}>
                     <Image width={15} height={15} src='/images/orders.png' alt='time' />
-                    <div className={s.time}>{choosenTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                    <div className={s.time}>
+                        {choosenTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
                 </div>
                 <div className={s.date_wrapper}>
                     <Image width={15} height={15} src='/images/booking.png' alt='time' />
-                    <div className={s.date}>{choosenTime.toLocaleDateString('uk-UA', { day: 'numeric', year: 'numeric', month: 'short' })}</div>
+                    <div className={s.date}>
+                        {choosenTime.toLocaleDateString('uk-UA', {
+                            day: 'numeric',
+                            year: 'numeric',
+                            month: 'short',
+                        })}
+                    </div>
                 </div>
                 <button className={s.cancel_btn} value={item.orderId} onClick={removeHandler}>
                     Відмінити
