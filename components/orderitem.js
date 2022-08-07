@@ -7,12 +7,10 @@ import Avatar from './avatar'
 import Calendar from './calendar'
 import { useSession } from 'next-auth/react'
 
-
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function OrderItem({ item }) {
     const { data: session, status } = useSession()
-    console.log(session.user.name);
 
     const currentTime = new Date()
     const { data: user } = useSWR(item ? `/api/userpublic?q=${item.masterEmail} ` : null, fetcher)
@@ -84,7 +82,7 @@ export default function OrderItem({ item }) {
                 <div className={s.serv_price}>{item.option.price} грн</div>
                 <div className={s.serv_dur}>{item.option.dur} хв </div>
             </div>
-            
+
             <div className={s.master_info}>
                 <div className={s.master_inner}>
                     <div className={s.avatar}>
@@ -108,7 +106,6 @@ export default function OrderItem({ item }) {
                     </div>
                 </div>
             </div>
-            
 
             <Calendar props={{ visitHandler, orderDur, user, booking }} />
 

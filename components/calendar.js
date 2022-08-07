@@ -2,10 +2,21 @@ import s from './calendar.module.css'
 import { useState, useEffect, useCallback } from 'react'
 
 export default function Calendar({ props }) {
-    const currentTime = new Date()
     const { visitHandler, orderDur, user, booking } = props
+    const currentTime = new Date()
+    const currentTimeInMinutes = currentTime.getHours() * 60 + currentTime.getMinutes()
+    const [date, setDate] = useState(currentTime.getMonth())
+    let generatedMonths = []
+    let generatedDays = []
+    let generatedTime = []
 
     if (!user) return <div>Loading...</div>
+    const work = {
+        startTime: +user.userData.work_begin * 60 ?? 9 * 60,
+        endTime: +user.userData.work_end * 60 ?? 18 * 60,
+        interval: +user.userData.interval ?? 20,
+        except: '',
+    }
 
     function dayTimeHandler(e) {
         console.log(e.target.dataset)
@@ -29,19 +40,6 @@ export default function Calendar({ props }) {
         'Листопад',
         'Грудень',
     ]
-    const bookingTime = new Date(`2022-12-17T03:24:00`)
-    // console.log(bookingTime)
-
-    let generatedMonths = []
-    let generatedDays = []
-    let generatedTime = []
-
-    const work = {
-        startTime: +user.userData.work_begin * 60 ?? 9 * 60,
-        endTime: +user.userData.work_end * 60 ?? 18 * 60,
-        interval: +user.userData.interval ?? 20,
-        except: '',
-    }
 
     const getDays = (year, month) => {
         return new Date(year, month, 0).getDate()
@@ -50,12 +48,12 @@ export default function Calendar({ props }) {
     for (let i = +currentTime.getMonth() + 1; i <= +user.userData.horizon + currentTime.getMonth() + 1; i++) {
         generatedMonths.push(i)
     }
-    for (let i = +currentTime.getDate(); i <= getDays(2022, 8); i++) {
+    for (let i = 1; i <= getDays(2022, date); i++) {
         generatedDays.push(i)
     }
-
-    const currentTimeInMinutes = currentTime.getHours() * 60 + currentTime.getMinutes()
-    const timeSlotsQuantity = (work.endTime - work.startTime) / work.interval
+    // for (let i = +currentTime.getDate(); i <= getDays(2022, +currentTime.getMonth()); i++) {
+    //     generatedDays.push(i)
+    // }
 
     if (currentTimeInMinutes < work.startTime || currentTimeInMinutes > work.endTime) {
         for (let i = work.startTime; i <= work.endTime; i = i + work.interval) {
@@ -67,8 +65,13 @@ export default function Calendar({ props }) {
         }
     }
 
-    // console.log('month', generatedMonths);
-    // console.log('day', generatedDays);
+    function monthHandler(e) {
+        console.log(e.target.value)
+        setDate(e.target.value)
+    }
+
+    console.log('month', generatedMonths)
+    console.log('day', generatedDays)
     // console.log('time', generatedTime);
 
     function timeConvert(n) {
@@ -98,13 +101,20 @@ export default function Calendar({ props }) {
         padding: '0',
     }
 
-    
     return (
         <>
             <form className={s.wrapper_month}>
                 {generatedMonths.map((i) => (
                     <label key={i} style={monthStyle} className={s.container_month}>
-                        <input name='radio' type='radio' onChange={visitHandler} data-type-index={i} data-type-field='month' />
+                        <input
+                            value={i}
+                            name='radio'
+                            type='radio'
+                            onChange={visitHandler}
+                            data-type-index={i}
+                            data-type-field='month'
+                            onClick={monthHandler}
+                        />
                         <span style={monthStyle} className={s.name_month}>
                             {monthsLabel[i - 1]}
                         </span>
