@@ -5,7 +5,9 @@ export default function Calendar({ props }) {
     const { visitHandler, orderDur, user, booking } = props
     const currentTime = new Date()
     const currentTimeInMinutes = currentTime.getHours() * 60 + currentTime.getMinutes()
-    const [date, setDate] = useState(currentTime.getMonth() + 1)
+    const [month, setDate] = useState(currentTime.getMonth() + 1)
+    const [showMore, setShoMore] = useState(0)
+
     let generatedMonths = []
     let generatedDays = []
     let generatedTime = []
@@ -18,7 +20,6 @@ export default function Calendar({ props }) {
         except: '',
     }
 
-    const daysLabel = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П`ятниця', 'Субота', 'Неділя']
     const monthsLabel = [
         'Січень',
         'Лютий ',
@@ -37,6 +38,20 @@ export default function Calendar({ props }) {
     const getDays = (year, month) => {
         return new Date(year, month, 0).getDate()
     }
+
+    const getFormatedDay = (year, month, day) => {
+        const date = new Date()
+        date.setMonth(month - 1)
+        date.setFullYear(year)
+        date.setDate(day)
+
+        const options = { weekday: 'long' }
+        const dayLong = new Intl.DateTimeFormat('uk-UA', options).format(date)
+        const optionsNum = { day: 'numeric', month: 'numeric' }
+        const dayNum = new Intl.DateTimeFormat('uk-UA', optionsNum).format(date)
+        return { weekday: dayLong, number: dayNum, index: date.getDate() }
+    }
+
     const getRoundedInterval = (currentTimeInMinutes) => {
         return currentTimeInMinutes + work.interval - (currentTimeInMinutes % work.interval)
     }
@@ -45,13 +60,13 @@ export default function Calendar({ props }) {
         generatedMonths.push(i)
     }
 
-    if (+currentTime.getMonth() + 1 === +date) {
-        for (let i = currentTime.getDate(); i <= getDays(2022, date); i++) {
-            generatedDays.push(i)
+    if (+currentTime.getMonth() + 1 === +month) {
+        for (let i = currentTime.getDate(); i <= getDays(2022, month); i++) {
+            generatedDays.push(getFormatedDay(2022, month, i))
         }
     } else {
-        for (let i = 1; i <= getDays(2022, date); i++) {
-            generatedDays.push(i)
+        for (let i = 1; i <= getDays(2022, month); i++) {
+            generatedDays.push(getFormatedDay(2022, month, i))
         }
     }
 
@@ -65,12 +80,12 @@ export default function Calendar({ props }) {
         }
     }
 
-    console.log('date', date)
-
     function monthHandler(e) {
         console.log(e.target.value)
         setDate(e.target.value)
     }
+
+ 
 
     // console.log('month', generatedMonths)
     // console.log('day', generatedDays)
@@ -103,6 +118,14 @@ export default function Calendar({ props }) {
         padding: '0',
     }
 
+    const formHeight = generatedTime.length *10
+    const displayToggle = { height: showMore ? `${formHeight}px` : '55px' , overflowY: 'hidden' } 
+
+    function showMoreHandler (e) {
+        showMore ? setShoMore(0) : setShoMore(1) 
+
+    }
+
     return (
         <>
             <form className={s.wrapper_month}>
@@ -125,26 +148,29 @@ export default function Calendar({ props }) {
                 ))}
             </form>
             <form className={s.wrapper_day}>
-                {generatedDays.map((i) => (
-                    <div key={i}>
+                {generatedDays.map((i, index) => (
+                    <div key={index}>
                         <label style={dayStyle} className={s.container_day}>
                             <input
                                 name='radio'
                                 type='radio'
                                 onChange={visitHandler}
-                                data-type-index={i}
+                                data-type-index={i.index}
                                 data-type-field='day'
                             />
                             <span style={dayStyle} className={s.name_day}>
-                                {i}
+                                <div className={s.weekday}>{i.weekday} </div>
+                                <div className={s.weekday_num}>{i.number}</div>
                             </span>
                             <span style={dayStyle} className={s.checkmark_day}></span>
                         </label>
                     </div>
                 ))}
             </form>
+            {console.log(generatedDays)}
+                
 
-            <form id='time' className={s.wrapper_time}>
+            <form style={displayToggle} id='time' className={s.wrapper_time}>
                 {generatedTime.map((i, index) => (
                     <div key={index}>
                         <label style={timeStyle} className={s.container_time}>
@@ -165,6 +191,7 @@ export default function Calendar({ props }) {
                     </div>
                 ))}
             </form>
+            <button value={showMore} onClick={showMoreHandler} className={s.showmore}>{showMore ? 'Показати менше' : 'Показати більше'}</button>
         </>
     )
 }

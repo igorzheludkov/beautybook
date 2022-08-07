@@ -1,5 +1,7 @@
 .orders_wrapper {
     margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
 }
 
 .master_info {
@@ -82,7 +84,7 @@
 .date_wrapper {
     display: flex;
     align-items: center;
-    width: 130px;
+    width: 160px;
     border-radius: 10px;
     padding-left: 5px;
     

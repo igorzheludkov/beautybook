@@ -68,11 +68,10 @@ export default function OrderItem({ item }) {
     }
 
     // console.log('merged', mergedData);
-    const bookingTime = new Date(`2022-08-07T22:06:00`)
 
     // console.log('dayTime', dayTime)
     // console.log('dayTime.day', dayTime.day)
-    // console.log('currentTime', currentTime.getDay())
+    console.log('choosenTime', dayTime)
     // console.log('mergedData', mergedData)
 
     async function orderHandler(e) {
