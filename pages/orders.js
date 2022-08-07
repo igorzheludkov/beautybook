@@ -41,7 +41,6 @@ export default function MasterPage() {
                 <title>Ваші замовлення</title>
             </Head>
             <div className='container'>
-                <h3>Ваші замовлення</h3>
 
                 {/* {store.orders.map((i) => (
                     <OrderItem key={i.orderId} item={i} />

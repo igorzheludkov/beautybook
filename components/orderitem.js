@@ -53,9 +53,9 @@ export default function OrderItem({ item }) {
     // console.log('merged', mergedData);
     const bookingTime = new Date(`2022-08-07T22:06:00`)
 
-    console.log('dayTime', dayTime)
-    console.log('dayTime.day', dayTime.day)
-    console.log('currentTime', currentTime.getDay())
+    // console.log('dayTime', dayTime)
+    // console.log('dayTime.day', dayTime.day)
+    // console.log('currentTime', currentTime.getDay())
     // console.log('mergedData', mergedData)
 
     async function orderHandler(e) {
@@ -79,10 +79,16 @@ export default function OrderItem({ item }) {
 
     return (
         <div className={s.orders_wrapper}>
+            <div className={s.serv}>
+                <div className={s.serv_name}>{item.option.name}</div>
+                <div className={s.serv_price}>{item.option.price} грн</div>
+                <div className={s.serv_dur}>{item.option.dur} хв </div>
+            </div>
+            
             <div className={s.master_info}>
                 <div className={s.master_inner}>
                     <div className={s.avatar}>
-                        <Avatar w={50} h={50} src={item.photo} />
+                        <Avatar w={40} h={40} src={item.photo} />
                     </div>
                     <div>
                         <div className={s.master_name}>{item.masterName}</div>
@@ -102,11 +108,7 @@ export default function OrderItem({ item }) {
                     </div>
                 </div>
             </div>
-            <div className={s.serv}>
-                <div className={s.serv_name}>{item.option.name}</div>
-                <div className={s.serv_price}>{item.option.price} грн</div>
-                <div className={s.serv_dur}>{item.option.dur} хв </div>
-            </div>
+            
 
             <Calendar props={{ visitHandler, orderDur, user, booking }} />
 
