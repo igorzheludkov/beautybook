@@ -44,6 +44,9 @@ export default function Calendar({ props }) {
     const getDays = (year, month) => {
         return new Date(year, month, 0).getDate()
     }
+    const getRoundedInterval = (currentTimeInMinutes) => {
+        return currentTimeInMinutes + work.interval - (currentTimeInMinutes % work.interval)
+    }
 
     for (let i = +currentTime.getMonth() + 1; i <= +user.userData.horizon + currentTime.getMonth() + 1; i++) {
         generatedMonths.push(i)
@@ -51,27 +54,29 @@ export default function Calendar({ props }) {
     for (let i = 1; i <= getDays(2022, date); i++) {
         generatedDays.push(i)
     }
-    // for (let i = +currentTime.getDate(); i <= getDays(2022, +currentTime.getMonth()); i++) {
-    //     generatedDays.push(i)
-    // }
 
     if (currentTimeInMinutes < work.startTime || currentTimeInMinutes > work.endTime) {
         for (let i = work.startTime; i <= work.endTime; i = i + work.interval) {
-            generatedTime.push(timeConvert(i))
+            generatedTime.push(timeConvert(getRoundedInterval(i)))
         }
     } else {
         for (let i = currentTimeInMinutes; i <= work.endTime; i = i + work.interval) {
-            generatedTime.push(timeConvert(i))
+            generatedTime.push(timeConvert(getRoundedInterval(i)))
         }
     }
+
+    let timeEx = 590
+    console.log(...generatedTime)
+    console.log('basic time', timeConvert(timeEx))
+    console.log('static time', timeConvert(getRoundedInterval(timeEx)))
 
     function monthHandler(e) {
         console.log(e.target.value)
         setDate(e.target.value)
     }
 
-    console.log('month', generatedMonths)
-    console.log('day', generatedDays)
+    // console.log('month', generatedMonths)
+    // console.log('day', generatedDays)
     // console.log('time', generatedTime);
 
     function timeConvert(n) {
