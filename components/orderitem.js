@@ -16,7 +16,10 @@ export default function OrderItem({ item }) {
     const { data: user } = useSWR(item ? `/api/userpublic?q=${item.masterEmail} ` : null, fetcher)
     const { data: bookedOrders } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
 
+    
+
     const [store, setStore] = useStoreContext()
+    
 
     const mockBooked = [
         {
@@ -162,7 +165,7 @@ export default function OrderItem({ item }) {
         e.preventDefault()
         setStore({ ...store, orders: store.orders.filter((i) => e.target.value !== i.orderId) })
     }
-    if (!bookedOrders) return <div>Loading...</div>
+    if (!bookedOrders && !user) return <div>Loading...</div>
 
     return (
         <div className={s.orders_wrapper}>
