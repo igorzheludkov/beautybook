@@ -1,95 +1,123 @@
 import s from './calendar.module.css'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { getMonthLabel } from '../lib/calendarLabels'
 
 export default function Calendar({ props }) {
-    const { visitHandler, orderDur, user, booking } = props
+    const { visitHandler, orderDur, user, bookedOrders, choosenTimeStamp, mockBooked } = props
+
+    const monthLabel = getMonthLabel()
+
+    const horizonMonths = 12
+
     const currentTime = new Date()
-    const currentTimeInMinutes = currentTime.getHours() * 60 + currentTime.getMinutes()
-    const [month, setDate] = useState(currentTime.getMonth() + 1)
+    const [stateTime, setStateTime] = useState(currentTime)
+
+    let curYear = stateTime.getFullYear()
+    let curMonth = stateTime.getMonth()
+    let curDay = stateTime.getDate()
+
+    const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
+    const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
+    const [checkDay, setCheckDay] = useState(stateTime.getDate())
     const [showMore, setShoMore] = useState(0)
 
-    let generatedMonths = []
-    let generatedDays = []
-    let generatedTime = []
 
-    if (!user) return <div>Loading...</div>
+    const [checkTime, setCheckTime] = useState('')
+
+    // if (!user) return <div>Loading...</div>
     const work = {
-        startTime: +user.userData.work_begin * 60 ?? 9 * 60,
-        endTime: +user.userData.work_end * 60 ?? 18 * 60,
-        interval: +user.userData.interval ?? 20,
+        startTime: +user?.userData.work_begin * 60 ?? 9 * 60,
+        endTime: +user?.userData.work_end * 60 ?? 22 * 60,
+        interval: +user?.userData.interval ?? 20,
         except: '',
     }
 
-    const monthsLabel = [
-        'Січень',
-        'Лютий ',
-        'Березень',
-        'Квітень',
-        'Травень',
-        'Червень',
-        'Липень',
-        'Серпень',
-        'Вересень',
-        'Жовтень',
-        'Листопад',
-        'Грудень',
-    ]
-
-    const getDays = (year, month) => {
-        return new Date(year, month, 0).getDate()
+    function yearHandler(e) {
+        e.target.value === '2023' && setStateTime(new Date(`2023-01-01T12:30:00`))
+        e.target.value === '2022' && setStateTime(new Date())
     }
 
-    const getFormatedDay = (year, month, day) => {
+    function monthHandler(e) {
+        setCheckMonths(e.target.value)
+    }
+    function dayHandler(e) {
+        setCheckDay(e.target.value)
+    }
+
+    const generatedMonths = useMemo(() => genMonths(curMonth, horizonMonths), [curYear])
+    function genMonths(month, horizonMonths) {
+        let genArr = []
+        for (let i = month; i <= month + horizonMonths - 1; i++) {
+            genArr.push({ month: monthLabel[i], index: i })
+        }
+        return genArr
+    }
+
+    const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth])
+
+    function genDays(month) {
+        let countDays = new Date(checkYear, checkMonth + 1, 0).getDate()
+        let genArr = []
+        let i = checkMonth == curMonth ? curDay : 1
+        for (i; i <= countDays; i++) {
+            genArr.push(getFormatedDay(checkYear, month, i))
+        }
+        return genArr
+    }
+
+
+    const generatedTime = useMemo(() => genTime(checkYear, checkMonth, checkDay), [checkYear, checkMonth, checkDay])
+
+    function genTime(year, month, day) {
+        console.log(year, month, day);
+        let genArr = []
+        let filtered = []
+        let testArray = []
+        const filteredBooking = mockBooked.forEach((i) => {
+            if (+i.visitDateTime.year == +year && +i.visitDateTime.month == +month+1 && +i.visitDateTime.day == +day) {
+                let timeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
+                console.log('filtered.push',i)
+
+                filtered.push({ time: timeInMinutes, dur: i.visitDur })
+            }
+        })
+
+
+        for (let i = work.startTime; i <= work.endTime; i = i + 10) {
+            genArr.push({ time: i, free: true })
+        testArray.push({ time: i, free: true })
+
+        }
+        filtered.forEach((g) => {
+            genArr.forEach((i, index) => {
+                if (i.time == g.time) {
+                    // console.log(g.dur / 10 + 1)
+                    for (
+                        let e = 0;
+                        e < (+orderDur + work.interval) / 10 + (g.dur + work.interval) / 10;
+                        e++
+                    ) {
+                        // console.log('index',index - (+orderDur + work.interval) / 10 + e)
+                        genArr[index - (+orderDur + work.interval) / 10 + e].free = false
+                    }
+                }
+            })
+        })
+        console.log('filtered',filtered)
+        return genArr
+    }
+
+    function getFormatedDay(year, month, day) {
         const date = new Date()
-        date.setMonth(month - 1)
+        date.setMonth(month)
         date.setFullYear(year)
         date.setDate(day)
-
         const options = { weekday: 'long' }
         const dayLong = new Intl.DateTimeFormat('uk-UA', options).format(date)
         const optionsNum = { day: 'numeric', month: 'numeric' }
         const dayNum = new Intl.DateTimeFormat('uk-UA', optionsNum).format(date)
         return { weekday: dayLong, number: dayNum, index: date.getDate() }
     }
-
-    const getRoundedInterval = (currentTimeInMinutes) => {
-        return currentTimeInMinutes + work.interval - (currentTimeInMinutes % work.interval)
-    }
-
-    for (let i = +currentTime.getMonth() + 1; i <= +user.userData.horizon + currentTime.getMonth() + 1; i++) {
-        generatedMonths.push(i)
-    }
-
-    if (+currentTime.getMonth() + 1 === +month) {
-        for (let i = currentTime.getDate(); i <= getDays(2022, month); i++) {
-            generatedDays.push(getFormatedDay(2022, month, i))
-        }
-    } else {
-        for (let i = 1; i <= getDays(2022, month); i++) {
-            generatedDays.push(getFormatedDay(2022, month, i))
-        }
-    }
-
-    if (currentTimeInMinutes < work.startTime || currentTimeInMinutes > work.endTime) {
-        for (let i = work.startTime; i <= work.endTime; i = i + work.interval) {
-            generatedTime.push(timeConvert(getRoundedInterval(i)))
-        }
-    } else {
-        for (let i = currentTimeInMinutes; i <= work.endTime; i = i + work.interval) {
-            generatedTime.push(timeConvert(getRoundedInterval(i)))
-        }
-    }
-
-    function monthHandler(e) {
-        console.log(e.target.value)
-        setDate(e.target.value)
-    }
-
- 
-
-    // console.log('month', generatedMonths)
-    // console.log('day', generatedDays)
-    // console.log('time', generatedTime);
 
     function timeConvert(n) {
         let num = n
@@ -118,21 +146,32 @@ export default function Calendar({ props }) {
         padding: '0',
     }
 
-    const formHeight = generatedTime.length *10
-    const displayToggle = { height: showMore ? `${formHeight}px` : '55px' , overflowY: 'hidden' } 
+    const formHeight = generatedTime.length * 8
+    const displayToggle = { height: showMore ? `${formHeight}px` : '55px', overflowY: 'hidden' }
 
-    function showMoreHandler (e) {
-        showMore ? setShoMore(0) : setShoMore(1) 
-
+    function showMoreHandler(e) {
+        showMore ? setShoMore(0) : setShoMore(1)
     }
+    if (!generatedMonths) return <div>Loading...</div>
+
+    function showMoreHandler(e) {
+        showMore ? setShoMore(0) : setShoMore(1)
+    }
+
 
     return (
         <>
+            <button value='2022' onClick={yearHandler}>
+                2022
+            </button>
+            <button value='2023' onClick={yearHandler}>
+                2023
+            </button>
             <form className={s.wrapper_month}>
                 {generatedMonths.map((i) => (
-                    <label key={i} style={monthStyle} className={s.container_month}>
+                    <label key={i.index} style={monthStyle} className={s.container_month}>
                         <input
-                            value={i}
+                            value={i.index}
                             name='radio'
                             type='radio'
                             onChange={visitHandler}
@@ -141,7 +180,7 @@ export default function Calendar({ props }) {
                             onClick={monthHandler}
                         />
                         <span style={monthStyle} className={s.name_month}>
-                            {monthsLabel[i - 1]}
+                            {i.month}
                         </span>
                         <span style={monthStyle} className={s.checkmark_month}></span>
                     </label>
@@ -157,6 +196,7 @@ export default function Calendar({ props }) {
                                 onChange={visitHandler}
                                 data-type-index={i.index}
                                 data-type-field='day'
+                                onClick={() => setCheckDay(i.index)}
                             />
                             <span style={dayStyle} className={s.name_day}>
                                 <div className={s.weekday}>{i.weekday} </div>
@@ -167,8 +207,6 @@ export default function Calendar({ props }) {
                     </div>
                 ))}
             </form>
-            {console.log(generatedDays)}
-                
 
             <form style={displayToggle} id='time' className={s.wrapper_time}>
                 {generatedTime.map((i, index) => (
@@ -177,6 +215,7 @@ export default function Calendar({ props }) {
                             <input
                                 name='radio'
                                 type='radio'
+                                // value={}
                                 onChange={visitHandler}
                                 data-type-index={i.hours}
                                 data-type-field='hour'
@@ -184,6 +223,7 @@ export default function Calendar({ props }) {
                                 data-type-fieldminutes='minute'
                             />
                             <span style={timeStyle} className={s.name_time}>
+                                {i.free ? i.time : null}
                                 {i.minutes ? i.hours + ':' + i.minutes : i.hours}
                             </span>
                             <span style={timeStyle} className={s.checkmark_time}></span>
@@ -191,7 +231,9 @@ export default function Calendar({ props }) {
                     </div>
                 ))}
             </form>
-            <button value={showMore} onClick={showMoreHandler} className={s.showmore}>{showMore ? 'Показати менше' : 'Показати більше'}</button>
+            <button value={showMore} onClick={showMoreHandler} className={s.showmore}>
+                {showMore ? 'Показати менше' : 'Показати більше'}
+            </button>
         </>
     )
 }

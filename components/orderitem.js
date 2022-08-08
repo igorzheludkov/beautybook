@@ -14,9 +14,84 @@ export default function OrderItem({ item }) {
 
     const currentTime = new Date()
     const { data: user } = useSWR(item ? `/api/userpublic?q=${item.masterEmail} ` : null, fetcher)
-    const { data: booking } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
+    const { data: bookedOrders } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
 
     const [store, setStore] = useStoreContext()
+
+    const mockBooked = [
+        {
+            masterEmail: '500griven@gmail.com',
+            masterId: '62e6840acf4d88a22c64aeed',
+            visitDateTime: {
+                day: '8',
+                hour: '13',
+                minute: '00',
+                month: '8',
+                year: '2022',
+            },
+            visitDur: 40,
+        },
+        {
+            masterEmail: '500griven@gmail.com',
+            masterId: '62e6840acf4d88a22c64aeed',
+            visitDateTime: {
+                day: '8',
+                hour: '18',
+                minute: '0',
+                month: '8',
+                year: '2022',
+            },
+            visitDur: 60,
+        },
+        {
+            masterEmail: '500griven@gmail.com',
+            masterId: '62e6840acf4d88a22c64aeed',
+            visitDateTime: {
+                day: '8',
+                hour: '21',
+                minute: '0',
+                month: '8',
+                year: '2022',
+            },
+            visitDur: 40,
+        },
+        {
+            masterEmail: '500griven@gmail.com',
+            masterId: '62e6840acf4d88a22c64aeed',
+            visitDateTime: {
+                day: '9',
+                hour: '14',
+                minute: '0',
+                month: '8',
+                year: '2022',
+            },
+            visitDur: 80,
+        },
+        {
+            masterEmail: '500griven@gmail.com',
+            masterId: '62e6840acf4d88a22c64aeed',
+            visitDateTime: {
+                day: '3',
+                hour: '14',
+                minute: '0',
+                month: '9',
+                year: '2022',
+            },
+            visitDur: 80,
+        },
+        {
+            masterEmail: '500griven@gmail.com',
+            masterId: '62e6840acf4d88a22c64aeed',
+            visitDateTime: {
+                day: '3',
+                hour: '10',
+                minute: '0',
+                month: '10',
+                year: '2022',
+            },
+            visitDur: 80,
+        },
+    ]
 
     const defaultTime = {
         year: currentTime.getFullYear().toString(),
@@ -34,20 +109,23 @@ export default function OrderItem({ item }) {
                 : currentTime.getHours().toString(),
         minute: '00',
     }
-
     const [contacts, setContacts] = useState({
         clientName: session.user.name,
         clientPhone: '',
         suggestions: '',
     })
-    const [dayTime, setDayTime] = useState(defaultTime)
-    const orderDur = item.option.dur
-    const choosenTime = new Date(
-        `${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`
-    )
-    let mergedData = { ...item, ...contacts, visitDateTime: choosenTime.getTime(), visitDur: orderDur }
+    const [dayTime, setDayTime] = useState(defaultTime) // отримано поточну дату у форматі для конвертування у timestamp
 
-    // Із функції повинна прийти дата бронювання у вигляді timestamp
+  
+
+    const orderDur = item.option.dur //тривалість обраної послуги
+    const choosenTimeStamp = new Date(
+        `${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`
+    ) // конвертує отриманий з календаря час в timestamp
+
+    let mergedData = { ...item, ...contacts, visitDateTime: dayTime, visitDur: orderDur }
+    // merged data - об'єднує інформацію в єдине замовлення
+    // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
     function visitHandler(e) {
         const typeMinute =
             e.target.dataset.typeIndexminutes < 10
@@ -67,13 +145,6 @@ export default function OrderItem({ item }) {
         setContacts({ ...contacts, [e.target.id]: e.target.value, visitDur: +orderDur })
     }
 
-    // console.log('merged', mergedData);
-
-    // console.log('dayTime', dayTime)
-    // console.log('dayTime.day', dayTime.day)
-    console.log('choosenTime', dayTime)
-    // console.log('mergedData', mergedData)
-
     async function orderHandler(e) {
         e.preventDefault(e)
         const response = await fetch(`/api/order/`, {
@@ -91,7 +162,7 @@ export default function OrderItem({ item }) {
         e.preventDefault()
         setStore({ ...store, orders: store.orders.filter((i) => e.target.value !== i.orderId) })
     }
-    if (!booking) return <div>Loading...</div>
+    if (!bookedOrders) return <div>Loading...</div>
 
     return (
         <div className={s.orders_wrapper}>
@@ -125,7 +196,7 @@ export default function OrderItem({ item }) {
                 </div>
             </div>
 
-            <Calendar props={{ visitHandler, orderDur, user, booking }} />
+            <Calendar props={{ visitHandler, orderDur, user, bookedOrders, choosenTimeStamp, mockBooked }} />
 
             <input
                 className={s.suggestions}
@@ -138,16 +209,16 @@ export default function OrderItem({ item }) {
                 <div className={s.time_wrapper}>
                     <Image width={15} height={15} src='/images/orders.png' alt='time' />
                     <div className={s.time}>
-                        {choosenTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {choosenTimeStamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                 </div>
                 <div className={s.date_wrapper}>
                     <Image width={15} height={15} src='/images/booking.png' alt='time' />
                     <div className={s.date}>
-                        {choosenTime.toLocaleDateString('uk-UA', {
+                        {choosenTimeStamp.toLocaleDateString('uk-UA', {
                             day: 'numeric',
                             year: 'numeric',
-                            month: 'short',
+                            month: 'long',
                         })}
                     </div>
                 </div>
