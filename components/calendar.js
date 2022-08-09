@@ -139,15 +139,16 @@ export default function Calendar({ props }) {
         borderRadius: '10px',
     }
     const timeStyle = {
-        fontSize: '13px',
-        height: '30px',
+        fontSize: '14px',
+        height: '40px',
         width: '50px',
         borderRadius: '7px',
         padding: '0',
     }
 
-    const formHeight = generatedTime.length * 8
-    const displayToggle = { height: showMore ? `${formHeight}px` : '55px', overflowY: 'hidden' }
+    // const formHeight = generatedTime.length * 8
+    // const displayToggle = { height: showMore ? `${formHeight}px` : '55px', overflowY: 'hidden' }
+    // style={displayToggle}
 
     function showMoreHandler(e) {
         showMore ? setShoMore(0) : setShoMore(1)
@@ -211,7 +212,7 @@ export default function Calendar({ props }) {
                 ))}
             </form>
 
-            <form style={displayToggle} id='time' className={s.wrapper_time}>
+            <form  id='time' className={s.wrapper_time}>
                 {generatedTime.map((i, index) => (
                     <div key={index}>
                         <label style={timeStyle} className={s.container_time}>
@@ -234,9 +235,7 @@ export default function Calendar({ props }) {
                     </div>
                 ))}
             </form>
-            <button value={showMore} onClick={showMoreHandler} className={s.showmore}>
-                {showMore ? 'Показати менше' : 'Показати більше'}
-            </button>
+
         </>
     )
 }

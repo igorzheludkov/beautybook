@@ -1,10 +1,7 @@
-
-
 .wrapper_month {
     display: flex;
     margin-bottom: 5px;
     overflow-x: auto;
-    
 }
 
 /* .container_month:focus-within {
@@ -34,7 +31,6 @@
     justify-content: center;
 }
 
-
 /* Hide the browser's default checkbox */
 .container_month input {
     position: absolute;
@@ -42,7 +38,6 @@
     cursor: pointer;
     height: 0;
     width: 0;
-    
 }
 
 /* Create a custom checkbox */
@@ -55,7 +50,6 @@
     background-color: rgb(255, 255, 255);
     /* border-radius: var(--month-border-radius); */
     border: 1px solid rgb(255, 255, 255);
-
 }
 
 /* On mouse-over, add a grey background color */
@@ -66,13 +60,9 @@
 
 /* When the checkbox is checked, add a blue background */
 .container_month input:checked ~ .checkmark_month {
-
     /* background-color: #7bc3ff; */
-    border: 2px solid #A6EAFF;
-
+    border: 2px solid #a6eaff;
 }
-
-
 
 /* ------------- styles for days --------------------- */
 .wrapper_day {
@@ -104,7 +94,6 @@
     align-items: center;
     justify-content: center;
     width: 90px;
-
 }
 
 /* Hide the browser's default checkbox */
@@ -114,7 +103,6 @@
     cursor: pointer;
     height: 0;
     width: 0;
-    
 }
 
 /* Create a custom checkbox */
@@ -127,7 +115,6 @@
     background-color: rgb(255, 255, 255);
     /* border-radius: var(--day-border-radius); */
     border: 2px solid rgb(230, 230, 230);
-    
 }
 
 /* On mouse-over, add a grey background color */
@@ -140,31 +127,29 @@
 .container_day input:checked ~ .checkmark_day {
     /* background-color: #2196f3; */
     border: 2px solid #2196f3;
-
 }
 
 .weekday {
-text-transform:capitalize;
+    text-transform: capitalize;
 }
 
 .weekday_num {
     font-size: 12px;
     color: grey;
-
 }
-
-
-
 
 /* ------------- styles for time --------------------- */
 
-
 .wrapper_time {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+    /* display: flex; */
+    display: grid;
+    grid-template-rows: 50px 50px; 
+    grid-auto-flow: column;
+    margin-bottom: 15px;
     transition: 0.3s;
-    height: 70px;
+    overflow-x: scroll;
+    height: 100px;
+    justify-content: start;
 }
 /* 
 .wrapper_time_compact {
@@ -176,7 +161,7 @@ text-transform:capitalize;
 .container_time {
     display: block;
     position: relative;
-    padding: 0 5px;
+    /* padding: 0 5px; */
     cursor: pointer;
     font-size: 14px;
     -webkit-user-select: none;
@@ -184,7 +169,7 @@ text-transform:capitalize;
     -ms-user-select: none;
     user-select: none;
     height: var(--time-height);
-    margin: 3px;
+    margin: 2px 4px;
 }
 
 .name_time {
@@ -194,8 +179,7 @@ text-transform:capitalize;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70px;
-
+    width: 60px;
 }
 
 /* Hide the browser's default checkbox */
@@ -205,7 +189,6 @@ text-transform:capitalize;
     cursor: pointer;
     height: 0;
     width: 0;
-    
 }
 
 /* Create a custom checkbox */
@@ -218,7 +201,6 @@ text-transform:capitalize;
     background-color: rgb(245, 245, 245);
     border-radius: var(--time-border-radius);
     /* border: 2px solid rgb(230, 230, 230); */
-
 }
 
 /* On mouse-over, add a grey background color */
@@ -231,38 +213,28 @@ text-transform:capitalize;
 .container_time input:checked ~ .checkmark_time {
     /* background-color: #2196f3; */
     border: 2px solid #2196f3;
-
 }
-
-
 
 .showmore {
-
-        border: none;
-        border-radius: 10px;
-        color: rgb(0, 0, 0);
-        background-color: #bce4ff;
-        width: 130px;
-        margin: 0 auto;
-        margin-bottom: 20px;
-
+    border: none;
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    background-color: #bce4ff;
+    width: 130px;
+    margin: 0 auto;
+    margin-bottom: 20px;
 }
 
-.years_wrapper{
+.years_wrapper {
     display: flex;
     align-items: center;
     width: 130px;
 }
 .years {
-
-        border: none;
-        border-radius: 10px;
-        color: rgb(0, 0, 0);
-        background-color: #bce4ff;
-        width: 50px;
-        margin: 0 auto;
-
+    border: none;
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    background-color: #bce4ff;
+    width: 50px;
+    margin: 0 auto;
 }
-
-
- 
