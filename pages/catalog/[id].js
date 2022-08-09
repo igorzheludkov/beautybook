@@ -24,7 +24,6 @@ export default function MasterPage() {
 
     return user && services ? (
         <div className='container'>
-            {user.userData.name}
             <div className={s.header}>
                 <div className={s.avatar_container}>
                     <div className={s.avatar_img_inner}>

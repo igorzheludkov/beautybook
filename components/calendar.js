@@ -67,14 +67,9 @@ export default function Calendar({ props }) {
     )
 
     function genTime(year, month, day, orders) {
-        console.log(orders)
+        console.log(day);
         let classicTime = []
-        let baseArr = []
-        for (let i = work.startTime - 360; i <= work.endTime; i = i + 10) {
-            baseArr.push({ time: i, free: true })
-        }
-        console.log(baseArr)
-
+        let bufferArr = []
 
         const filtered = orders.map((i) => {
             if (
@@ -87,28 +82,40 @@ export default function Calendar({ props }) {
             }
         })
 
-        filtered.forEach((g) => {
-            baseArr.forEach((i, index) => {
-                if (i.time == g.time) {
-                    for (
-                        let rem = 0;
-                        rem < (+orderDur + work.interval) / 10 + (g.dur + work.interval) / 10;
-                        rem++
-                    ) {
-                        baseArr[index - (+orderDur + work.interval) / 10 + rem].free = false
-                    }
-                }
-            })
-        })
+        const baseArr = () => {
 
-        const freeTime = baseArr.filter(
-            (i) => !(i.time % 20) && i.free === true && i.time > work.startTime && i.time < work.endTime
-        )
-        const convert = freeTime.forEach((i) => {
-            classicTime.push(timeConvert(i.time))
-        })
+            for (let i = work.startTime - 360; i <= work.endTime; i = i + 10) {
+                bufferArr.push({ time: i, free: true })
+            }
+            return []
+        }
 
-        console.log(freeTime)
+        console.log(baseArr())
+        console.log(bufferArr);
+        // filtered.forEach((g) => {
+        //     bufferArr.forEach((i, index) => {
+        //         console.log('g');
+        //         if (i.time == g.time) {
+        //             for (
+        //                 let rem = 0;
+        //                 rem < (+orderDur + work.interval) / 10 + (g.dur + work.interval) / 10;
+        //                 rem++
+        //             ) {
+        //                 bufferArr[index - (+orderDur + work.interval) / 10 + rem].free = false
+        //             }
+        //         }
+        //     })
+        // })
+
+
+
+        // const freeTime = bufferArr.filter(
+        //     (i) => !(i.time % 20) && i.free === true && i.time > work.startTime && i.time < work.endTime
+        // )
+        // const convert = freeTime.forEach((i) => {
+        //     classicTime.push(timeConvert(i.time))
+        // })
+
 
         return classicTime
     }
@@ -150,18 +157,6 @@ export default function Calendar({ props }) {
         width: '50px',
         borderRadius: '7px',
         padding: '0',
-    }
-
-    // const formHeight = generatedTime.length * 8
-    // const displayToggle = { height: showMore ? `${formHeight}px` : '55px', overflowY: 'hidden' }
-    // style={displayToggle}
-
-    function showMoreHandler(e) {
-        showMore ? setShoMore(0) : setShoMore(1)
-    }
-
-    function showMoreHandler(e) {
-        showMore ? setShoMore(0) : setShoMore(1)
     }
 
     return (
