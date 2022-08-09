@@ -24,7 +24,7 @@ export default function Calendar({ props }) {
 
     const work = {
         startTime: +user?.userData.work_begin * 60 ?? 9 * 60,
-        endTime: +user?.userData.work_end * 60 ?? 22 * 60,
+        endTime: +user?.userData.work_end * 60 ?? 20 * 60,
         interval: +user?.userData.interval ?? 20,
         except: '',
     }
@@ -69,9 +69,10 @@ export default function Calendar({ props }) {
     )
 
     function genTime(year, month, day) {
+       
         let genArr = []
         let filtered = []
-        let testArray = []
+        let classicTime = []
         const filteredBooking = mockBooked.forEach((i) => {
             if (
                 +i.visitDateTime.year == +year &&
@@ -85,7 +86,6 @@ export default function Calendar({ props }) {
 
         for (let i = work.startTime; i <= work.endTime; i = i + 10) {
             genArr.push({ time: i, free: true })
-            testArray.push({ time: i, free: true })
         }
         filtered.forEach((g) => {
             genArr.forEach((i, index) => {
@@ -100,7 +100,11 @@ export default function Calendar({ props }) {
                 }
             })
         })
-        return genArr
+
+        const freeTime = genArr.filter(i => !(i.time % 20) && i.free === true)
+        const convert = freeTime.forEach(i=> {classicTime.push(timeConvert(i.time))})
+
+        return classicTime
     }
 
     function getFormatedDay(year, month, day) {
