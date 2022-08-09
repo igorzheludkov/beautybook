@@ -7,6 +7,7 @@ export default function Calendar({ props }) {
     const monthLabel = getMonthLabel()
 
     const currentTime = new Date()
+    const currentHour = currentTime.getHours()
     const [stateTime, setStateTime] = useState(currentTime)
 
     let curYear = stateTime.getFullYear()
@@ -16,8 +17,8 @@ export default function Calendar({ props }) {
     const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
     const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
     const [checkDay, setCheckDay] = useState(stateTime.getDate())
+    const [checkTime, setCheckTime] = useState(currentHour)
 
-    const [renderTime, setCheckTime] = useState('')
     const horizonMonths = monthLabel.length - checkMonth
 
     const work = {
@@ -26,6 +27,11 @@ export default function Calendar({ props }) {
         interval: +user?.userData.interval ?? 20,
         except: '',
     }
+    const [renderTime, setRenderTime] = useState(generatedClassicTime(timeTransform()))
+    ;('generatedClassicTime(timeTransform())')
+
+    // const renderTimeEx = useMemo(() => generatedClassicTime(timeTransform()), [checkDay])
+    // console.log(renderTimeEx.length);
 
     function yearHandler(e) {
         e.preventDefault()
@@ -37,8 +43,12 @@ export default function Calendar({ props }) {
         setCheckMonths(e.target.value)
     }
     function dayHandler(e) {
-        setCheckDay(e.target.value)
+        setCheckDay(() => e.target.value)
     }
+
+    useEffect(() => {
+        setRenderTime(() => generatedClassicTime(timeTransform()))
+    }, [checkDay])
 
     const generatedMonths = useMemo(() => genMonths(curMonth, horizonMonths), [curYear])
     function genMonths(month, horizonMonths) {
@@ -61,62 +71,80 @@ export default function Calendar({ props }) {
         return genArr
     }
 
-    const generatedTime = useMemo(
-        () => genTime(checkYear, checkMonth, checkDay, bookedOrders.orders),
-        [checkYear, checkMonth, checkDay]
-    )
+    // const generatedTime = useMemo(() => generateBaseTime(), [checkYear, checkMonth, checkDay])
+    // console.log(generatedTime)
 
-    function genTime(year, month, day, orders) {
-        console.log(day);
-        let classicTime = []
-        let bufferArr = []
-
-        const filtered = orders.map((i) => {
+    function filteredOrders() {
+        let testArr = []
+        let convTime = []
+        let arr = bookedOrders.orders.forEach((i) => {
             if (
-                +i.visitDateTime.year == +year &&
-                +i.visitDateTime.month == +month + 1 &&
-                +i.visitDateTime.day == +day
+                +i.visitDateTime.year == +checkYear &&
+                +i.visitDateTime.month == +checkMonth + 1 &&
+                +i.visitDateTime.day == +checkDay
             ) {
+
                 let timeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
-                return { time: timeInMinutes, dur: +i.visitDur }
+                let add = 0
+                for (let rem = 0; rem < ((+work.interval + +i.visitDur) / 10); rem++) {
+                    testArr.push({ time: timeInMinutes + add, free: false })
+                    convTime.push(timeConvert(timeInMinutes))
+                    add = add + 10
+
+                }
+                let sub = 0
+                for (let rem = 0; rem < ((+orderDur + +work.interval) / 10); rem++) {
+                    testArr.push({ time: timeInMinutes - sub, free: false })
+                    convTime.push(timeConvert(timeInMinutes))
+                    sub = sub + 10
+                    console.log(timeInMinutes - sub);
+
+                }
             }
         })
+        console.log(bookedOrders.orders);
+        console.log(testArr);
+        console.log(convTime);
+        return testArr
+    }
 
-        const baseArr = () => {
-
-            for (let i = work.startTime - 360; i <= work.endTime; i = i + 10) {
+    function generateBaseTime() {
+        let bufferArr = []
+        let current = (currentHour % work.interval) * 60
+        if (checkDay == curDay) {
+            for (let i = currentTime.getHours() * 60 + +work.interval; i <= work.endTime; i = i + 10) {
                 bufferArr.push({ time: i, free: true })
             }
-            return []
+        } else {
+            for (let i = work.startTime; i <= work.endTime; i = i + 10) {
+                bufferArr.push({ time: i, free: true })
+            }
         }
+        return bufferArr
+    }
 
-        console.log(baseArr())
-        console.log(bufferArr);
-        // filtered.forEach((g) => {
-        //     bufferArr.forEach((i, index) => {
-        //         console.log('g');
-        //         if (i.time == g.time) {
-        //             for (
-        //                 let rem = 0;
-        //                 rem < (+orderDur + work.interval) / 10 + (g.dur + work.interval) / 10;
-        //                 rem++
-        //             ) {
-        //                 bufferArr[index - (+orderDur + work.interval) / 10 + rem].free = false
-        //             }
-        //         }
-        //     })
-        // })
+    function timeTransform() {
+        let transform = generateBaseTime()
+        let source = filteredOrders()
 
+        source.forEach((g) => {
+            transform.forEach((i) => {
+                if (i.time === g.time) {
+                    i.free = false
+                }
+            })
+        })
 
-
-        // const freeTime = bufferArr.filter(
-        //     (i) => !(i.time % 20) && i.free === true && i.time > work.startTime && i.time < work.endTime
-        // )
-        // const convert = freeTime.forEach((i) => {
-        //     classicTime.push(timeConvert(i.time))
-        // })
-
-
+        let ex = transform.filter((el) => !(el.time % work.interval) && el.free === true)
+        // console.log(transform)
+        // ex.forEach(e=> console.log(timeConvert(e.time)))
+        return ex
+    }
+    function generatedClassicTime(timeInMinutes) {
+        let classicTime = []
+        const convert = timeInMinutes.forEach((i) => {
+            classicTime.push(timeConvert(i.time))
+        })
         return classicTime
     }
 
@@ -195,12 +223,13 @@ export default function Calendar({ props }) {
                     <div key={index}>
                         <label style={dayStyle} className={s.container_day}>
                             <input
+                                value={i.index}
                                 name='radio'
                                 type='radio'
                                 onChange={visitHandler}
                                 data-type-index={i.index}
                                 data-type-field='day'
-                                onClick={() => setCheckDay(i.index)}
+                                onClick={dayHandler}
                             />
                             <span style={dayStyle} className={s.name_day}>
                                 <div className={s.weekday}>{i.weekday} </div>
@@ -213,7 +242,7 @@ export default function Calendar({ props }) {
             </form>
 
             <form id='time' className={s.wrapper_time}>
-                {generatedTime.map((i, index) => (
+                {renderTime.map((i, index) => (
                     <div key={index}>
                         <label style={timeStyle} className={s.container_time}>
                             <input

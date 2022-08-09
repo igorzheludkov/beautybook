@@ -122,6 +122,7 @@ export default function OrderItem({ item }) {
     ) // конвертує отриманий з календаря час в timestamp
 
     let mergedData = { ...item, ...contacts, visitDateTime: dayTime, visitDur: orderDur }
+    console.log(mergedData.visitDateTime)
     // merged data - об'єднує інформацію в єдине замовлення
     // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
     function visitHandler(e) {
