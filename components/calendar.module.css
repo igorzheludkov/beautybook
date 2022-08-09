@@ -248,5 +248,21 @@ text-transform:capitalize;
 
 }
 
+.years_wrapper{
+    display: flex;
+    align-items: center;
+    width: 130px;
+}
+.years {
+
+        border: none;
+        border-radius: 10px;
+        color: rgb(0, 0, 0);
+        background-color: #bce4ff;
+        width: 50px;
+        margin: 0 auto;
+
+}
+
 
  

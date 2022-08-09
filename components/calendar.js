@@ -7,8 +7,6 @@ export default function Calendar({ props }) {
 
     const monthLabel = getMonthLabel()
 
-    const horizonMonths = 12
-
     const currentTime = new Date()
     const [stateTime, setStateTime] = useState(currentTime)
 
@@ -21,10 +19,9 @@ export default function Calendar({ props }) {
     const [checkDay, setCheckDay] = useState(stateTime.getDate())
     const [showMore, setShoMore] = useState(0)
 
-
     const [checkTime, setCheckTime] = useState('')
+    const horizonMonths = monthLabel.length - checkMonth
 
-    // if (!user) return <div>Loading...</div>
     const work = {
         startTime: +user?.userData.work_begin * 60 ?? 9 * 60,
         endTime: +user?.userData.work_end * 60 ?? 22 * 60,
@@ -33,7 +30,8 @@ export default function Calendar({ props }) {
     }
 
     function yearHandler(e) {
-        e.target.value === '2023' && setStateTime(new Date(`2023-01-01T12:30:00`))
+        e.preventDefault()
+        e.target.value === '2023' && setStateTime(new Date(`2023-01-01T09:00:00`))
         e.target.value === '2022' && setStateTime(new Date())
     }
 
@@ -65,45 +63,43 @@ export default function Calendar({ props }) {
         return genArr
     }
 
-
-    const generatedTime = useMemo(() => genTime(checkYear, checkMonth, checkDay), [checkYear, checkMonth, checkDay])
+    const generatedTime = useMemo(
+        () => genTime(checkYear, checkMonth, checkDay),
+        [checkYear, checkMonth, checkDay]
+    )
 
     function genTime(year, month, day) {
-        console.log(year, month, day);
         let genArr = []
         let filtered = []
         let testArray = []
         const filteredBooking = mockBooked.forEach((i) => {
-            if (+i.visitDateTime.year == +year && +i.visitDateTime.month == +month+1 && +i.visitDateTime.day == +day) {
+            if (
+                +i.visitDateTime.year == +year &&
+                +i.visitDateTime.month == +month + 1 &&
+                +i.visitDateTime.day == +day
+            ) {
                 let timeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
-                console.log('filtered.push',i)
-
                 filtered.push({ time: timeInMinutes, dur: i.visitDur })
             }
         })
 
-
         for (let i = work.startTime; i <= work.endTime; i = i + 10) {
             genArr.push({ time: i, free: true })
-        testArray.push({ time: i, free: true })
-
+            testArray.push({ time: i, free: true })
         }
         filtered.forEach((g) => {
             genArr.forEach((i, index) => {
                 if (i.time == g.time) {
-                    // console.log(g.dur / 10 + 1)
                     for (
                         let e = 0;
                         e < (+orderDur + work.interval) / 10 + (g.dur + work.interval) / 10;
                         e++
                     ) {
-                        // console.log('index',index - (+orderDur + work.interval) / 10 + e)
                         genArr[index - (+orderDur + work.interval) / 10 + e].free = false
                     }
                 }
             })
         })
-        console.log('filtered',filtered)
         return genArr
     }
 
@@ -158,16 +154,14 @@ export default function Calendar({ props }) {
         showMore ? setShoMore(0) : setShoMore(1)
     }
 
-
     return (
         <>
-            <button value='2022' onClick={yearHandler}>
-                2022
-            </button>
-            <button value='2023' onClick={yearHandler}>
-                2023
-            </button>
             <form className={s.wrapper_month}>
+                <div className={s.years_wrapper}>
+                    <button className={s.years} value='2022' onClick={yearHandler}>
+                        {2022}
+                    </button>
+                </div>
                 {generatedMonths.map((i) => (
                     <label key={i.index} style={monthStyle} className={s.container_month}>
                         <input
@@ -185,6 +179,11 @@ export default function Calendar({ props }) {
                         <span style={monthStyle} className={s.checkmark_month}></span>
                     </label>
                 ))}
+                <div className={s.years_wrapper}>
+                    <button className={s.years} value='2023' onClick={yearHandler}>
+                        {curYear + 1}
+                    </button>
+                </div>
             </form>
             <form className={s.wrapper_day}>
                 {generatedDays.map((i, index) => (
