@@ -4,7 +4,6 @@ import { getMonthLabel } from '../lib/calendarLabels'
 
 export default function Calendar({ props }) {
     const { visitHandler, orderDur, user, bookedOrders, choosenTimeStamp, mockBooked } = props
-
     const monthLabel = getMonthLabel()
 
     const currentTime = new Date()
@@ -17,9 +16,8 @@ export default function Calendar({ props }) {
     const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
     const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
     const [checkDay, setCheckDay] = useState(stateTime.getDate())
-    const [showMore, setShoMore] = useState(0)
 
-    const [checkTime, setCheckTime] = useState('')
+    const [renderTime, setCheckTime] = useState('')
     const horizonMonths = monthLabel.length - checkMonth
 
     const work = {
@@ -69,18 +67,20 @@ export default function Calendar({ props }) {
     )
 
     function genTime(year, month, day) {
-       
+        console.log(bookedOrders.orders)
+        console.log(mockBooked)
+
         let genArr = []
         let filtered = []
         let classicTime = []
-        const filteredBooking = mockBooked.forEach((i) => {
+        const filteredBooking = bookedOrders.orders.forEach((i) => {
             if (
                 +i.visitDateTime.year == +year &&
                 +i.visitDateTime.month == +month + 1 &&
                 +i.visitDateTime.day == +day
             ) {
                 let timeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
-                filtered.push({ time: timeInMinutes, dur: i.visitDur })
+                filtered.push({ time: timeInMinutes, dur: +i.visitDur })
             }
         })
 
@@ -101,8 +101,12 @@ export default function Calendar({ props }) {
             })
         })
 
-        const freeTime = genArr.filter(i => !(i.time % 20) && i.free === true)
-        const convert = freeTime.forEach(i=> {classicTime.push(timeConvert(i.time))})
+        console.log(filtered)
+
+        const freeTime = genArr.filter((i) => !(i.time % 20) && i.free === true)
+        const convert = freeTime.forEach((i) => {
+            classicTime.push(timeConvert(i.time))
+        })
 
         return classicTime
     }
@@ -153,7 +157,6 @@ export default function Calendar({ props }) {
     function showMoreHandler(e) {
         showMore ? setShoMore(0) : setShoMore(1)
     }
-    if (!generatedMonths) return <div>Loading...</div>
 
     function showMoreHandler(e) {
         showMore ? setShoMore(0) : setShoMore(1)
@@ -212,7 +215,7 @@ export default function Calendar({ props }) {
                 ))}
             </form>
 
-            <form  id='time' className={s.wrapper_time}>
+            <form id='time' className={s.wrapper_time}>
                 {generatedTime.map((i, index) => (
                     <div key={index}>
                         <label style={timeStyle} className={s.container_time}>
@@ -235,7 +238,6 @@ export default function Calendar({ props }) {
                     </div>
                 ))}
             </form>
-
         </>
     )
 }

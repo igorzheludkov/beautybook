@@ -34,7 +34,6 @@ export default function MasterPage() {
         },
     ]
 
-    console.log('MockOrderEnabled.')
     return (
         <>
             <Head>
@@ -42,12 +41,12 @@ export default function MasterPage() {
             </Head>
             <div className='container'>
 
-                {/* {store.orders.map((i) => (
-                    <OrderItem key={i.orderId} item={i} />
-                ))} */}
-                {mockOrder.map((i) => (
+                {store.orders.map((i) => (
                     <OrderItem key={i.orderId} item={i} />
                 ))}
+                {/* {mockOrder.map((i) => (
+                    <OrderItem key={i.orderId} item={i} />
+                ))} */}
             </div>
         </>
     )
