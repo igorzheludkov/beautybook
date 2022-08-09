@@ -154,6 +154,7 @@ export default function OrderItem({ item }) {
         })
         const res = await response.json()
         console.log('Sended')
+        console.log(res)
     }
 
     function removeHandler(e) {
@@ -194,7 +195,7 @@ export default function OrderItem({ item }) {
                 </div>
             </div>
 
-            {bookedOrders && (
+            {bookedOrders && user && (
                 <Calendar
                     props={{ visitHandler, orderDur, user, bookedOrders, choosenTimeStamp, mockBooked }}
                 />

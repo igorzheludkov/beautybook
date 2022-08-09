@@ -62,51 +62,53 @@ export default function Calendar({ props }) {
     }
 
     const generatedTime = useMemo(
-        () => genTime(checkYear, checkMonth, checkDay),
+        () => genTime(checkYear, checkMonth, checkDay, bookedOrders.orders),
         [checkYear, checkMonth, checkDay]
     )
 
-    function genTime(year, month, day) {
-        console.log(bookedOrders.orders)
-        console.log(mockBooked)
-
-        let genArr = []
-        let filtered = []
+    function genTime(year, month, day, orders) {
+        console.log(orders)
         let classicTime = []
-        const filteredBooking = bookedOrders.orders.forEach((i) => {
+        let baseArr = []
+        for (let i = work.startTime - 360; i <= work.endTime; i = i + 10) {
+            baseArr.push({ time: i, free: true })
+        }
+        console.log(baseArr)
+
+
+        const filtered = orders.map((i) => {
             if (
                 +i.visitDateTime.year == +year &&
                 +i.visitDateTime.month == +month + 1 &&
                 +i.visitDateTime.day == +day
             ) {
                 let timeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
-                filtered.push({ time: timeInMinutes, dur: +i.visitDur })
+                return { time: timeInMinutes, dur: +i.visitDur }
             }
         })
 
-        for (let i = work.startTime; i <= work.endTime; i = i + 10) {
-            genArr.push({ time: i, free: true })
-        }
         filtered.forEach((g) => {
-            genArr.forEach((i, index) => {
+            baseArr.forEach((i, index) => {
                 if (i.time == g.time) {
                     for (
-                        let e = 0;
-                        e < (+orderDur + work.interval) / 10 + (g.dur + work.interval) / 10;
-                        e++
+                        let rem = 0;
+                        rem < (+orderDur + work.interval) / 10 + (g.dur + work.interval) / 10;
+                        rem++
                     ) {
-                        genArr[index - (+orderDur + work.interval) / 10 + e].free = false
+                        baseArr[index - (+orderDur + work.interval) / 10 + rem].free = false
                     }
                 }
             })
         })
 
-        console.log(filtered)
-
-        const freeTime = genArr.filter((i) => !(i.time % 20) && i.free === true)
+        const freeTime = baseArr.filter(
+            (i) => !(i.time % 20) && i.free === true && i.time > work.startTime && i.time < work.endTime
+        )
         const convert = freeTime.forEach((i) => {
             classicTime.push(timeConvert(i.time))
         })
+
+        console.log(freeTime)
 
         return classicTime
     }

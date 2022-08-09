@@ -20,7 +20,7 @@ export default async function UserData(req, res) {
             const findUser = await client
                 .db('beautybook')
                 .collection('user_public')
-                .findOne({ _id: ObjectId(user) })
+                .findOne({ email: user })
             await client.close()
             res.status(200).json(findUser)
             break
