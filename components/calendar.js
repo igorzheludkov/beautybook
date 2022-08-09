@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { getMonthLabel } from '../lib/calendarLabels'
 
 export default function Calendar({ props }) {
-    const { visitHandler, orderDur, user, bookedOrders, choosenTimeStamp, mockBooked } = props
+    const { visitHandler, orderDur, user, bookedOrders, choosenTimeStamp } = props
     const monthLabel = getMonthLabel()
 
     const currentTime = new Date()
@@ -48,7 +48,7 @@ export default function Calendar({ props }) {
 
     useEffect(() => {
         setRenderTime(() => generatedClassicTime(timeTransform()))
-    }, [checkDay])
+    }, [checkDay, bookedOrders])
 
     const generatedMonths = useMemo(() => genMonths(curMonth, horizonMonths), [curYear])
     function genMonths(month, horizonMonths) {
@@ -76,7 +76,6 @@ export default function Calendar({ props }) {
 
     function filteredOrders() {
         let testArr = []
-        let convTime = []
         let arr = bookedOrders.orders.forEach((i) => {
             if (
                 +i.visitDateTime.year == +checkYear &&
@@ -88,31 +87,24 @@ export default function Calendar({ props }) {
                 let add = 0
                 for (let rem = 0; rem < ((+work.interval + +i.visitDur) / 10); rem++) {
                     testArr.push({ time: timeInMinutes + add, free: false })
-                    convTime.push(timeConvert(timeInMinutes))
                     add = add + 10
 
                 }
                 let sub = 0
                 for (let rem = 0; rem < ((+orderDur + +work.interval) / 10); rem++) {
                     testArr.push({ time: timeInMinutes - sub, free: false })
-                    convTime.push(timeConvert(timeInMinutes))
                     sub = sub + 10
-                    console.log(timeInMinutes - sub);
 
                 }
             }
         })
-        console.log(bookedOrders.orders);
-        console.log(testArr);
-        console.log(convTime);
         return testArr
     }
 
     function generateBaseTime() {
         let bufferArr = []
-        let current = (currentHour % work.interval) * 60
         if (checkDay == curDay) {
-            for (let i = currentTime.getHours() * 60 + +work.interval; i <= work.endTime; i = i + 10) {
+            for (let i = (currentTime.getHours() * 60 )+ +work.interval ; i <= work.endTime; i = i + 10) {
                 bufferArr.push({ time: i, free: true })
             }
         } else {

@@ -31,7 +31,8 @@ export default function PersonalPage({ user, data }) {
     work_begin: '',
     work_end: '',
     interval: 10,
-    horizon: 3
+    horizon: 3,
+    url: '',
 
   })
   const [avatar, setAvatar] = useState('')
@@ -106,8 +107,8 @@ export default function PersonalPage({ user, data }) {
 
   const personalInfo = [
     { id: 'name', tp: 'text', vl: 'Ваше ім`я' },
-    { id: 'phone', tp: 'text', vl: 'Ваше номер телефону' },
     { id: 'surname', tp: 'text', vl: 'Ваше прізвище' },
+    { id: 'phone', tp: 'text', vl: 'Ваше номер телефону' },
     { id: 'social_1', tp: 'text', vl: 'Ваш акаунт в instagram' },
     { id: 'social_2', tp: 'text', vl: 'Ваш акаунт в telegram' },
     { id: 'about_me', tp: 'text', vl: 'Розкажіть трохи про себе' },

@@ -19,8 +19,8 @@ export default function MasterPage() {
 
     const router = useRouter()
 
-    const { data: user } = useSWR(session ? `/api/user/${session.user.email}` : null, fetcher)
-    const { data: services } = useSWR(session ? `/api/services/${session.user.email}` : null, fetcher)
+    const { data: user } = useSWR(session ? `/api/user/${router.query.id}` : null, fetcher)
+    const { data: services } = useSWR(session ? `/api/services/${router.query.id}` : null, fetcher)
 
     return user && services ? (
         <div className='container'>

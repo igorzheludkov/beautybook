@@ -1,5 +1,5 @@
 import s from './orderitem.module.css'
-import useSWR from 'swr'
+import useSWR, {mutate} from 'swr'
 import Image from 'next/image'
 import { useStoreContext } from '../context/store'
 import { useState } from 'react'
@@ -18,81 +18,7 @@ export default function OrderItem({ item }) {
 
     const [store, setStore] = useStoreContext()
 
-    const mockBooked = [
-        {
-            masterEmail: '500griven@gmail.com',
-            masterId: '62e6840acf4d88a22c64aeed',
-            visitDateTime: {
-                day: '9',
-                hour: '11',
-                minute: '00',
-                month: '8',
-                year: '2022',
-            },
-            visitDur: 40,
-        },
-        {
-            masterEmail: '500griven@gmail.com',
-            masterId: '62e6840acf4d88a22c64aeed',
-            visitDateTime: {
-                day: '9',
-                hour: '14',
-                minute: '0',
-                month: '8',
-                year: '2022',
-            },
-            visitDur: 60,
-        },
-        {
-            masterEmail: '500griven@gmail.com',
-            masterId: '62e6840acf4d88a22c64aeed',
-            visitDateTime: {
-                day: '9',
-                hour: '15',
-                minute: '40',
-                month: '8',
-                year: '2022',
-            },
-            visitDur: 40,
-        },
-        {
-            masterEmail: '500griven@gmail.com',
-            masterId: '62e6840acf4d88a22c64aeed',
-            visitDateTime: {
-                day: '9',
-                hour: '17',
-                minute: '0',
-                month: '8',
-                year: '2022',
-            },
-            visitDur: 80,
-        },
-        {
-            masterEmail: '500griven@gmail.com',
-            masterId: '62e6840acf4d88a22c64aeed',
-            visitDateTime: {
-                day: '10',
-                hour: '14',
-                minute: '0',
-                month: '9',
-                year: '2022',
-            },
-            visitDur: 80,
-        },
-        {
-            masterEmail: '500griven@gmail.com',
-            masterId: '62e6840acf4d88a22c64aeed',
-            visitDateTime: {
-                day: '10',
-                hour: '10',
-                minute: '0',
-                month: '10',
-                year: '2022',
-            },
-            visitDur: 80,
-        },
-    ]
-
+  
     const defaultTime = {
         year: currentTime.getFullYear().toString(),
         month:
@@ -114,7 +40,7 @@ export default function OrderItem({ item }) {
         clientPhone: '',
         suggestions: '',
     })
-    const [dayTime, setDayTime] = useState(defaultTime) // отримано поточну дату у форматі для конвертування у timestamp
+    const [dayTime, setDayTime] = useState('') // отримано поточну дату у форматі для конвертування у timestamp
 
     const orderDur = item.option.dur //тривалість обраної послуги
     const choosenTimeStamp = new Date(
@@ -122,7 +48,6 @@ export default function OrderItem({ item }) {
     ) // конвертує отриманий з календаря час в timestamp
 
     let mergedData = { ...item, ...contacts, visitDateTime: dayTime, visitDur: orderDur }
-    console.log(mergedData.visitDateTime)
     // merged data - об'єднує інформацію в єдине замовлення
     // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
     function visitHandler(e) {
@@ -154,13 +79,17 @@ export default function OrderItem({ item }) {
             },
         })
         const res = await response.json()
+        if(res.result.acknowledged){mutate(`/api/bookedtime?q=${item.masterEmail}`)}
         console.log('Sended')
-        console.log(res)
+        console.log()
     }
 
     function removeHandler(e) {
         e.preventDefault()
-        setStore({ ...store, orders: store.orders.filter((i) => e.target.value !== i.orderId) })
+        console.log(store.orders);
+        console.log(...store.orders);
+        console.log(e.target.value);
+        setStore({ ...store, orders: store.orders.filter((i) => +e.target.value !== i.orderId) })
     }
     if (!bookedOrders && !user) return <div>Loading...</div>
 
@@ -198,7 +127,7 @@ export default function OrderItem({ item }) {
 
             {bookedOrders && user && (
                 <Calendar
-                    props={{ visitHandler, orderDur, user, bookedOrders, choosenTimeStamp, mockBooked }}
+                    props={{ visitHandler, orderDur, user, bookedOrders, choosenTimeStamp }}
                 />
             )}
 
