@@ -33,9 +33,6 @@ export default function OrdersHistory({ client }) {
     return (
         <div className='container'>
             <div className={s.history_wrapper}>
-                <Head>
-                    Профіль клієнта
-                </Head>
                 <DashNav />
                 <h1 className={s.title}>Мої бронювання</h1>
                 {bookedOrders.orders.map((i) => (

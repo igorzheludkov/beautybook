@@ -1,0 +1,131 @@
+.orders_wrapper {
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.master_info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.master_inner {
+    display: flex;
+    align-items: center;
+}
+
+.master_adress {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 12px;
+    width: 172px;
+    color: grey;
+}
+.master_adressLogo {
+    width: 30px;
+}
+
+.avatar {
+    margin-right: 10px;
+}
+
+.master_name,
+.master_surName {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+.serv {
+    display: grid;
+    align-items: center;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 60px 60px;
+    background-color: #fff;
+    color: #444;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.serv_name {
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.daytime {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.time_wrapper {
+    display: flex;
+    align-items: center;
+    width: 70px;
+    background: #fffead;
+    border-radius: 10px;
+    padding-left: 5px;
+}
+.time {
+    font-size: 14px;
+    margin-left: 5px;
+    padding: 2px 0;
+}
+.date_wrapper {
+    display: flex;
+    align-items: center;
+    width: 160px;
+    border-radius: 10px;
+    padding-left: 5px;
+}
+.date {
+    font-size: 14px;
+    margin-left: 5px;
+    padding: 2px 0;
+}
+
+.cancel_btn {
+    border: none;
+    border-radius: 10px;
+    color: grey;
+}
+
+.masterLink {
+    padding: 8px;
+    border-radius: 5px;
+    background: rgb(204, 204, 204);
+    font-size: 14px;
+}
+
+.master_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.phone_wrapper {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+.phone_text {
+    margin-left: 10px;
+}
+
+.contacts {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.site{
+    background-color: aliceblue;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+}

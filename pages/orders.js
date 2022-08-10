@@ -11,7 +11,21 @@ import { useStoreContext } from '../context/store'
 import { useSession } from 'next-auth/react'
 import OrderItem from '../components/orderitem'
 
-export default function MasterPage() {
+export async function getServerSideProps(context) {
+    const session = await getSession(context)
+    if (!session) {
+        context.res.writeHead(302, { Location: '/login' })
+        context.res.end()
+        return {}
+    }
+    return {
+        props: {
+            client: session.user,
+        },
+    }
+}
+
+export default function MasterPage({client}) {
     const { data: session, status } = useSession()
     const [store, setStore] = useStoreContext()
 
@@ -42,7 +56,7 @@ export default function MasterPage() {
             <div className='container'>
 
                 {store.orders.map((i) => (
-                    <OrderItem key={i.orderId} item={i} />
+                    <OrderItem key={i.orderId} item={i} clientEmail={client.email}/>
                 ))}
                 {/* {mockOrder.map((i) => (
                     <OrderItem key={i.orderId} item={i} />

@@ -18,7 +18,7 @@ export default function Calendar({ props }) {
     const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
     const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
     const [checkDay, setCheckDay] = useState(stateTime.getDate())
-    const [checkTime, setCheckTime] = useState(currentHour)
+    const [checkTime, setCheckTime] = useState()
 
     const horizonMonths = monthLabel.length - checkMonth
 
@@ -28,9 +28,8 @@ export default function Calendar({ props }) {
         interval: +user?.userData.interval ?? 20,
         except: '',
     }
-    const [renderTime, setRenderTime] = useState(generatedClassicTime(timeTransform()))
-    ;('generatedClassicTime(timeTransform())')
-
+    const [renderTime, setRenderTime] = useState([])
+    // const [renderTime, setRenderTime] = useState(generatedClassicTime(timeTransform()))
 
     function yearHandler(e) {
         e.preventDefault()
@@ -57,15 +56,16 @@ export default function Calendar({ props }) {
         return genArr
     }
 
-    const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth])
+    const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth, checkDay])
 
-    function genDays(month) {
+    function genDays(month) {   
         let countDays = new Date(checkYear, checkMonth + 1, 0).getDate()
         let genArr = []
         let i = checkMonth == curMonth ? curDay : 1
         for (i; i <= countDays; i++) {
             genArr.push(getFormatedDay(checkYear, month, i))
         }
+
         return genArr
     }
 
@@ -105,6 +105,7 @@ export default function Calendar({ props }) {
                 bufferArr.push({ time: i, free: true })
             }
         }
+        // console.log(bufferArr.filter(el => el.free === false));
         return bufferArr
     }
 
@@ -121,8 +122,10 @@ export default function Calendar({ props }) {
         })
 
         let ex = transform.filter((el) => !(el.time % work.interval) && el.free === true)
+        console.log(ex);
         return ex
     }
+
     function generatedClassicTime(timeInMinutes) {
         let classicTime = []
         const convert = timeInMinutes.forEach((i) => {
