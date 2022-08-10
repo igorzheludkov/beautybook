@@ -19,6 +19,7 @@ export default function Home() {
                 <title>BeautyBook</title>
                 <meta name='description' content="Каталог майстрів сфери краси та здоров'я" />
                 <link rel='icon' href='/favicon.ico' />
+                <link rel="preload" href="/api/getall" as="fetch" crossOrigin="anonymous"></link>
             </Head>
 
             {allusers.user.map((i) => (

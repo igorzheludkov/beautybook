@@ -16,19 +16,58 @@ export default function Navbar() {
                 <Link href='/'>
                     <a>
                         <div className={s.logo_wrapper}>
-                            <Image className={s.logo} src='/images/logo.png' width={40} height={40} alt='logo' />
+                            <Image
+                                className={s.logo}
+                                src='/images/logo.png'
+                                width={40}
+                                height={40}
+                                alt='logo'
+                            />
                             <span className={s.title}>каталог краси</span>
                         </div>
                     </a>
                 </Link>
             </div>
             <div className={s.navButtons}>
-                <Image className={s.bookmarks} src='/images/bookmarks.png' width={30} height={30} alt='logo' />
                 <div className={s.orders_container}>
-                    <span className={s.counter}>{store.orders.length}</span>
+                    {/* <span className={s.counter}>{store.orders.length}</span> */}
+                    <Link href='/bookmarks'>
+                        <a>
+                            <Image
+                                className={s.orders}
+                                src='/images/bookmarks.png'
+                                width={25}
+                                height={25}
+                                alt='logo'
+                            />
+                        </a>
+                    </Link>
+                </div>
+                <div className={s.orders_container}>
+                    {/* <span className={s.counter}>{store.orders.length}</span> */}
+                    <Link href='/history'>
+                        <a>
+                            <Image
+                                className={s.orders}
+                                src='/images/orders.png'
+                                width={25}
+                                height={25}
+                                alt='logo'
+                            />
+                        </a>
+                    </Link>
+                </div>
+                <div className={s.orders_container}>
+                    {store.orders.length ? <span className={s.counter}>{store.orders.length}</span> : ''}
                     <Link href='/orders'>
                         <a>
-                            <Image className={s.orders} src='/images/orders.png' width={30} height={30} alt='logo' />
+                            <Image
+                                className={s.orders}
+                                src='/images/cart.png'
+                                width={25}
+                                height={25}
+                                alt='logo'
+                            />
                         </a>
                     </Link>
                 </div>
@@ -46,24 +85,20 @@ export default function Navbar() {
                                     Увійти
                                 </a>
                             </span>
-                            <Image className={[s.login_image, s.logo]} src='/images/userplaceholder.png' width={40} height={40} alt='logo' />
+                            <Image
+                                className={[s.login_image, s.logo]}
+                                src='/images/userplaceholder.png'
+                                width={40}
+                                height={40}
+                                alt='logo'
+                            />
                         </div>
                     </>
                 )}
                 {session?.user && (
                     <>
                         <div className={s.login_wrapper}>
-                            <span className={s.login_title}>
-                                <a
-                                    href={`/api/auth/signout`}
-                                    onClick={(e) => {
-                                        e.preventDefault()
-                                        signOut()
-                                    }}
-                                >
-                                    Вийти
-                                </a>
-                            </span>
+                            
                             <Link href='/user'>
                                 <a className={s.link}>
                                     <Avatar h={40} w={40} src={session.user.image} />

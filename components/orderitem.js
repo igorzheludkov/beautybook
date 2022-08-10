@@ -96,9 +96,6 @@ export default function OrderItem({ item, clientEmail}) {
 
     function removeHandler(e) {
         e.preventDefault()
-        console.log(store.orders)
-        console.log(...store.orders)
-        console.log(e.target.value)
         setStore({ ...store, orders: store.orders.filter((i) => +e.target.value !== i.orderId) })
     }
 

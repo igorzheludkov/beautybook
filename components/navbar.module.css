@@ -14,7 +14,6 @@
 }
 
 .logo_wrapper {
-    border: 2px solid var(--main-yellow-color);
     width: 145px;
     height: 50px;
     border-radius: 45px;
@@ -27,8 +26,6 @@
 }
 
 .login_wrapper {
-    border: 2px solid var(--main-yellow-color);
-    width: 100px;
     height: 50px;
     border-radius: 45px;
     display: flex;

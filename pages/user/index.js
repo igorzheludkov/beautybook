@@ -37,10 +37,7 @@ export default function OrdersHistory({ client }) {
                     Профіль клієнта
                 </Head>
                 <DashNav />
-                <h1 className={s.title}>Мої бронювання</h1>
-                {bookedOrders.orders.map((i) => (
-                    <OrdersHistoryItem key={i._id} order={i} />
-                ))}
+               
             </div>
         </div>
     )

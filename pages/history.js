@@ -1,13 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../../components/layout'
-import s from '../../styles/login.module.css'
+import s from '../styles/history.module.css'
 import { getSession } from 'next-auth/react'
-import DashNav from '../../components/dashnav'
-import { useStoreContext } from '../../context/store'
-import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
-import OrdersHistoryItem from '../../components/orderhistoryitem'
+import OrdersHistoryItem from '../components/orderhistoryitem'
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
@@ -33,7 +29,9 @@ export default function OrdersHistory({ client }) {
     return (
         <div className='container'>
             <div className={s.history_wrapper}>
-                <DashNav />
+                <Head>
+                    Історія ваших бронювань
+                </Head>
                 <h1 className={s.title}>Мої бронювання</h1>
                 {bookedOrders.orders.map((i) => (
                     <OrdersHistoryItem key={i._id} order={i} />
