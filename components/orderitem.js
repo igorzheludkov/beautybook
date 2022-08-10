@@ -18,7 +18,6 @@ export default function OrderItem({ item, clientEmail}) {
     const currentTime = new Date()
     const { data: user } = useSWR(item ? `/api/userpublic?q=${item.masterEmail} ` : null, fetcher)
     const { data: bookedOrders } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
-    console.log('client',user.userData.phone);
 
     const [store, setStore] = useStoreContext()
     const [statusMessage, setStatusMessage] = useState({ status: 0, message: 'Оберіть місяць, дату та час' })
@@ -46,7 +45,9 @@ export default function OrderItem({ item, clientEmail}) {
         `${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`
     ) // конвертує отриманий з календаря час в timestamp
 
-    let mergedData = { ...item, ...contacts, visitDateTime: dayTime, visitDur: orderDur, masterPhone: user.userData.phone }
+    console.log(item);
+
+    let mergedData = { ...item, ...contacts, visitDateTime: dayTime, visitDur: orderDur}
     console.log(mergedData)
     // merged data - об'єднує інформацію в єдине замовлення
     // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
