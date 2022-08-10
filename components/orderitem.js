@@ -1,11 +1,12 @@
 import s from './orderitem.module.css'
-import useSWR, {mutate} from 'swr'
+import useSWR, { mutate } from 'swr'
 import Image from 'next/image'
 import { useStoreContext } from '../context/store'
 import { useState } from 'react'
 import Avatar from './avatar'
 import Calendar from './calendar'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -17,30 +18,24 @@ export default function OrderItem({ item }) {
     const { data: bookedOrders } = useSWR(item ? `/api/bookedtime?q=${item.masterEmail}` : null, fetcher)
 
     const [store, setStore] = useStoreContext()
+    const [statusMessage, setStatusMessage] = useState({ status: 0, message: 'Оберіть місяць, дату та час' })
+    console.log(statusMessage)
 
-  
     const defaultTime = {
-        year: currentTime.getFullYear().toString(),
-        month:
-            currentTime.getMonth() + 1 < 10
-                ? '0' + (currentTime.getMonth() + 1).toString()
-                : (currentTime.getMonth() + 1).toString(),
-        day:
-            currentTime.getDate() < 10
-                ? '0' + currentTime.getDate().toString()
-                : currentTime.getDate().toString(),
-        hour:
-            currentTime.getHours() < 10
-                ? '0' + currentTime.getHours().toString()
-                : currentTime.getHours().toString(),
-        minute: '00',
+        year: currentTime.getFullYear(),
+        month: '',
+        day: '',
+        hour: '',
+        minute: '',
     }
     const [contacts, setContacts] = useState({
         clientName: session.user.name,
         clientPhone: '',
         suggestions: '',
     })
-    const [dayTime, setDayTime] = useState('') // отримано поточну дату у форматі для конвертування у timestamp
+
+    console.log(defaultTime)
+    const [dayTime, setDayTime] = useState(defaultTime) // отримано поточну дату у форматі для конвертування у timestamp
 
     const orderDur = item.option.dur //тривалість обраної послуги
     const choosenTimeStamp = new Date(
@@ -48,6 +43,7 @@ export default function OrderItem({ item }) {
     ) // конвертує отриманий з календаря час в timestamp
 
     let mergedData = { ...item, ...contacts, visitDateTime: dayTime, visitDur: orderDur }
+    console.log(dayTime)
     // merged data - об'єднує інформацію в єдине замовлення
     // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
     function visitHandler(e) {
@@ -71,115 +67,156 @@ export default function OrderItem({ item }) {
 
     async function orderHandler(e) {
         e.preventDefault(e)
-        const response = await fetch(`/api/order/`, {
-            method: 'POST',
-            body: JSON.stringify(mergedData),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        const res = await response.json()
-        if(res.result.acknowledged){mutate(`/api/bookedtime?q=${item.masterEmail}`)}
-        console.log('Sended')
-        console.log()
+        if (validate) {
+            const response = await fetch(`/api/order/`, {
+                method: 'POST',
+                body: JSON.stringify(mergedData),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            const res = await response.json()
+            if (res.result.acknowledged) {
+                mutate(`/api/bookedtime?q=${item.masterEmail}`)
+            }
+            console.log('Sended')
+            console.log(res.result.acknowledged)
+            showMessage()
+        }
+        console.log('statusMessage')
     }
 
     function removeHandler(e) {
         e.preventDefault()
-        console.log(store.orders);
-        console.log(...store.orders);
-        console.log(e.target.value);
+        console.log(store.orders)
+        console.log(...store.orders)
+        console.log(e.target.value)
         setStore({ ...store, orders: store.orders.filter((i) => +e.target.value !== i.orderId) })
+    }
+
+    const validate = dayTime.month > 0 && dayTime.day > 0 && dayTime.hour > 0
+
+    function showMessage() {
+        setStatusMessage({
+            status: 1,
+            message:
+                'Бронювання надіслано. Можете вибрати інші послуги майстра та забронювати додаткові візити',
+        })
     }
     if (!bookedOrders && !user) return <div>Loading...</div>
 
     return (
         <div className={s.orders_wrapper}>
-            <div className={s.serv}>
-                <div className={s.serv_name}>{item.option.name}</div>
-                <div className={s.serv_price}>{item.option.price} грн</div>
-                <div className={s.serv_dur}>{item.option.dur} хв </div>
-            </div>
-
-            <div className={s.master_info}>
-                <div className={s.master_inner}>
-                    <div className={s.avatar}>
-                        <Avatar w={40} h={40} src={item.photo} />
+            {statusMessage.status === 0 && (
+                <div>
+                    <div className={s.serv}>
+                        <div className={s.serv_name}>{item.option.name}</div>
+                        <div className={s.serv_price}>{item.option.price} грн</div>
+                        <div className={s.serv_dur}>{item.option.dur} хв </div>
                     </div>
-                    <div>
-                        <div className={s.master_name}>{item.masterName}</div>
 
-                        <div className={s.master_name}>{item.masterSurname}</div>
+                    <div className={s.master_info}>
+                        <div className={s.master_inner}>
+                            <div className={s.avatar}>
+                                <Avatar w={40} h={40} src={item.photo} />
+                            </div>
+                            <div>
+                                <div className={s.master_name}>{item.masterName}</div>
+
+                                <div className={s.master_name}>{item.masterSurname}</div>
+                            </div>
+                        </div>
+                        <div className={s.master_adress}>
+                            <div className={s.master_adressLogo}>
+                                <Image width={20} height={20} src='/images/adress.png' alt='adress' />
+                            </div>
+
+                            <div>
+                                <div>{item.city}</div>
+                                <div>{item.street}</div>
+                                <div>{item.location}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={s.calendar_wrapper}>
+                        {bookedOrders && user && (
+                            <Calendar
+                                props={{ visitHandler, orderDur, user, bookedOrders, choosenTimeStamp }}
+                            />
+                        )}
+
+                        <input
+                            className={s.suggestions}
+                            id='suggestions'
+                            value={contacts.suggestions}
+                            onChange={clientContactsHandler}
+                            placeholder='Додайте побажання щодо послуги'
+                        />
+                        <div className={s.daytime}>
+                            <div className={s.time_wrapper}>
+                                <Image width={15} height={15} src='/images/orders.png' alt='time' />
+                                <div className={s.time}>
+                                    {dayTime.hour}:{dayTime.minute}
+                                </div>
+                            </div>
+                            <div className={s.date_wrapper}>
+                                <Image width={15} height={15} src='/images/booking.png' alt='time' />
+                                <div className={s.date}>
+                                    {dayTime.month}.{dayTime.day}.{dayTime.year}
+                                </div>
+                            </div>
+                            <button className={s.cancel_btn} value={item.orderId} onClick={removeHandler}>
+                                Відмінити
+                            </button>
+                        </div>
+                        <div className={s.message}>{statusMessage.message}</div>
+                        <form className={s.contacts}>
+                            <div>
+                                <input
+                                    className={s.clientName}
+                                    id='clientName'
+                                    value={contacts.clientName}
+                                    onChange={clientContactsHandler}
+                                    placeholder='Ваше ім`я'
+                                />
+                                <input
+                                    className={s.clientPhone}
+                                    id='clientPhone'
+                                    value={contacts.clientPhone}
+                                    onChange={clientContactsHandler}
+                                    placeholder='Ваш номер телефону'
+                                />
+                            </div>
+                            <button className={s.submit_btn} value={item.orderId} onClick={orderHandler}>
+                                Підтвердити
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <div className={s.master_adress}>
-                    <div className={s.master_adressLogo}>
-                        <Image width={20} height={20} src='/images/adress.png' alt='adress' />
-                    </div>
-
-                    <div>
-                        <div>{item.city}</div>
-                        <div>{item.street}</div>
-                        <div>{item.location}</div>
-                    </div>
-                </div>
-            </div>
-
-            {bookedOrders && user && (
-                <Calendar
-                    props={{ visitHandler, orderDur, user, bookedOrders, choosenTimeStamp }}
-                />
             )}
 
-            <input
-                className={s.suggestions}
-                id='suggestions'
-                value={contacts.suggestions}
-                onChange={clientContactsHandler}
-                placeholder='Додайте побажання щодо послуги'
-            />
-            <div className={s.daytime}>
-                <div className={s.time_wrapper}>
-                    <Image width={15} height={15} src='/images/orders.png' alt='time' />
-                    <div className={s.time}>
-                        {choosenTimeStamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            {statusMessage.status === 1 && (
+                <div className={s.message_wrapper}>
+                    <div className={s.message}>{statusMessage.message}</div>
+                    <div className={s.master_wrapper}>
+                        <div className={s.master_inner}>
+                            <div className={s.avatar}>
+                                <Avatar w={40} h={40} src={item.photo} />
+                            </div>
+                            <div>
+                                <div className={s.master_name}>{item.masterName}</div>
+
+                                <div className={s.master_name}>{item.masterSurname}</div>
+                            </div>
+                        </div>
+                        <div className={s.masterLink}>
+                            <Link href={`/catalog/${item.masterEmail}`}>
+                                <a>Сторінка майстра</a>
+                            </Link>
+                        </div>
                     </div>
                 </div>
-                <div className={s.date_wrapper}>
-                    <Image width={15} height={15} src='/images/booking.png' alt='time' />
-                    <div className={s.date}>
-                        {choosenTimeStamp.toLocaleDateString('uk-UA', {
-                            day: 'numeric',
-                            year: 'numeric',
-                            month: 'long',
-                        })}
-                    </div>
-                </div>
-                <button className={s.cancel_btn} value={item.orderId} onClick={removeHandler}>
-                    Відмінити
-                </button>
-            </div>
-            <form className={s.contacts}>
-                <div>
-                    <input
-                        className={s.clientName}
-                        id='clientName'
-                        value={contacts.clientName}
-                        onChange={clientContactsHandler}
-                        placeholder='Ваше ім`я'
-                    />
-                    <input
-                        className={s.clientPhone}
-                        id='clientPhone'
-                        value={contacts.clientPhone}
-                        onChange={clientContactsHandler}
-                        placeholder='Ваш номер телефону'
-                    />
-                </div>
-                <button className={s.submit_btn} value={item.orderId} onClick={orderHandler}>
-                    Підтвердити
-                </button>
-            </form>
+            )}
         </div>
     )
 }

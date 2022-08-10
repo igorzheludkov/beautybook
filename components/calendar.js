@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { getMonthLabel } from '../lib/calendarLabels'
 
 export default function Calendar({ props }) {
-    const { visitHandler, orderDur, user, bookedOrders, choosenTimeStamp } = props
+    const { visitHandler, orderDur, user, bookedOrders, choosenTimeStamp, confirmedOrder } = props
     const monthLabel = getMonthLabel()
 
     const currentTime = new Date()
@@ -13,6 +13,7 @@ export default function Calendar({ props }) {
     let curYear = stateTime.getFullYear()
     let curMonth = stateTime.getMonth()
     let curDay = stateTime.getDate()
+
 
     const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
     const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
@@ -30,15 +31,12 @@ export default function Calendar({ props }) {
     const [renderTime, setRenderTime] = useState(generatedClassicTime(timeTransform()))
     ;('generatedClassicTime(timeTransform())')
 
-    // const renderTimeEx = useMemo(() => generatedClassicTime(timeTransform()), [checkDay])
-    // console.log(renderTimeEx.length);
 
     function yearHandler(e) {
         e.preventDefault()
         e.target.value === '2023' && setStateTime(new Date(`2023-01-01T09:00:00`))
         e.target.value === '2022' && setStateTime(new Date())
     }
-
     function monthHandler(e) {
         setCheckMonths(e.target.value)
     }
@@ -71,30 +69,25 @@ export default function Calendar({ props }) {
         return genArr
     }
 
-    // const generatedTime = useMemo(() => generateBaseTime(), [checkYear, checkMonth, checkDay])
-    // console.log(generatedTime)
-
     function filteredOrders() {
+        console.log(checkMonth)
         let testArr = []
         let arr = bookedOrders.orders.forEach((i) => {
             if (
                 +i.visitDateTime.year == +checkYear &&
-                +i.visitDateTime.month == +checkMonth + 1 &&
+                +i.visitDateTime.month == +checkMonth &&
                 +i.visitDateTime.day == +checkDay
             ) {
-
                 let timeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
                 let add = 0
-                for (let rem = 0; rem < ((+work.interval + +i.visitDur) / 10); rem++) {
+                for (let rem = 0; rem < (+work.interval + +i.visitDur) / 10; rem++) {
                     testArr.push({ time: timeInMinutes + add, free: false })
                     add = add + 10
-
                 }
                 let sub = 0
-                for (let rem = 0; rem < ((+orderDur + +work.interval) / 10); rem++) {
+                for (let rem = 0; rem < (+orderDur + +work.interval) / 10; rem++) {
                     testArr.push({ time: timeInMinutes - sub, free: false })
                     sub = sub + 10
-
                 }
             }
         })
@@ -104,7 +97,7 @@ export default function Calendar({ props }) {
     function generateBaseTime() {
         let bufferArr = []
         if (checkDay == curDay) {
-            for (let i = (currentTime.getHours() * 60 )+ +work.interval ; i <= work.endTime; i = i + 10) {
+            for (let i = currentTime.getHours() * 60 + +work.interval; i <= work.endTime; i = i + 10) {
                 bufferArr.push({ time: i, free: true })
             }
         } else {
@@ -128,8 +121,6 @@ export default function Calendar({ props }) {
         })
 
         let ex = transform.filter((el) => !(el.time % work.interval) && el.free === true)
-        // console.log(transform)
-        // ex.forEach(e=> console.log(timeConvert(e.time)))
         return ex
     }
     function generatedClassicTime(timeInMinutes) {
@@ -194,7 +185,7 @@ export default function Calendar({ props }) {
                             name='radio'
                             type='radio'
                             onChange={visitHandler}
-                            data-type-index={i}
+                            data-type-index={i.index}
                             data-type-field='month'
                             onClick={monthHandler}
                         />
