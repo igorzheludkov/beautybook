@@ -3,9 +3,19 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Avatar from './avatar'
 import s from './bookingitem.module.css'
+import GetFormatedDay from './getFormatedDay'
+
 
 export default function OrderItem({ item }) {
     const [store, setStore] = useStoreContext()
+
+    const getDay = GetFormatedDay(
+        item.visitDateTime.year,
+        item.visitDateTime.month,
+        item.visitDateTime.day
+    )
+
+    console.log(getDay);
 
     function clientContactsHandler(e) {
         setContacts({ ...contacts, [e.target.id]: e.target.value })
@@ -42,8 +52,8 @@ export default function OrderItem({ item }) {
             <div className={s.booking_details}>
                 <div className={s.booking_inner}>
                     <div className={s.date_time}>
-                        <div className={s.time}>Час</div>
-                        <div className={s.date}>Дата</div>
+                        <div className={s.time}>{item.visitDateTime.hour}:{item.visitDateTime.minute}</div>
+                        <div className={s.date}>{getDay.weekday} {getDay.number}.{getDay.year}</div>
                     </div>
                     <div className={s.contacts}>
                         <div className={s.phone}>{item.clientPhone}</div>
