@@ -21,7 +21,6 @@ export default function OrderItem({ item, clientEmail}) {
 
     const [store, setStore] = useStoreContext()
     const [statusMessage, setStatusMessage] = useState({ status: 0, message: 'Оберіть місяць, дату та час' })
-    console.log(statusMessage)
 
     const defaultTime = {
         year: currentTime.getFullYear(),
@@ -37,7 +36,6 @@ export default function OrderItem({ item, clientEmail}) {
         suggestions: '',
     })
 
-    console.log(defaultTime)
     const [dayTime, setDayTime] = useState(defaultTime) // отримано поточну дату у форматі для конвертування у timestamp
 
     const orderDur = item.option.dur //тривалість обраної послуги
@@ -45,10 +43,7 @@ export default function OrderItem({ item, clientEmail}) {
         `${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`
     ) // конвертує отриманий з календаря час в timestamp
 
-    console.log(item);
-
     let mergedData = { ...item, ...contacts, visitDateTime: dayTime, visitDur: orderDur}
-    console.log(mergedData)
     // merged data - об'єднує інформацію в єдине замовлення
     // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
     function visitHandler(e) {

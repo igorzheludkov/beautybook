@@ -98,11 +98,9 @@ export default function Navbar() {
                 {session?.user && (
                     <>
                         <div className={s.login_wrapper}>
-                            
                             <Link href='/user'>
                                 <a className={s.link}>
                                     <Avatar h={40} w={40} src={session.user.image} />
-                                    {/* <Image width={50} height={50} className={s.login_image} src={session.user.image} alt='logo' /> */}
                                 </a>
                             </Link>
                         </div>

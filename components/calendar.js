@@ -97,7 +97,7 @@ export default function Calendar({ props }) {
     function generateBaseTime() {
         let bufferArr = []
         if (checkDay == curDay) {
-            for (let i = currentTime.getHours() * 60 + +work.interval; i <= work.endTime; i = i + 10) {
+            for (let i = (currentTime.getHours() * 60 + (Math.round(currentTime.getMinutes() /10 ) * 10)); i <= work.endTime; i = i + 10) {
                 bufferArr.push({ time: i, free: true })
             }
         } else {
@@ -120,7 +120,7 @@ export default function Calendar({ props }) {
                 }
             })
         })
-
+console.log(transform);
         let ex = transform.filter((el) => !(el.time % work.interval) && el.free === true)
         console.log(ex);
         return ex
