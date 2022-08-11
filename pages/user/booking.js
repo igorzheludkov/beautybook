@@ -46,7 +46,7 @@ export default function Booking({ master, data }) {
             <div className='container'>
                 <div className={s.header}>
                 <h1 className={s.title_h2}>Бронювання</h1>
-                    <Link href='serviceadd'>
+                    <Link href='/user/bookingadd'>
                         <button>Додати бронювання</button>
                     </Link>
                 </div>
