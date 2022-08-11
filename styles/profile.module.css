@@ -37,14 +37,9 @@
     margin: 3px 2px;
 }
 
-.link {
-    color: #0059ff;
-    margin-bottom: 10px;
-    font-weight: 600;
-    display: flex;
-    justify-content: flex-end;
+.profile_nav {
+    margin-bottom: 20px;
 }
-
 .submit_btn {
     height: 30px;
     background-color: var(--submit-buttons-color);

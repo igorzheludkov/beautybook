@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { getSession } from 'next-auth/react'
 import DashNav from '../../components/dashnav'
 import MasterNav from '../../components/masternav'
-import dash from '../../styles/dash.module.css'
 import s from '../../styles/services_page_admin.module.css'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
@@ -43,7 +42,6 @@ export default function Booking({ master, data }) {
 
     return (
         <div>
-            <DashNav />
             <MasterNav />
             <div className='container'>
                 <div className={s.header}>

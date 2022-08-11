@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '../../components/layout'
-import s from '../../styles/login.module.css'
 import { getSession } from 'next-auth/react'
-import DashNav from '../../components/dashnav'
+import MasterNav from '../../components/masternav'
 import { useStoreContext } from '../../context/store'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
 import OrdersHistoryItem from '../../components/orderhistoryitem'
+import s from '../../styles/profile.module.css'
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
@@ -36,7 +36,7 @@ export default function OrdersHistory({ client }) {
                 <Head>
                     Профіль клієнта
                 </Head>
-                <DashNav />
+                <MasterNav />
                
             </div>
         </div>

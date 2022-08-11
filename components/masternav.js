@@ -1,34 +1,27 @@
 import Link from 'next/link'
-import dash from '../styles/dash.module.css'
+import s from './masternav.module.css'
 import { useRouter } from 'next/router'
+import { useState } from "react";
 
 export default function MasterNav({ path, status }) {
     const route = useRouter()
 
-    const menuItems = [
-        { title: 'Панель', url: '/user' },
-        { title: 'Бронювання', url: '/brn' },
-        { title: 'Послуги', url: '/poslugi' },
-        { title: 'Акції', url: '/akcii' },
-        { title: 'Відгуки', url: '/vidguku' },
-        { title: 'Сертифікати', url: '/sertif' },
-        { title: 'Профіль', url: '/profile' },
-    ]
     return (
-        <div className={dash.masterNav}>
-            <button className={dash.nav_sub_button}>
-                <Link href=''>Панель</Link>
+        <div className={s.master_nav}>
+            <button className={s.nav_button}>
+                <Link href='/user/panel'>Панель</Link>
             </button>
-            <button className={dash.nav_sub_button}>
-                <Link href='/master/booking'>Бронювання</Link>
+            <button className={s.nav_button}>
+                <Link href='/user/booking'>Бронювання</Link>
             </button>
-            <button className={dash.nav_sub_button}>
-                <Link href='/master/services'>Послуги</Link>
+            <button className={s.nav_button}>
+                <Link href='/user/services'>Послуги</Link>
             </button>
 
-            <button className={[`${dash.nav_sub_button} ${status}`]}>
-                <Link href='/master/profile'>Особиста інформація</Link>
+            <button className={[`${s.nav_button} ${status}`]}>
+                <Link href='/user/profile'>Профіль</Link>
             </button>
+            
         </div>
     )
 }

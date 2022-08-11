@@ -56,10 +56,19 @@
     flex-direction: column;
     justify-content: space-between;
     height: 200px;
+    position: relative;
+}
+
+.spec_wrapper {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .spec {
     color: var(--faded-text-color);
+    font-size: 13px;
+    margin-right: 10px;
+    
 }
 .about_me {
     font-size: 16px;
@@ -68,10 +77,17 @@
 }
 
 .adress_info {
+    font-size: 14px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 50px;
 }
+
+.daytime {
+    margin-left: 5px;
+}
+
+/* .history_wrapper {} */
 
 .info_a,
 .info_h,
@@ -97,7 +113,18 @@
 }
 
 .info_h {
-    width: 90px;
+    width: 110px;
 }
 
+.bookmark_add {
+position: absolute;
+right: 0;
+font-size: 12px;
+display: flex;
+align-items: center;
+}
+
+.bookmark_text {
+    margin-left: 5px;
+}
 

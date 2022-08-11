@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import s from '../../styles/master.module.css'
+import s from '../../styles/userpage.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import { server } from '../../config/index'
@@ -22,13 +22,26 @@ export default function MasterPage() {
     const { data: user } = useSWR(session ? `/api/user/${router.query.id}` : null, fetcher)
     const { data: services } = useSWR(session ? `/api/services/${router.query.id}` : null, fetcher)
 
+   
+
     return user && services ? (
         <div className='container'>
             <div className={s.header}>
                 <div className={s.avatar_container}>
                     <div className={s.avatar_img_inner}>
-                        <Image className={s.avatar_img} placeholder='blur' blurDataURL='/images/userplaceholder.png' layout='responsive' objectFit='cover' width={150} height={150} src={user.userData.photo ? user.userData.photo : '/images/userplaceholder.png'} alt='avatar' />
+                        <Image
+                            className={s.avatar_img}
+                            placeholder='blur'
+                            blurDataURL='/images/userplaceholder.png'
+                            layout='responsive'
+                            objectFit='cover'
+                            width={150}
+                            height={150}
+                            src={user.userData.photo ? user.userData.photo : '/images/userplaceholder.png'}
+                            alt='avatar'
+                        />
                     </div>
+
                     <div className={s.social}>
                         <Link href={user.userData.social_1}>
                             <a target='_blank' className='social_link'>
@@ -48,16 +61,27 @@ export default function MasterPage() {
                     </div>
                 </div>
                 <div className={s.header_block}>
-                    <div>
+                    <div className={s.header_name}>
                         <div className={s.title}>{user.userData.name}</div>
                         <div className={s.title}>{user.userData.surname}</div>
-                        <div className={s.spec}>{user.userData.specialization_1}</div>
-                        <div className={s.spec}>{user.userData.specialization_2}</div>
-                        <div className={s.spec}>{user.userData.specialization_3}</div>
+                        <div className={s.spec_wrapper}>
+                            {user.userData.categories.map((i) => (
+                                <div key={i} className={s.spec}>
+                                    {i}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                     <div className={s.about_me}>{user.userData.about_me}</div>
+                    <div className={s.bookmark_add}>
+                        <div className={s.bookmark_logo_logo}>
+                            <Image width={20} height={20} src='/images/bookmarks.png' alt='instagram' />
+                        </div>
+                        <div className={s.bookmark_text}></div>
+                    </div>
                 </div>
             </div>
+
             <div className={s.adress_info}>
                 <div className={s.info_a}>
                     <div className={s.info_a_logo}>
@@ -75,15 +99,14 @@ export default function MasterPage() {
                     <div className={s.info_h_logo}>
                         <Image width={20} height={20} src='/images/orders.png' alt='instagram' />
                     </div>
-                    <div className={s.info_h_text}>
-                        {user.userData.work_begin}-{user.userData.work_end}
+                    <div className={s.daytime}>
+                        <div className={s.working_time}>
+                            <div className={s.info_h_text}>
+                                {user.userData.work_begin}-{user.userData.work_end}
+                            </div>
+                        </div>
+                        <div className={s.working_days}>{user.userData.work_days}</div>
                     </div>
-                </div>
-                <div className={s.info_b}>
-                    <div className={s.info_b_logo}>
-                        <Image width={20} height={20} src='/images/bookmarks.png' alt='instagram' />
-                    </div>
-                    <div className={s.info_b_text}>Додати в закладки</div>
                 </div>
             </div>
             <section className={s.services}>

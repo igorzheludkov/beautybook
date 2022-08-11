@@ -1,0 +1,16 @@
+.nav_wrapper {
+display: flex;
+/* justify-content: space-between; */
+margin-bottom: 10px;
+}
+
+.nav_button {
+    background-color: transparent;
+    color: grey;
+    font-weight: 400;
+    margin-right: 10px;
+    border: none;
+    font-size: 14px;
+    /* text-decoration: 2px underline var(--main-yellow-color); */
+    margin-bottom: 5px;
+}

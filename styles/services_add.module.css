@@ -27,8 +27,23 @@
 .photo_wrapper {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 30px;
 }
 .photo_container {
-  width: 80px;
+  width: 75px;
   height: 80px;
+  margin: 5px;
+}
+
+.photo_serv {
+}
+
+.btn_add {
+  height: 40px;
+  width: 100%;
+  background-color: #C2FFD7;
+  font-size: 13px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 50px;
 }
