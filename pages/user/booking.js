@@ -47,7 +47,7 @@ export default function Booking({ master, data }) {
                 <div className={s.header}>
                 <h1 className={s.title_h2}>Бронювання</h1>
                     <Link href='/user/bookingadd'>
-                        <button>Додати бронювання</button>
+                        <button className={s.addserv}>Додати бронювання</button>
                     </Link>
                 </div>
                 {booking.orders.map((i) => (

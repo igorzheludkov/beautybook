@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.title_h2 {
+    font-size: 22px;
+    font-weight: 600;
+    text-decoration: 3px underline var(--main-yellow-color);
+  }
+
+  .addserv {
+    width: 130px;
+    height: 30px;
+    background-color: #A6EAFF;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 400;
+}

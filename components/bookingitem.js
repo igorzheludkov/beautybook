@@ -7,6 +7,8 @@ import GetFormatedDay from './getFormatedDay'
 
 
 export default function OrderItem({ item }) {
+
+    console.log(item);
     const [store, setStore] = useStoreContext()
 
     const getDay = GetFormatedDay(
