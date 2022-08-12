@@ -16,7 +16,7 @@
   padding: 5px;
 }
 .input_desc {
-  height: 50px;
+  height: 60px;
   width: 100%;
   max-width: 600px;
 }
@@ -42,6 +42,15 @@
   height: 40px;
   width: 100%;
   background-color: #C2FFD7;
+  font-size: 13px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+.btn_rem {
+  height: 40px;
+  width: 100%;
+  background-color: #ffc2cf;
   font-size: 13px;
   border: none;
   border-radius: 10px;

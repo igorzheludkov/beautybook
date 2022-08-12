@@ -25,9 +25,9 @@ export async function getServerSideProps(context) {
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function OrdersHistory({ client }) {
-    const { data: bookedOrders } = useSWR(`/api/orderclient?q=${client.email}`, fetcher)
+    // const { data: bookedOrders } = useSWR(`/api/orderclient?q=${client.email}`, fetcher)
 
-    if (!bookedOrders) return <div>Loading...</div>
+    // if (!bookedOrders) return <div>Loading...</div>
 
 
     return (

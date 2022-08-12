@@ -33,12 +33,12 @@ const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function Booking({ master, data }) {
 
-    console.log('booking', master);
     
     const [store, setStore] = useStoreContext()
     const { data: booking } = useSWR(master ? `/api/order?q=${master.email}` : null, fetcher)
 
     if (!booking) return <div>Loading...</div>
+    console.log(booking);
 
     return (
         <div>

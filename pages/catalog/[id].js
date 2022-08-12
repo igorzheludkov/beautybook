@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function MasterPage() {
+export default function ServiceEdit() {
     const { data: session, status } = useSession()
 
     const [store, setStore] = useStoreContext()

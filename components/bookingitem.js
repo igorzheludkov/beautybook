@@ -15,7 +15,6 @@ export default function OrderItem({ item }) {
         item.visitDateTime.day
     )
 
-    console.log(getDay);
 
     function clientContactsHandler(e) {
         setContacts({ ...contacts, [e.target.id]: e.target.value })
@@ -38,7 +37,6 @@ export default function OrderItem({ item }) {
         e.preventDefault()
     }
 
-    console.log('booking page', item)
 
     return (
         <div className={s.booking_wrapper}>
@@ -68,19 +66,3 @@ export default function OrderItem({ item }) {
         </div>
     )
 }
-// city: "м. Вінниця"
-// clientName: "Марк"
-// clientPhone: "28428974892347"
-// location: "Торговий цетр МИР"
-// masterEmail: "500griven@gmail.com"
-// masterId: "62e6840acf4d88a22c64aeed"
-// masterName: "Ігор"
-// masterSurname: "Желудков"
-// option: {name: 'Масаж всього тіла', price: '400', dur: '40'}
-// orderId: "1659625794355"
-// photo: "https://res.cloudinary.com/dvywpujnv/image/upload/v1659504913/profile_uploads/iih5wi9co4jpmzub7b4y.jpg"
-// serviceId: "62ea1547b4912b56079c3c2f"
-// street: "вул. Космонавтів 65"
-// suggestions: "Не дуже сильно"
-// title: "Масаж всього тіла"
-// _id: "62ebe159e928ffcf36c1274f"
