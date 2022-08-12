@@ -80,11 +80,7 @@ export default function ServicesAddPage({ user, data }) {
             <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
             <div className='container'>
-                <h3>Виберіть розділ</h3>
-                <div className='specialization'>
-                    <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={serv.cat_top} />
-                </div>
-                <div className='sub_main'></div>
+
                 <h3>
                     Вкажіть нижче назву послуги своїми словами.
                 </h3>
@@ -185,6 +181,10 @@ export default function ServicesAddPage({ user, data }) {
                     <div className={s.images_wrapper}>
                         <Cloudinary uploadHandler={photoHandler} multiple={true} />
                     </div>
+                </div>
+                <h3>Виберіть розділ</h3>
+                <div className={s.spec}>
+                    <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={serv.cat_top} />
                 </div>
                 <button className={s.btn_add} onClick={pushData}>
                     Додати послугу

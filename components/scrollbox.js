@@ -1,4 +1,4 @@
-import s from '../styles/scrollbox.module.css'
+import s from './scrollbox.module.css'
 import { useState, useEffect, useCallback } from 'react'
 
 export default function CheckboxHorizontal({ data, checkboxToggle, checkStatus }) {

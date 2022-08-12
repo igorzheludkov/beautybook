@@ -152,7 +152,7 @@ export default function ServicesAddPage({ user, category }) {
                             value={serv.item_1.dur}
                         />
                     </span>
-                    <p>Додайте варіації, якщо є. </p>
+                    <p className={s.subtitle}>Додайте варіації, якщо є. </p>
                     <span className={s.serv_item}>
                         <input
                             className={s.input_serv}
@@ -215,7 +215,7 @@ export default function ServicesAddPage({ user, category }) {
                         value={serv.about.description}
                     />
                     
-                    <p>Додайте фото (до 8 шт)</p>
+                    <p className={s.subtitle}>Додайте фото (до 8 шт)</p>
                     <br></br>
                     <div className={s.photo_wrapper}>
                         {serv.pic.map((i) => (
@@ -237,7 +237,7 @@ export default function ServicesAddPage({ user, category }) {
                     </div>
                 </div>
                 <h3>Виберіть розділ</h3>
-                <div className='specialization'>
+                <div className={s.spec}>
                     <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={serv.cat_top} />
                 </div>
                 <button className={s.btn_add} onClick={pushData}>

@@ -9,7 +9,7 @@
 
 .input_serv,
 .input_desc {
-  background-color: rgb(223, 223, 223);
+  background-color: rgb(231, 231, 231);
   color: #444;
   border-radius: 5px;
   border: none;
@@ -42,17 +42,26 @@
   height: 40px;
   width: 100%;
   background-color: #C2FFD7;
-  font-size: 13px;
+  font-size: 14px;
   border: none;
   border-radius: 10px;
-  margin-bottom: 40px;
+  margin-bottom: 40px; font-weight: 600;
 }
 .btn_rem {
   height: 40px;
   width: 100%;
   background-color: #ffc2cf;
-  font-size: 13px;
+  font-size: 14px;
   border: none;
   border-radius: 10px;
   margin-bottom: 50px;
+}
+
+.subtitle{
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.spec{
+  margin-bottom: 20px;
 }
