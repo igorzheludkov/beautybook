@@ -138,7 +138,7 @@ console.log(router);
             <div className='container'>
                 <div className={s.profile_nav}>
                     <button className={s.nav_button}>
-                        <Link href='/catalog/${user.email}'>
+                        <Link href={`/catalog/${user.email}`}>
                             <a>Відкрити вашу сторінку</a>
                         </Link>
                     </button>
