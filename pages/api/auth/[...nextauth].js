@@ -18,6 +18,11 @@ export default NextAuth({
        
     }),
   ],
+  pages: {
+    signIn: '/login',
+    newUser: '/user/profile' // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
+  
   // jwt: {
 
   //   maxAge: 60 * 60 * 24 * 30,
