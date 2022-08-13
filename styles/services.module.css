@@ -51,6 +51,7 @@
 
 .images {
     overflow-x: auto;
+    padding-left: 10px;
 }
 
 .images_wrapper {
@@ -60,8 +61,8 @@
 
 .images_container {
     margin-right: 5px;
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
 }
 
 

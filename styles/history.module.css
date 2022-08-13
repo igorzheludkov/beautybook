@@ -1,0 +1,5 @@
+.title_h2 {
+    font-size: 22px;
+    font-weight: 600;
+    text-decoration: 3px underline var(--main-yellow-color);
+  }

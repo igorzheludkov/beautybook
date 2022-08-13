@@ -53,7 +53,6 @@ export default function MasterPage({client}) {
             <Head>
                 <title>Ваші замовлення</title>
             </Head>
-            <div className='container'>
 
                 {store.orders.map((i) => (
                     <OrderItem key={i.orderId} item={i} clientEmail={client.email}/>
@@ -61,7 +60,6 @@ export default function MasterPage({client}) {
                 {/* {mockOrder.map((i) => (
                     <OrderItem key={i.orderId} item={i} />
                 ))} */}
-            </div>
         </>
     )
 }

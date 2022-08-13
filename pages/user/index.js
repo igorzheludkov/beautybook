@@ -29,16 +29,10 @@ export default function OrdersHistory({ client }) {
 
     // if (!bookedOrders) return <div>Loading...</div>
 
-
     return (
-        <div className='container'>
-            <div className={s.history_wrapper}>
-                <Head>
-                    Профіль клієнта
-                </Head>
-                <MasterNav />
-               
-            </div>
-        </div>
+        <>
+            <Head>Профіль клієнта</Head>
+            <MasterNav />
+        </>
     )
 }

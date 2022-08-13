@@ -10,8 +10,7 @@
 
 .title {
     font-weight: 800;
-    color: var(--strong-blue);
-}
+font-size: 18px;}
 
 .title_info {
     display: flex;
@@ -19,14 +18,9 @@
     width: 110px;
 }
 
-.time {
+.time, .phone {
     background: rgb(255, 254, 167);
     padding: 3px 10px;
-    border-radius: 20px;
-}
-.phone {
-    background: rgb(189, 189, 189);
-    padding: 2px 10px;
     border-radius: 20px;
 }
 .booking_details {
@@ -34,7 +28,10 @@
     justify-content: space-between;
 }
 
-.date{margin: 0 10px;}
+.date {
+    margin: 0 10px;
+    font-size: 14px;
+}
 
 .date_time {
     display: flex;
@@ -45,9 +42,12 @@
 .contacts {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
-.name{margin: 0 10px;}
+.name {
+    margin: 0 10px;
+}
 
 .buttons {
     width: 110px;
@@ -63,8 +63,8 @@
     border-radius: 5px;
 }
 .shift {
-    height: 30px;
-    background: var(--main-blue);
+    height: 20px;
+    background: rgb(211, 211, 211);
     border: none;
-    border-radius: 5px;
+    border-radius:20px;
 }

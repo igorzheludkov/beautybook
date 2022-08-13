@@ -58,7 +58,7 @@ export default function Navbar() {
                     </Link>
                 </div>
                 <div className={s.orders_container}>
-                    {store.orders.length ? <span className={s.counter}>{store.orders.length}</span> : ''}
+                    {store.orders?.length ? <span className={s.counter}>{store.orders.length}</span> : ''}
                     <Link href='/orders'>
                         <a>
                             <Image

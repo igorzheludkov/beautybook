@@ -55,13 +55,15 @@ export default function Services({ user, data }) {
                         <button className={s.addserv}>Додати послугу</button>
                     </Link>
                 </div>
-                <div> </div>
-                <div className='serv_wrapper'>
-                    {srv.map((i, index) => (
-                        <div key={i._id} className={s.serv_inner}>
-                            
+            </div>
+            <div className='serv_wrapper'>
+                {srv.map((i, index) => (
+                    <div key={i._id} className={s.serv_inner}>
+                        <div className='container'>
                             <div className={s.serv_item}>
-                                <span className={s.serv_title}>{index+1}. {i.item_1.name}</span>
+                                <span className={s.serv_title}>
+                                    {index + 1}. {i.item_1.name}
+                                </span>
                                 <span className={s.serv_price}>{i.item_1.price} грн</span>
                                 <span className={s.serv_duration}>{i.item_1.dur} хв</span>
                             </div>
@@ -87,35 +89,34 @@ export default function Services({ user, data }) {
                                     {i.item_3.dur ? `${i.item_3.dur} хв` : null}
                                 </span>
                             </div>
-                            <div className={s.serv_about}>
+                            {/* <div className={s.serv_about}>
                                 <span className={s.serv_desc}>{i.about.description}</span>
-                            </div>
-                            <div className={s.images}>
-                                <div className={s.images_wrapper}>
-                                    {i.pic.map((i) => (
-                                        <div key={i} className={s.images_container}>
-                                            <Image
-                                                style={{ borderRadius: '10px' }}
-                                                layout='responsive'
-                                                objectFit='cover'
-                                                width={50}
-                                                height={50}
-                                                src={i}
-                                                alt='service'
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                                
-                            </div>
-                            <button className={s.remove}>
-                                    <Link href={`/user/services/${i._id}`}>
-                                        <a>Редагувати</a>
-                                    </Link>
-                                </button>
+                            </div> */}
                         </div>
-                    ))}
-                </div>
+                        <div className={s.images}>
+                            <div className={s.images_wrapper}>
+                                {i.pic.map((i) => (
+                                    <div key={i} className={s.images_container}>
+                                        <Image
+                                            style={{ borderRadius: '10px' }}
+                                            layout='responsive'
+                                            objectFit='cover'
+                                            width={50}
+                                            height={50}
+                                            src={i}
+                                            alt='service'
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <button className={s.remove}>
+                            <Link href={`/user/services/${i._id}`}>
+                                <a>Редагувати</a>
+                            </Link>
+                        </button>
+                    </div>
+                ))}
             </div>
         </div>
     )

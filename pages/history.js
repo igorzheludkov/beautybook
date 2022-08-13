@@ -32,7 +32,7 @@ export default function OrdersHistory({ client }) {
                 <Head>
                     Історія ваших бронювань
                 </Head>
-                <h1 className={s.title}>Мої бронювання</h1>
+                <h2 className={s.title_h2}>Мої бронювання</h2>
                 {bookedOrders.orders.map((i) => (
                     <OrdersHistoryItem key={i._id} order={i} />
                 ))}

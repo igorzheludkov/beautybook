@@ -1,148 +1,252 @@
-.orders_wrapper {
-    margin-bottom: 50px;
-    display: flex;
-    flex-direction: column;
+.title_h3 {
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: 3px underline var(--main-yellow-color);
+  margin-bottom: 10px;
 }
 
 .master_info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .master_inner {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .master_adress {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 12px;
-    width: 172px;
-    color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 12px;
+  width: 172px;
+  color: grey;
 }
 .master_adressLogo {
-    width: 30px;
+  width: 30px;
 }
 
 .avatar {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .master_name,
 .master_surName {
-    font-size: 12px;
-    text-transform: uppercase;
+  font-size: 12px;
+  text-transform: uppercase;
 }
 .serv {
-    display: grid;
-    align-items: center;
-    grid-gap: 10px;
-    grid-template-columns: 1fr 60px 60px;
-    background-color: #fff;
-    color: #444;
-    margin-bottom: 20px;
-    font-size: 14px;
+  display: grid;
+  align-items: center;
+  grid-gap: 10px;
+  grid-template-columns: 1fr 60px 60px;
+  background-color: #fff;
+  color: #444;
+  margin-bottom: 20px;
+  font-size: 14px;
 }
 
 .serv_name {
-    font-weight: 800;
-    font-size: 18px;
+  font-weight: 800;
+  font-size: 18px;
 }
 
 .suggestions {
-    width: 100%;
-    height: 35px;
-    border-radius: 10px;
-    border: 1px solid rgb(182, 182, 182);
-    padding: 0 10px;
-    margin-bottom: 10px;
+  width: 100%;
+  height: 35px;
+  border-radius: 10px;
+  border: 1px solid rgb(182, 182, 182);
+  padding: 0 10px;
+  margin-bottom: 10px;
 }
 .daytime {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .time_wrapper {
-    display: flex;
-    align-items: center;
-    width: 70px;
-    background: #fffead;
-    border-radius: 10px;
-    padding-left: 5px;
-    
+  display: flex;
+  align-items: center;
+  width: 70px;
+  background: #fffead;
+  border-radius: 10px;
+  padding-left: 5px;
 }
-.time {font-size: 14px;
-    margin-left: 5px;
-    padding: 2px 0;
-
+.time {
+  font-size: 14px;
+  margin-left: 5px;
+  padding: 2px 0;
 }
 .date_wrapper {
-    display: flex;
-    align-items: center;
-    width: 160px;
-    border-radius: 10px;
-    padding-left: 5px;
-    
+  display: flex;
+  align-items: center;
+  width: 160px;
+  border-radius: 10px;
+  padding-left: 5px;
 }
-.date {font-size: 14px;
-    margin-left: 5px;
-    padding: 2px 0;
-
+.date {
+  font-size: 14px;
+  margin-left: 5px;
+  padding: 2px 0;
 }
 
 .cancel_btn {
-    border: none;
-    border-radius: 10px;
-    color: grey;
+  border: none;
+  border-radius: 10px;
+  color: grey;
 }
 
 .contacts {
-    display: flex;
-    align-items: center;
-    border-radius: 20px;
-    padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 5px 15px;
 
-    background-color: #A2FEC2;
-
+  background-color: #a2fec2;
 }
 
-
-.clientName, .clientPhone {
-    width: 95%;
-    height: 45px;
-    border-radius: 10px;
-    border: 2px solid #61f595;
+.clientName,
+.clientPhone {
+  width: 95%;
+  height: 45px;
+  border-radius: 10px;
+  border: 2px solid #61f595;
 }
 
 .submit_btn {
-    border: none;
-font-weight: 800;
-    background-color: #A2FEC2;
+  border: none;
+  font-weight: 800;
+  background-color: #a2fec2;
 }
 
-.message{
-    background: rgb(195, 228, 255);
-    border-radius: 10px;
-    padding: 5px;
-    font-size: 13px;
-    margin-bottom: 10px;
-    text-align: center;
+.message {
+  background: rgb(235, 235, 235);
+  /* border-radius: 10px; */
+  padding: 5px;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .masterLink {
-    padding: 8px;
-    border-radius: 5px;
-    background: rgb(204, 204, 204);
-    font-size: 14px;
+  padding: 8px;
+  border-radius: 5px;
+  background: rgb(204, 204, 204);
+  font-size: 14px;
 }
 
 .master_wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+/* ------------ scroller css   -------------  */
+
+.options {
+    overflow-x: auto;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .options_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    /* margin-bottom: 5px; */
+    width:500px;
+    max-width:500px;
+    /* overflow-x: scroll; */
+    margin: 0;
+    padding: 0;
+    /* height: 100px; */
+  }
+  
+  /* .container_category:focus-within {
+    color: white;
+  } */
+  
+  .options_container::-webkit-scrollbar {
+    display: none;
+  }
+  .options_container {
+    display: flex;
+    position: relative;
+    /* padding: 0 5px; */
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* height: var(--category-height); */
+    margin: 5px;
+    color: rgb(148, 148, 148);
+  }
+  
+  .option_name {
+    color:rgb(0, 0, 0);
+    /* font-weight: 600; */
+    position: relative;
+    z-index: 100;
+    padding: 3px 5px;
+  }
+  .option_price {
+    position: relative;
+    z-index: 100;
+    display: flex;
+
+    padding: 3px 5px;
+  }
+  .option_dur {
+    position: relative;
+    z-index: 100;
+    padding: 3px 5px;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .options_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark_options {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* height:var(--category-height); */
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    /* border-radius: var(--category-border-radius); */
+    border: 1px solid rgb(255, 255, 255);
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .options_container:hover input ~ .checkmark_options {
+    /* background-color: rgb(235, 235, 235); */
+    /* border: 2px solid grey; */
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .options_container input:checked ~ .checkmark_options {
+    /* background-color: #7bc3ff; */
+    border: 2px solid #a6eaff;
+    height: 100%;
+    border-radius: 5px;
+  }
+  
+  
+  @media (min-width: 400px) {
+    .wrapper_category {
+      width: 100%;
+    }
+  }
+

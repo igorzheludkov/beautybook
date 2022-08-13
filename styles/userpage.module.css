@@ -21,7 +21,7 @@
 .avatar_container {
     float: left;
     margin: 0 10px 20px 0;
-    width: 150px;
+    width: 200px;
     height: 200px;
     position: relative;
     display: flex;
@@ -31,6 +31,7 @@
 
 .avatar_img_inner {
     margin-bottom: 10px;
+    position: relative;
 }
 
 .avatar_img {
@@ -118,7 +119,8 @@
 
 .bookmark_add {
 position: absolute;
-right: 0;
+left: 0;
+bottom: 0;
 font-size: 12px;
 display: flex;
 align-items: center;

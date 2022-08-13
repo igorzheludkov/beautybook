@@ -1,22 +1,18 @@
 import { useStoreContext } from '../context/store'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Avatar from './avatar'
 import s from './bookingitem.module.css'
 import GetFormatedDay from './getFormatedDay'
-
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function OrderItem({ item }) {
+    const router = useRouter()
 
-    console.log(item);
     const [store, setStore] = useStoreContext()
 
-    const getDay = GetFormatedDay(
-        item.visitDateTime.year,
-        item.visitDateTime.month,
-        item.visitDateTime.day
-    )
-
+    const getDay = GetFormatedDay(item.visitDateTime.year, item.visitDateTime.month, item.visitDateTime.day)
 
     function clientContactsHandler(e) {
         setContacts({ ...contacts, [e.target.id]: e.target.value })
@@ -39,31 +35,37 @@ export default function OrderItem({ item }) {
         e.preventDefault()
     }
 
-
     return (
         <div className={s.booking_wrapper}>
             <div className={s.header}>
-                <div className={s.title}>{item.option.name}</div>
+                <div className={s.title}>{item.opt.name}</div>
                 <div className={s.title_info}>
-                    <div className={s.price}>{item.option.price} грн</div>
-                    <div className={s.dur}>{item.option.dur} хв</div>
+                    <div className={s.price}>{item.opt.price} грн</div>
+                    <div className={s.dur}>{item.opt.dur} хв</div>
                 </div>
             </div>
             <div className={s.booking_details}>
                 <div className={s.booking_inner}>
                     <div className={s.date_time}>
-                        <div className={s.time}>{item.visitDateTime.hour}:{item.visitDateTime.minute}</div>
-                        <div className={s.date}>{getDay.weekday} {getDay.number}.{getDay.year}</div>
-                    </div>
-                    <div className={s.contacts}>
-                        <div className={s.phone}>{item.clientPhone}</div>
-                        <div className={s.name}>{item.clientName}</div>
+                        <div className={s.time}>
+                            {item.visitDateTime.hour}:{item.visitDateTime.minute}
+                        </div>
+                        <div className={s.date}>
+                            {getDay.weekday} {getDay.number}.{getDay.year}
+                        </div>
                     </div>
                 </div>
                 <div className={s.buttons}>
-                    <button className={s.cancel}>Відмінити</button>
-                    <button className={s.shift}>Перенести</button>
+                    <button className={s.shift}>
+                        <Link href={`/user/booking/${item._id}`}>
+                            <a>Редагувати</a>
+                        </Link>
+                    </button>
                 </div>
+            </div>
+            <div className={s.contacts}>
+                <div className={s.phone}>{item.clientPhone}</div>
+                <div className={s.name}>{item.clientName}</div>
             </div>
         </div>
     )
