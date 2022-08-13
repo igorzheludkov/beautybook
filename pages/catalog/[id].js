@@ -19,8 +19,8 @@ export default function ServiceEdit() {
 
   const router = useRouter()
 
-  const { data: user } = useSWR(session ? `/api/user/${router.query.id}` : null, fetcher)
-  const { data: services } = useSWR(session ? `/api/services/${router.query.id}` : null, fetcher)
+  const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
+  const { data: services } = useSWR(`/api/services/${router.query.id}`, fetcher)
 
   return user && services ? (
     <div className='container'>
