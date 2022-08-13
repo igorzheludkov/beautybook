@@ -9,6 +9,7 @@ export default function Layout({ children }) {
     
       <div className={styles.container}>
         <Navbar />
+        <div className='padding-top'></div>
         <div>{children}</div>
       </div>
   

@@ -1,5 +1,7 @@
 .header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 161px 1fr;
+    margin-bottom: 30px;
 }
 
 .title {
@@ -20,8 +22,7 @@
 
 .avatar_container {
     float: left;
-    margin: 0 10px 20px 0;
-    width: 150px;
+ 
     height: 150px;
     position: relative;
     display: flex;
@@ -53,6 +54,7 @@
 }
 
 .header_block {
+    margin-left: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -74,14 +76,13 @@
 .about_me {
     font-size: 16px;
     text-decoration: 3px underline var(--main-yellow-color);
-    margin-bottom: 5px;
 }
 
 .adress_info {
     font-size: 14px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .daytime {

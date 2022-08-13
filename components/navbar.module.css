@@ -3,6 +3,10 @@
     justify-content: space-between;
     width: 100%;
     align-items: center;
+    position: fixed;
+    z-index: 1000;
+    background-color: white;
+    position: fixed;
 }
 
 .navButtons {
@@ -11,6 +15,8 @@
     justify-content: space-between;
     align-items: center;
 }
+
+
 
 .logo_wrapper {
     width: 145px;
