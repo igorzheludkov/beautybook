@@ -21,8 +21,8 @@
 .avatar_container {
     float: left;
     margin: 0 10px 20px 0;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     position: relative;
     display: flex;
     flex-direction: column;
