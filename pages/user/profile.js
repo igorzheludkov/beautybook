@@ -96,7 +96,6 @@ export default function PersonalPage({ user, data }) {
   }, [userPublic])
 
   // console.log('settings', settings)
-  // console.log('userPublic.userSettings',userPublic.userSettings)
 
   async function newUser() {
     const response = await fetch('/api/userdata', {

@@ -14,9 +14,6 @@ export default async function Order(req, res) {
     const method = req.method
     const data =  req.body 
     const query = req.query.q
-    console.log('data', data)
-    console.log('query', query)
-    console.log('method', method)
 
     const projection = {
         masterId: 1,
@@ -29,7 +26,6 @@ export default async function Order(req, res) {
         case 'GET':
             const finded = await collection.find({masterEmail: query}).project(projection).toArray()
             await client.close()
-            console.log('booking time ', finded)
             res.status(200).json({ message: 'finded services:', orders: finded })
             break
 
