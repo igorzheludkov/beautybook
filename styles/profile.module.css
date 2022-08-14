@@ -1,66 +1,97 @@
 .container {
-    width: 100%;
+  width: 100%;
 }
 
 .masterNav {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
+.header {
+  height: 170px;
+  display: flex;
+}
+.social_wrapper,
+.aboutme_wrapper {
+  margin-bottom: 20px;
+}
+.social_container,
+.aboutme_container {
+  display: flex;
+  align-items: center;
+}
+
+.aboutme_input {
+  border: none;
+  background-color: #ebebeb;
+  padding: 5px;
+  border-radius: 5px;
+  width: 250px;
+  height: 70px;
+}
+
+.paragraph {
+  padding-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
 .avatar_container {
-    float: left;
-    margin-right: 10px;
-    width: 150px;
-    height: 150px;
-    display: block;
-    position: relative;
-    border-radius: 50%;
-    transition: 1s;
+  float: left;
+  margin-right: 10px;
+  width: 150px;
+  height: 150px;
+  display: block;
+  position: relative;
+  border-radius: 50%;
+  transition: 1s;
 }
 
 .avatar_img {
-    border-radius: 50%;
-    transition: 1s;
+  border-radius: 50%;
+  transition: 1s;
 }
 
 .nav_button {
-    height: 30px;
-    background-color: #A6EAFF;
-    border-radius: 5px;
-    border: none;
-    margin: 5px;
+  height: 30px;
+  background-color: #a6eaff;
+  border-radius: 5px;
+  border: none;
+  margin: 5px;
 }
 .nav_sub_button {
-    height: 30px;
-    background-color: white;
-    border-radius: 50px;
-    border: 2px solid #b1b1b1;
-    margin: 3px 2px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50px;
+  border: 2px solid #b1b1b1;
+  margin: 3px 2px;
 }
 
 .profile_nav {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .submit_btn {
-    height: 30px;
-    background-color: var(--submit-buttons-color);
-    border-radius: 5px;
-    border: none;
-    margin: 5px;
+  height: 30px;
+  background-color: var(--submit-buttons-color);
+  border-radius: 5px;
+  border: none;
+  margin: 5px;
 }
 
 .input_item {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0 5px 5px;
+  width: 100%;
 }
 
 .input_text {
-    height: 30px;
+    border: none;
+    background-color: #ebebeb;
+    padding: 5px;
     border-radius: 5px;
-    border: 1px solid var(--light-border-color);
-
+  height: 30px;
+  border-radius: 5px;
 }
 
 .label {
-    color: var(--faded-text-color);
+  color: var(--faded-text-color);
 }

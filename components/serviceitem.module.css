@@ -53,6 +53,7 @@ text-decoration: 3px underline var(--main-yellow-color);
 
 .images_wrapper {
   display: inline-flex;
+  padding-left: 10px;
 }
 
 .images_container {
