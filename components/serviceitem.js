@@ -89,6 +89,7 @@ export default function ServiceItem({ data, user }) {
           </div>
         </div>
 
+        <div className={s.gallery_wrapper}>
         <div className={s.images}>
           <div className={s.images_wrapper}>
             {data.pic.map((i) => (
@@ -106,7 +107,8 @@ export default function ServiceItem({ data, user }) {
               </div>
             ))}
           </div>
-          {fullView === '0' ? (
+        </div>
+        {fullView === '0' ? (
           <button className={s.gallery} onClick={fullViewHandler} value='1'>
             Дивитись фото
           </button>
@@ -132,8 +134,6 @@ export default function ServiceItem({ data, user }) {
           </button>
         )}
         </div>
-
-        
       </div>
     </>
   )
