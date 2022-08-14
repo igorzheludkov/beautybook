@@ -14,8 +14,11 @@ import ScrollBox from '../../../components/scrollbox'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 // import { v2 as cloudinary } from 'cloudinary'
+let counter = 0
 
 export default function ServicesAddPage({ user, category }) {
+    counter++
+    console.log('COUNTER', counter)
     const router = useRouter()
 
     const servicesModel = {

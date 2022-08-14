@@ -1,13 +1,14 @@
 .wrapper {
     display: flex;
-    justify-content: space-between;
-    width: 65vw;
+    width: inherit;
+    max-width: 500px;
     align-items: center;
     position: fixed;
     z-index: 1000;
     background-color: white;
-    position: fixed;
+   
 }
+
 
 .navButtons {
     width: 200px;
@@ -16,6 +17,7 @@
     align-items: center;
 }
 
+.logo{margin-right: auto;}
 
 
 .logo_wrapper {

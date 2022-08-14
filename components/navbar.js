@@ -21,7 +21,7 @@ export default function Navbar() {
 
   return (
     <div className={s.wrapper}>
-      <div>
+      <div className={s.logo}>
         <Link href='/'>
           <a>
             <div className={s.logo_wrapper}>

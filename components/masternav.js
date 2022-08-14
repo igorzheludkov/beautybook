@@ -9,7 +9,7 @@ export default function MasterNav({ path, status }) {
   return (
     <div className={s.master_nav}>
       <button className={s.nav_button}>
-        <Link href='/user/panel'>Панель</Link>
+        <Link href='/user'>Головна</Link>
       </button>
       <button className={s.nav_button}>
         <Link href='/user/booking'>Бронювання</Link>

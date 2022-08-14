@@ -11,13 +11,15 @@ import { server } from '../../config/index'
 import ScrollBox from '../../components/scrollbox'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import CheckboxButtons from '../../components/ui/checkboxbuttons'
 
+let counter = 0
 export default function PersonalPage({ user, data }) {
+  counter++
+  console.log('COUNTER', counter)
   const router = useRouter()
-  console.log(router)
-  console.log(user.email)
   const { data: session, status } = useSession()
-  const [userPublic, setUserPublic] = useState('0')
+  const [userPublic, setUserPublic] = useState([])
   const [form, setForm] = useState({
     photo: '',
     about_me: '',
@@ -38,7 +40,37 @@ export default function PersonalPage({ user, data }) {
     url: '',
     work_days: '',
   })
-  const [avatar, setAvatar] = useState('')
+
+  const [settings, setSettings] = useState({
+    isPageVisibleInCat: {
+      label: 'Сторінка видима в каталозі',
+      id: 'isPageVisibleInCat',
+      checked: false,
+    },
+    isBookingActivated: {
+      label: 'Активувати бронювання',
+      id: 'isBookingActivated',
+      checked: false,
+    },
+  })
+
+  async function settingsHandler(e) {
+    const update = {
+      ...settings,
+      [e.target.id]: { ...settings[e.target.id], checked: e.target.checked },
+    }
+    setSettings(update)
+
+    const response = await fetch(`/api/userdata`, {
+      method: 'PATCH',
+      body: JSON.stringify({ email: session.user.email, userSettings: update }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    console.log(data)
+  }
 
   const categories = data.categories
 
@@ -50,16 +82,21 @@ export default function PersonalPage({ user, data }) {
         .then((res) => res.json())
         .then((data) => {
           if (data === null) {
-            console.log('new user')
             newUser()
           } else {
             setUserPublic(data)
             setForm(data.userData)
-            console.log('registered user')
           }
         })
     }
   }, [session])
+
+  useEffect(() => {
+    userPublic.userSettings ? setSettings(userPublic.userSettings) : null
+  }, [userPublic])
+
+  // console.log('settings', settings)
+  // console.log('userPublic.userSettings',userPublic.userSettings)
 
   async function newUser() {
     const response = await fetch('/api/userdata', {
@@ -101,7 +138,6 @@ export default function PersonalPage({ user, data }) {
   }
 
   function avatarHandler(result) {
-    setAvatar(result)
     setForm(() => ({ ...form, photo: result.secure_url }))
   }
   const profileNamePhone = [
@@ -142,7 +178,7 @@ export default function PersonalPage({ user, data }) {
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
       <MasterNav path='/' status='active_tab' />
-
+      <CheckboxButtons data={settings} settingsHandler={settingsHandler} status={settings} />
       <div className='container'>
         <div className={s.profile_nav}>
           <button className={s.nav_button}>
@@ -251,7 +287,7 @@ export default function PersonalPage({ user, data }) {
           ))}
         </div>
         <h4>Додайте ваш графік роботи</h4>
-        
+
         <div className={s.worktime_wrapper}>
           {personalInfo?.map((i) => (
             <div className={s.worktime_container} key={i.id}>
