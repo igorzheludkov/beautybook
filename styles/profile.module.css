@@ -50,7 +50,15 @@
   transition: 1s;
 }
 
+.button_container {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .nav_button {
+
   height: 30px;
   background-color: #a6eaff;
   border-radius: 5px;
@@ -69,7 +77,9 @@
   margin-bottom: 20px;
 }
 .submit_btn {
-  height: 30px;
+  transition: 0.5s;
+  padding: 10px 20px;
+
   background-color: var(--submit-buttons-color);
   border-radius: 5px;
   border: none;
@@ -84,10 +94,10 @@
 }
 
 .input_text {
-    border: none;
-    background-color: #ebebeb;
-    padding: 5px;
-    border-radius: 5px;
+  border: none;
+  background-color: #ebebeb;
+  padding: 5px;
+  border-radius: 5px;
   height: 30px;
   border-radius: 5px;
   font-size: 14px;

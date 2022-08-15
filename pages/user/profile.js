@@ -14,15 +14,23 @@ import { useRouter } from 'next/router'
 import CheckboxButtons from '../../components/ui/checkboxbuttons'
 import RadioButtons from '../../components/ui/radiobuttons'
 import Input from '../../components/ui/input'
+import useSWR from 'swr'
+
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
 let counter = 0
 export default function PersonalPage({ user, data }) {
+  const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
+
+  console.log('uData', uData)
+
   const categories = data.categories
 
   counter++
-  // console.log('COUNTER', counter)
+  console.log('COUNTER', counter)
   const router = useRouter()
   const { data: session, status } = useSession()
+  const [saved, setSaved] = useState(0)
   const [userPublic, setUserPublic] = useState([])
   const [form, setForm] = useState({
     photo: '',
@@ -45,6 +53,19 @@ export default function PersonalPage({ user, data }) {
     work_days: '',
   })
 
+  useEffect(() => {
+    if (uData) {
+      setUserPublic(uData)
+      setForm(uData.userData)
+    } else if (uData === null) {
+      newUser()
+    }
+  }, [uData])
+
+  useEffect(() => {
+    userPublic.userSettings ? setSettings(userPublic.userSettings) : null
+  }, [userPublic])
+
   const [settings, setSettings] = useState({
     isPageVisibleInCat: {
       label: 'Сторінка видима в каталозі',
@@ -65,51 +86,16 @@ export default function PersonalPage({ user, data }) {
     }
     setSettings(update)
 
-    const response = await fetch(`/api/userdata`, {
-      method: 'PATCH',
-      body: JSON.stringify({ email: session.user.email, userSettings: update }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const data = await response.json()
-    console.log(data)
+    // const response = await fetch(`/api/userdata`, {
+    //   method: 'PATCH',
+    //   body: JSON.stringify({ email: session.user.email, userSettings: update }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    // const data = await response.json()
+    // console.log(data)
   }
-
-  useEffect(() => {
-    if (session?.user.email) {
-      fetch(`/api/userdata?q=${session.user.email}`, {
-        method: 'GET',
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data === null) {
-            newUser()
-          } else {
-            setUserPublic(data)
-            setForm(data.userData)
-          }
-        })
-    }
-  }, [session])
-
-  useEffect(() => {
-    userPublic.userSettings ? setSettings(userPublic.userSettings) : null
-  }, [userPublic])
-
-  // console.log('settings', settings)
-
-  async function newUser() {
-    const response = await fetch('/api/userdata', {
-      method: 'PUT',
-      body: JSON.stringify({ email: session.user.email, userData: form }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const data = await response.json()
-  }
-
   function inputHandler(e) {
     let key = e.target.id
     setForm({ ...form, [key]: e.target.value })
@@ -135,23 +121,47 @@ export default function PersonalPage({ user, data }) {
       },
     })
     const data = await response.json()
-    console.log('Sended')
+    const settingsUpdate = await fetch(`/api/userdata`, {
+      method: 'PATCH',
+      body: JSON.stringify({ email: session.user.email, userSettings: settings }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const responseUpdate = await settingsUpdate.json()
+    data.result.modifiedCount && setSaved(1)
+    console.log(data)
+    setTimeout(() => {
+      setSaved(0)
+    }, 1000)
   }
 
   function avatarHandler(result) {
     setForm(() => ({ ...form, photo: result.secure_url }))
   }
 
+  // console.log('settings', settings)
+
+  async function newUser() {
+    const response = await fetch('/api/userdata', {
+      method: 'PUT',
+      body: JSON.stringify({ email: session.user.email, userData: form }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+  }
+
+  // console.log(form);
   const aboutMe = {
     id: 'about_me',
     tp: 'text',
     vl: 'Розкажіть коротко про себе. Це речення буде на головній сторінці біля фото',
     icon: '/images/profile.png',
   }
-  
-  if (!form) return <div>Loading...</div>
 
-  console.log(form)
+  if (!form) return <div>Loading...</div>
 
   return (
     <>
@@ -161,7 +171,7 @@ export default function PersonalPage({ user, data }) {
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
       <MasterNav path='/' status='active_tab' />
-      
+
       <div className='container'>
         <div className={s.profile_nav}>
           <button className={s.nav_button}>
@@ -316,13 +326,13 @@ export default function PersonalPage({ user, data }) {
         />
         <p>На скільки місяців наперед клієнти можуть бронювати?</p>
         <RadioButtons
-          data={{ label: [1,3,12], id: 'horizon' }}
+          data={{ label: [1, 3, 12], id: 'horizon' }}
           inputHandler={inputHandler}
           value={form.horizon}
         />
         <p>Скільки хвилин має бути інтервал між бронюваннями?</p>
         <RadioButtons
-          data={{ label: [10,20,30], id: 'interval' }}
+          data={{ label: [10, 20, 30], id: 'interval' }}
           inputHandler={inputHandler}
           value={form.interval}
         />
@@ -330,9 +340,9 @@ export default function PersonalPage({ user, data }) {
         <div className={s.worktime_wrapper}></div>
       </div>
 
-      <div style={{ height: '150px', width: '100%', display: 'flex' }}>
-        <button style={{ width: '100px', margin: 'auto' }} onClick={buttonHandler} className={s.submit_btn}>
-          Зберегти
+      <div className={s.button_container}>
+        <button onClick={buttonHandler} className={s.submit_btn}>
+          {saved > 0 ? 'Інформацію збережено' : 'Зберегти'}
         </button>
       </div>
     </>

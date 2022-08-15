@@ -4,7 +4,6 @@ import s from './input.module.css'
 import Image from 'next/image'
 
 export default function Input({ data, inputHandler, value, state }) {
-  console.log(state[data.id])
   return (
     <div>
       <form className={s.input_wrapper}>
