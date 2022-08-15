@@ -5,13 +5,15 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { Router } from 'next/router'
 import { useRouter } from 'next/router'
+import AliceCarousel from 'react-alice-carousel'
+import Gallery from './gallery'
 
 export default function ServiceItem({ data, user }) {
   const router = useRouter()
   const [store, setStore] = useStoreContext()
   const { data: session, status } = useSession()
   const [checked, setChecked] = useState()
-  console.log('data', data._id)
+  const handleDragStart = (e) => e.preventDefault()
 
   function cartHandler(e) {
     e.preventDefault()
@@ -36,25 +38,6 @@ export default function ServiceItem({ data, user }) {
     })
     setChecked(1)
   }
-
-  const [fullView, setFullView] = useState('0')
-
-  function fullViewHandler(e) {
-    switch (e.target.value) {
-      case '1':
-        {
-          setFullView('1')
-        }
-        break
-      case '0':
-        {
-          setFullView('0')
-        }
-        break
-    }
-  }
-
-  const view = fullView === '1' ? { width: '300px', height: '300px' } : {}
 
   return (
     <>
@@ -84,57 +67,31 @@ export default function ServiceItem({ data, user }) {
                 </>
               )}
             </div>
-            <div className={s.serv_desc}>{data.about.description}</div>
+            <div className={s.desc}>
+              <div className={s.serv_desc}>{data.about.description}</div>
+              <div className={s.buttons}>
+                {checked ? (
+                  <button
+                    className={s.gotocart}
+                    onClick={() => {
+                      router.push({
+                        pathname: '/orders',
+                      })
+                    }}
+                  >
+                    Вибрати час і забронювати
+                  </button>
+                ) : (
+                  <button className={s.addtocart} onClick={cartHandler}>
+                    Додати в кошик
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className={s.gallery_wrapper}>
-          <div className={s.images}>
-              <div className={s.images_wrapper}>
-                {data.pic.map((i) => (
-                  <div key={i} className={s.images_container} style={view}>
-                    <Image
-                      style={{ borderRadius: '10px' }}
-                      layout='responsive'
-                      objectFit='cover'
-                      width={80}
-                      height={80}
-                      key={i}
-                      src={i}
-                      alt='service'
-                    />
-                  </div>
-                ))}
-              </div>
-          </div>
-        </div>
-        <div className={s.buttons}>
-          {fullView === '0' ? (
-            <button className={s.gallery} onClick={fullViewHandler} value='1'>
-              Дивитись фото
-            </button>
-          ) : (
-            <button className={s.gallery} onClick={fullViewHandler} value='0'>
-              Згорнути фото
-            </button>
-          )}
-          {checked ? (
-            <button
-              className={s.gotocart}
-              onClick={() => {
-                router.push({
-                  pathname: '/orders',
-                })
-              }}
-            >
-              Вибрати час і забронювати
-            </button>
-          ) : (
-            <button className={s.addtocart} onClick={cartHandler}>
-              Додати в кошик
-            </button>
-          )}
-        </div>
+        <Gallery data={data.pic} />
       </div>
     </>
   )

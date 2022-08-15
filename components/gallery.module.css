@@ -1,0 +1,34 @@
+.gallery {
+  height: 35px;
+  background-color: #ddffe0;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 400;
+}
+
+.images {
+  overflow-x: overlay;
+  position: relative;
+}
+
+.images_wrapper {
+  transition: 0.3s;
+  display: inline-flex;
+  padding-left: 10px;
+}
+
+.images_container {
+  position: relative;
+  margin-right: 5px;
+  width: 40px;
+  height: 40px;
+  transition: 0.5s;
+}
+
+.button_invisible {
+  position: absolute;
+  background-color: #ddffe0;
+  opacity: 0;
+  z-index: 1000;
+}

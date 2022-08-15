@@ -1,12 +1,7 @@
 const { MongoClient, ObjectId } = require('mongodb')
 
-// Connection URL
 const url = process.env.MONGODB_URI
 const client = new MongoClient(url)
-
-// Database Connevtion
-// const dbName = 'beautybook'
-// const db = client.db('beautybook')
 
 export default async function UserData(req, res) {
     await client.connect()

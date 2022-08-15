@@ -21,7 +21,6 @@ export default function ServiceEdit() {
 
   const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
   const { data: services } = useSWR(`/api/services/${router.query.id}`, fetcher)
-  
 
   return user && services ? (
     <>
@@ -116,7 +115,11 @@ export default function ServiceEdit() {
             </div>
             <div className={s.daytime}>
               {console.log(user.userSettings)}
-              {Object.values(user.userSettings).map(i=>(<div key={i.id} className={s.working_days}>{i.checked ? i.labelShort : null}</div>))}
+              {Object.values(user.userSettings).map((i) => (
+                <div key={i.id} className={s.working_days}>
+                  {i.checked ? i.labelShort : null}
+                </div>
+              ))}
               <div className={s.working_time}>
                 {user.userData.work_begin}-{user.userData.work_end}
               </div>
