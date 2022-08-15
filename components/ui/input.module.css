@@ -1,0 +1,21 @@
+.input_container {
+    display: flex;
+    align-items: center;
+}
+
+.input_item {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0 5px 5px;
+    width: 100%;
+  }
+
+  .input_text {
+    border: none;
+    background-color: #ebebeb;
+    padding: 5px;
+    border-radius: 5px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 14px;
+}

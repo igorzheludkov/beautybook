@@ -12,11 +12,15 @@ import ScrollBox from '../../components/scrollbox'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import CheckboxButtons from '../../components/ui/checkboxbuttons'
+import RadioButtons from '../../components/ui/radiobuttons'
+import Input from '../../components/ui/input'
 
 let counter = 0
 export default function PersonalPage({ user, data }) {
+  const categories = data.categories
+
   counter++
-  console.log('COUNTER', counter)
+  // console.log('COUNTER', counter)
   const router = useRouter()
   const { data: session, status } = useSession()
   const [userPublic, setUserPublic] = useState([])
@@ -71,8 +75,6 @@ export default function PersonalPage({ user, data }) {
     const data = await response.json()
     console.log(data)
   }
-
-  const categories = data.categories
 
   useEffect(() => {
     if (session?.user.email) {
@@ -139,35 +141,17 @@ export default function PersonalPage({ user, data }) {
   function avatarHandler(result) {
     setForm(() => ({ ...form, photo: result.secure_url }))
   }
-  const profileNamePhone = [
-    { id: 'name', tp: 'text', vl: 'Ваше ім`я' },
-    { id: 'surname', tp: 'text', vl: 'Ваше прізвище' },
-    { id: 'phone', tp: 'text', vl: 'Ваш номер телефону' },
-  ]
-  const social = [
-    { id: 'social_1', tp: 'text', vl: 'Ваш нікнейм в instagram', icon: '/images/instagram.png' },
-    { id: 'social_2', tp: 'text', vl: 'Ваш нікнейм в telegram', icon: '/images/telegram.png' },
-  ]
+
   const aboutMe = {
     id: 'about_me',
     tp: 'text',
     vl: 'Розкажіть коротко про себе. Це речення буде на головній сторінці біля фото',
     icon: '/images/profile.png',
   }
-  const workplace = [
-    { id: 'city', tp: 'text', vl: 'Ваше місто', icon: '/images/adress.png' },
-    { id: 'street', tp: 'text', vl: 'Вулиця', icon: '/images/adress.png' },
-    { id: 'location', tp: 'text', vl: 'Будівля або салон для орієнтиру', icon: '/images/adress.png' },
-  ]
-  const personalInfo = [
-    { id: 'work_begin', tp: 'text', vl: 'О котрій годині починаєте працювати?' },
-    { id: 'work_end', tp: 'text', vl: 'Коли закінчуєте робочий день?' },
-    { id: 'interval', tp: 'text', vl: 'Скільки хвилин має бути перерва між прийомом клієнтів?' },
-    { id: 'horizon', tp: 'text', vl: 'На скільки місяців наперед можуть записуватись люди?' },
-    { id: 'work_days', tp: 'text', vl: 'Вкажіть робочі дні' },
-  ]
-
+  
   if (!form) return <div>Loading...</div>
+
+  console.log(form)
 
   return (
     <>
@@ -177,7 +161,7 @@ export default function PersonalPage({ user, data }) {
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
       <MasterNav path='/' status='active_tab' />
-      <CheckboxButtons data={settings} settingsHandler={settingsHandler} status={settings} />
+      
       <div className='container'>
         <div className={s.profile_nav}>
           <button className={s.nav_button}>
@@ -214,38 +198,50 @@ export default function PersonalPage({ user, data }) {
           </div>
 
           <div className={s.name_wrapper}>
-            {profileNamePhone?.map((i) => (
-              <div className={s.name_container} key={i.id}>
-                <span className={s.input_item}>
-                  <input
-                    className={s.input_text}
-                    id={i.id}
-                    value={form[i.id]}
-                    onChange={inputHandler}
-                    type={i.tp}
-                    placeholder={i.vl}
-                  />
-                </span>
-              </div>
-            ))}
+            <Input
+              data={{ id: 'name', tp: 'text', label: ['Ваше ім`я'] }}
+              inputHandler={inputHandler}
+              value={form.name}
+              state={form}
+            />
+            <Input
+              data={{ id: 'surname', tp: 'text', label: ['Ваше прізвище'] }}
+              inputHandler={inputHandler}
+              value={form.surname}
+              state={form}
+            />
+            <Input
+              data={{ id: 'phone', tp: 'text', label: ['Ваше номер телефону'] }}
+              inputHandler={inputHandler}
+              value={form.phone}
+              state={form}
+            />
           </div>
         </div>
+
         <div className={s.social_wrapper}>
-          {social?.map((i) => (
-            <div className={s.social_container} key={i.id}>
-              <Image src={i.icon} width={20} height={20} alt='social profile' />
-              <span className={s.input_item}>
-                <input
-                  className={s.input_text}
-                  id={i.id}
-                  value={form[i.id]}
-                  onChange={inputHandler}
-                  type={i.tp}
-                  placeholder={i.vl}
-                />
-              </span>
-            </div>
-          ))}
+          <Input
+            data={{
+              id: 'social_1',
+              tp: 'text',
+              label: ['Ваше нікнейм в instagram'],
+              icon: '/images/instagram.png',
+            }}
+            inputHandler={inputHandler}
+            value={form.social_1}
+            state={form}
+          />
+          <Input
+            data={{
+              id: 'social_2',
+              tp: 'text',
+              label: ['Ваше нікнейм в telegram'],
+              icon: '/images/telegram.png',
+            }}
+            inputHandler={inputHandler}
+            value={form.social_2}
+            state={form}
+          />
         </div>
         <div className={s.scrollbox_wrapper}>
           <p className={s.paragraph}>Виділіть ваші навики</p>
@@ -269,42 +265,69 @@ export default function PersonalPage({ user, data }) {
 
         <h4>Додайте робочу адресу</h4>
         <div className={s.workplace_wrapper}>
-          {workplace?.map((i) => (
-            <div className={s.social_container} key={i.id}>
-              <Image src={i.icon} width={20} height={20} alt='social profile' />
-              <span className={s.input_item}>
-                <input
-                  className={s.input_text}
-                  id={i.id}
-                  value={form[i.id]}
-                  onChange={inputHandler}
-                  type={i.tp}
-                  placeholder={i.vl}
-                />
-              </span>
-            </div>
-          ))}
+          <Input
+            data={{
+              id: 'city',
+              tp: 'text',
+              label: ['Ваше місто'],
+              icon: '/images/adress.png',
+            }}
+            inputHandler={inputHandler}
+            value={form.city}
+            state={form}
+          />
+          <Input
+            data={{
+              id: 'street',
+              tp: 'text',
+              label: ['Вулиця'],
+              icon: '/images/adress.png',
+            }}
+            inputHandler={inputHandler}
+            value={form.city}
+            state={form}
+          />
+          <Input
+            data={{
+              id: 'location',
+              tp: 'text',
+              label: ['Будівля або салон для орієнтиру'],
+              icon: '/images/adress.png',
+            }}
+            inputHandler={inputHandler}
+            value={form.city}
+            state={form}
+          />
         </div>
+        <h2 className={s.title_h2}>Налаштування</h2>
+        <CheckboxButtons data={settings} settingsHandler={settingsHandler} status={settings} />
         <h4>Додайте ваш графік роботи</h4>
+        <p>О котрій годині починаєте працювати?</p>
+        <RadioButtons
+          data={{ label: [8, 9, 10, 11, 12, 13], id: 'work_begin' }}
+          inputHandler={inputHandler}
+          value={form.work_begin}
+        />
+        <p>Коли закінчуєте робочий день?</p>
+        <RadioButtons
+          data={{ label: [16, 17, 18, 19, 20, 21, 22, 23, 24], id: 'work_end' }}
+          inputHandler={inputHandler}
+          value={form.work_end}
+        />
+        <p>На скільки місяців наперед клієнти можуть бронювати?</p>
+        <RadioButtons
+          data={{ label: [1,3,12], id: 'horizon' }}
+          inputHandler={inputHandler}
+          value={form.horizon}
+        />
+        <p>Скільки хвилин має бути інтервал між бронюваннями?</p>
+        <RadioButtons
+          data={{ label: [10,20,30], id: 'interval' }}
+          inputHandler={inputHandler}
+          value={form.interval}
+        />
 
-        <div className={s.worktime_wrapper}>
-          {personalInfo?.map((i) => (
-            <div className={s.worktime_container} key={i.id}>
-              <span className={s.input_item}>
-                <label className={s.label} htmlFor={i.id}>
-                  {i.vl}
-                </label>
-                <input
-                  className={s.input_text}
-                  id={i.id}
-                  value={form[i.id]}
-                  onChange={inputHandler}
-                  type={i.tp}
-                />
-              </span>
-            </div>
-          ))}
-        </div>
+        <div className={s.worktime_wrapper}></div>
       </div>
 
       <div style={{ height: '150px', width: '100%', display: 'flex' }}>

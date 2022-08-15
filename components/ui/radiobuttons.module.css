@@ -25,11 +25,10 @@
   } */
   .container_category {
     display: block;
-    max-width: 300px;
-    width: 240px;
+
 
     position: relative;
-    padding: 5px 5px;
+    padding: 5px 10px;
     cursor: pointer;
     font-size: 16px;
     -webkit-user-select: none;
@@ -37,7 +36,7 @@
     -ms-user-select: none;
     user-select: none;
     /* height: var(--category-height); */
-    margin: 5px;
+    /* margin: 5px; */
     color: rgb(148, 148, 148);
   }
   
