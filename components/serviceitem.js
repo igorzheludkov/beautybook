@@ -15,6 +15,8 @@ export default function ServiceItem({ data, user }) {
   const [checked, setChecked] = useState()
   const handleDragStart = (e) => e.preventDefault()
 
+  console.log(user.userData.isBookingActivated);
+
   function cartHandler(e) {
     e.preventDefault()
     setStore({
@@ -70,7 +72,7 @@ export default function ServiceItem({ data, user }) {
             <div className={s.desc}>
               <div className={s.serv_desc}>{data.about.description}</div>
               <div className={s.buttons}>
-                {checked ? (
+                {user.userData.isBookingActivated == '1' && ((checked) ? (
                   <button
                     className={s.gotocart}
                     onClick={() => {
@@ -85,7 +87,7 @@ export default function ServiceItem({ data, user }) {
                   <button className={s.addtocart} onClick={cartHandler}>
                     Додати в кошик
                   </button>
-                )}
+                ))}
               </div>
             </div>
           </div>
