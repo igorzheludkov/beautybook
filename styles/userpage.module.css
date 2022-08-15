@@ -23,7 +23,6 @@
 .avatar_container {
   float: left;
 
-  height: 150px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -55,7 +54,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 200px;
   position: relative;
 }
 
@@ -144,7 +142,7 @@
 .bookmark_add {
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: 12px;
   font-size: 12px;
   display: flex;
   align-items: center;
