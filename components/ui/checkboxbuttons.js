@@ -1,9 +1,8 @@
 import s from './checkboxbuttons.module.css'
 import { useState, useEffect, useCallback } from 'react'
 
-export default function CheckboxButtons({ data, settingsHandler, status }) {
+export default function CheckboxButtons({ data, handler, status }) {
   const categories = data
-
   return (
     <div className={s.wrapper}>
       <div className={s.wrapper_category}>
@@ -15,7 +14,7 @@ export default function CheckboxButtons({ data, settingsHandler, status }) {
               // value={status[i.id]}
               checked={data.checked}
               type='checkbox'
-              onChange={settingsHandler}
+              onChange={handler}
             />
             <span className={s.name_category}>{data.label}</span>
             <span className={s.checkmark_category}></span>

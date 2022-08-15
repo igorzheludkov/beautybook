@@ -14,7 +14,7 @@ export default async function GetData(req, res) {
     const db = client.db(dbName)
     const collection = db.collection('user_public')
     console.log('Searching for user...')
-    const findUser = await collection.find({'userSettings.isPageVisibleInCat.checked': true}).toArray()
+    const findUser = await collection.find({'userData.isPageVisibleInCat': '1'}).toArray()
     await client.close()
 // }
 res.status(200).json({user: findUser})

@@ -43,14 +43,12 @@
 
 .social {
     display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
 }
 
 .social_link {
-    display: block;
-    width: 30px;
-    height: 30px;
-    display: block;
+    margin-right: 10px;
+  
 }
 
 .header_block {

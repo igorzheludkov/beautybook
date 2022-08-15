@@ -21,7 +21,6 @@ export default function ServiceEdit() {
 
   const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
   const { data: services } = useSWR(`/api/services/${router.query.id}`, fetcher)
-
   return user && services ? (
     <>
       <div className='container'>
@@ -45,20 +44,37 @@ export default function ServiceEdit() {
             </div>
 
             <div className={s.social}>
-              <Link href={user.userData.social_1}>
-                <a target='_blank' className='social_link'>
-                  <Image width={30} height={30} src='/images/instagram.png' alt='instagram' />
-                </a>
+              <Link href={`https://www.instagram.com/${user.userData.social_1}`}>
+                <div className={s.social_link}>
+                  <a target='_blank' className='social_link'>
+                    <Image width={30} height={30} src='/images/instagram.png' alt='instagram' />
+                  </a>
+                </div>
               </Link>
-              <Link href={user.userData.social_2}>
-                <a target='_blank' className='social_link'>
-                  <Image width={30} height={30} src='/images/telegram.png' alt='instagram' />
-                </a>
-              </Link>
+              {user.userData.social_2 && (
+                <Link href={`https://t.me/${user.userData.social_2}`}>
+                  <div className={s.social_link}>
+                    <a target='_blank' className='social_link'>
+                      <Image width={30} height={30} src='/images/telegram.png' alt='telegram' />
+                    </a>
+                  </div>
+                </Link>
+              )}
+              {user.userData.social_3 && (
+                <Link href={`viber://chat?number=%2B${user.userData.viber_phone}`}>
+                  <div className={s.social_link}>
+                    <a className='social_link'>
+                      <Image width={30} height={30} src='/images/viber.png' alt='viber' />
+                    </a>
+                  </div>
+                </Link>
+              )}
               <Link href={`tel:${user.userData.phone}`}>
-                <a className='social_link'>
-                  <Image width={30} height={30} src='/images/phone.png' alt='instagram' />
-                </a>
+                <div className={s.social_link}>
+                  <a className='social_link'>
+                    <Image width={30} height={30} src='/images/phone.png' alt='phone' />
+                  </a>
+                </div>
               </Link>
             </div>
           </div>
