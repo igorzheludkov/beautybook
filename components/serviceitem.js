@@ -13,7 +13,6 @@ export default function ServiceItem({ data, user }) {
   const [checked, setChecked] = useState()
   console.log('data', data._id)
 
-  user && console.log(data)
   function cartHandler(e) {
     e.preventDefault()
     setStore({

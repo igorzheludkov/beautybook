@@ -2,7 +2,7 @@ import s from './checkboxbuttons.module.css'
 import { useState, useEffect, useCallback } from 'react'
 
 export default function CheckboxButtons({ data, handler, status }) {
-  const categories = data
+  console.log(data);
   return (
     <div className={s.wrapper}>
       <div className={s.wrapper_category}>

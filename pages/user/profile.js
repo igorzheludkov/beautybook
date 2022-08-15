@@ -55,6 +55,31 @@ export default function PersonalPage({ user, data }) {
     isBookingActivated: 0,
   })
 
+  async function buttonHandler(e) {
+    e.preventDefault(e)
+    const response = await fetch('/api/userdata', {
+      method: 'POST',
+      body: JSON.stringify({ email: session.user.email, userData: form }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    const settingsUpdate = await fetch(`/api/userdata`, {
+      method: 'PATCH',
+      body: JSON.stringify({ email: session.user.email, userSettings: settings }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const responseUpdate = await settingsUpdate.json()
+    setSaved(1)
+    console.log(responseUpdate)
+    setTimeout(() => {
+      setSaved(0)
+    }, 1000)
+  }
+
   useEffect(() => {
     if (uData) {
       setUserPublic(uData)
@@ -66,13 +91,13 @@ export default function PersonalPage({ user, data }) {
   }, [uData])
 
   const [settings, setSettings] = useState({
-    mon: { label: 'Понеділок', checked: false, id: 'mon' },
-    tue: { label: 'Вівторок', checked: false, id: 'tue' },
-    wen: { label: 'Середа', checked: false, id: 'wen' },
-    thu: { label: 'Четвер', checked: false, id: 'thu' },
-    fri: { label: 'П`ятниця', checked: false, id: 'fri' },
-    sat: { label: 'Субота', checked: false, id: 'sat' },
-    sun: { label: 'Неділя', checked: false, id: 'sun' },
+    mon: {labelShort: 'Пн', label: 'Понеділок', checked: false, id: 'mon' },
+    tue: {labelShort: 'Вт', label: 'Вівторок', checked: false, id: 'tue' },
+    wen: {labelShort: 'Ср', label: 'Середа', checked: false, id: 'wen' },
+    thu: {labelShort: 'Чт', label: 'Четвер', checked: false, id: 'thu' },
+    fri: {labelShort: 'Пт', label: 'П`ятниця', checked: false, id: 'fri' },
+    sat: {labelShort: 'Сб', label: 'Субота', checked: false, id: 'sat' },
+    sun: {labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' },
   })
   console.log('settings', settings)
 
@@ -101,30 +126,7 @@ export default function PersonalPage({ user, data }) {
     }
   }
 
-  async function buttonHandler(e) {
-    e.preventDefault(e)
-    const response = await fetch('/api/userdata', {
-      method: 'POST',
-      body: JSON.stringify({ email: session.user.email, userData: form }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const data = await response.json()
-    const settingsUpdate = await fetch(`/api/userdata`, {
-      method: 'PATCH',
-      body: JSON.stringify({ email: session.user.email, userSettings: settings }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const responseUpdate = await settingsUpdate.json()
-    setSaved(1)
-    console.log(responseUpdate)
-    setTimeout(() => {
-      setSaved(0)
-    }, 1000)
-  }
+  
 
   function avatarHandler(result) {
     setForm(() => ({ ...form, photo: result.secure_url }))
@@ -312,43 +314,43 @@ export default function PersonalPage({ user, data }) {
         </div>
         <h2 className={s.title_h2}>Налаштування</h2>
 
-        <p>Відображати сторінку в каталозі?</p>
+        <p className={s.paragraph}>Відображати сторінку в каталозі?</p>
         <ToggleButtons
           data={{ label: [{name: 'Так', value: 1}, {name: 'Ні', value: 0}], id: 'isPageVisibleInCat' }}
           inputHandler={inputHandler}
           value={form.isPageVisibleInCat}
         />
-        <p>Функція бронювання активна?</p>
+        <p className={s.paragraph}>Функція бронювання активна?</p>
         <ToggleButtons
           data={{ label: [{name: 'Так', value: 1}, {name: 'Ні', value: 0}], id: 'isBookingActivated' }}
           inputHandler={inputHandler}
           value={form.isBookingActivated}
         />
 
-        <h4>Додайте ваш графік роботи</h4>
-        <p>Виділіть робочі дні</p>
+       
+        <p className={s.paragraph}>Виділіть робочі дні</p>
 
         <CheckboxButtons data={settings} handler={settingsHandler} status={settings} />
 
-        <p>О котрій годині починаєте працювати?</p>
+        <p className={s.paragraph}>О котрій годині починаєте працювати?</p>
         <RadioButtons
           data={{ label: [8, 9, 10, 11, 12, 13], id: 'work_begin' }}
           inputHandler={inputHandler}
           value={form.work_begin}
         />
-        <p>Коли закінчуєте робочий день?</p>
+        <p className={s.paragraph}>Коли закінчуєте робочий день?</p>
         <RadioButtons
           data={{ label: [16, 17, 18, 19, 20, 21, 22, 23, 24], id: 'work_end' }}
           inputHandler={inputHandler}
           value={form.work_end}
         />
-        <p>На скільки місяців наперед клієнти можуть бронювати?</p>
+        <p className={s.paragraph}>На скільки місяців наперед клієнти можуть бронювати?</p>
         <RadioButtons
           data={{ label: [1, 3, 12], id: 'horizon' }}
           inputHandler={inputHandler}
           value={form.horizon}
         />
-        <p>Скільки хвилин має бути інтервал між бронюваннями?</p>
+        <p className={s.paragraph}>Скільки хвилин має бути інтервал між бронюваннями?</p>
         <RadioButtons
           data={{ label: [10, 20, 30], id: 'interval' }}
           inputHandler={inputHandler}

@@ -21,12 +21,15 @@ export default function ServiceEdit() {
 
   const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
   const { data: services } = useSWR(`/api/services/${router.query.id}`, fetcher)
+  
+
   return user && services ? (
     <>
       <div className='container'>
         <div className={s.header}>
           <div className={s.avatar_container}>
             <div className={s.avatar_img_inner}>
+              {console.log(user.userSettings)}
               <Image
                 className={s.avatar_img}
                 placeholder='blur'
@@ -95,11 +98,11 @@ export default function ServiceEdit() {
         </div>
 
         <div className={s.adress_info}>
-          <div className={s.info_a}>
-            <div className={s.info_a_logo}>
+          <div className={s.adress}>
+            <div className={s.adress_logo}>
               <Image width={20} height={20} src='/images/adress.png' alt='adress' />
             </div>
-            <div className={s.info_a_text}>
+            <div className={s.adress_text}>
               {user.userData.city}
               <br></br>
               {user.userData.street}
@@ -107,12 +110,13 @@ export default function ServiceEdit() {
               {user.userData.location}
             </div>
           </div>
-          <div className={s.info_h}>
-            <div className={s.info_h_logo}>
+          <div className={s.work_time}>
+            <div className={s.work_time_logo}>
               <Image width={20} height={20} src='/images/orders.png' alt='instagram' />
             </div>
             <div className={s.daytime}>
-              <div className={s.working_days}>{user.userData.work_days}</div>
+              {console.log(user.userSettings)}
+              {Object.values(user.userSettings).map(i=>(<div key={i.id} className={s.working_days}>{i.checked ? i.labelShort : null}</div>))}
               <div className={s.working_time}>
                 {user.userData.work_begin}-{user.userData.work_end}
               </div>

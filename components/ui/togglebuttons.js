@@ -3,15 +3,12 @@ import { useState, useEffect, useCallback } from 'react'
 
 export default function ToggleButtons({ data, inputHandler, value }) {
 
-  console.log('togglebuttons',data);
-  console.log('togglebuttons',value);
 
   return (
   <div className={s.wrapper}>
-  <form className={s.wrapper_category}>
+  <form className={s.wrapper_inner}>
       {data.label.map((i) => (
-        <label key={i.name} className={s.container_category}>
-            {console.log(i)}
+        <label key={i.name} className={s.container}>
               <input
                   data-type-index={data.id}
                   data-type-field='work'
@@ -22,8 +19,8 @@ export default function ToggleButtons({ data, inputHandler, value }) {
                   onChange={inputHandler}
                   type='radio'
               />
-              <span className={s.name_category}>{i.name}</span>
-              <span className={s.checkmark_category}></span>
+              <span className={s.name}>{i.name}</span>
+              <span className={s.checkmark}></span>
           </label>
       ))}
   </form>
