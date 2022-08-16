@@ -8,8 +8,6 @@ export default function GallerySlide({ data }) {
   const slideWidth = 300
   const maxPosition = 0
   const minPosition = -((data.length - 1) * slideWidth)
-  console.log(minPosition)
-  console.log(sliderPosition)
   function fullViewHandler(e) {
     switch (e.target.value) {
       case '1':

@@ -84,12 +84,14 @@ export default function ServicesEditPage({ user, category }) {
   }
 
   function photoDeleteHandler(e) {
-    setServ({ ...serv, pic: serv.pic.filter((_, index) => index != e.target.id) })
+    console.log(e);
+    setServ({ ...serv, pic: serv.pic.filter((_, index) => index !== +e.target.id) })
   }
+
 
   async function pushData(e) {
     e.preventDefault(e)
-    const response = await fetch('/api/services_api', {
+    const response = await fetch(`/api/services_api?q=${router.query.serviceid}`, {
       method: 'PATCH',
       body: JSON.stringify(serv),
       headers: {
@@ -229,8 +231,9 @@ export default function ServicesEditPage({ user, category }) {
                   src={i ? i : '/images/userplaceholder.png'}
                   alt='serv_pic'
                 />
-                <button className={s.button_rempicture} onClick={photoDeleteHandler} id={index}>
-                  <Image src='/images/remove.png' width={20} height={20} alt='remove' />
+                <button className={s.button_rempicture} onClick={photoDeleteHandler}>
+                  {/* x */}
+                  <div><Image  id={index} src='/images/remove.png' width={20} height={20} alt='remove' /></div>
                 </button>
               </div>
             ))}

@@ -13,7 +13,7 @@ export default async function UserData(req, res) {
     const collection = db.collection('user_services')
     const data = req.body
     const query = req.query.q
-    const filter = { _id: new ObjectId(data.id) }
+    const filter = { _id: new ObjectId(query) }
     const options = { upsert: true }
     const replacement = {
         ...data,
@@ -22,7 +22,7 @@ export default async function UserData(req, res) {
         query: { services },
         method,
     } = req
-    console.log('query', data)
+    console.log('query', query)
     switch (method) {
         case 'GET':
             const finded = await collection.findOne({ _id: new ObjectId(query) })
