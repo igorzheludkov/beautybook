@@ -19,7 +19,6 @@ import useSWR, { useSWRConfig } from 'swr'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-
 export default function PersonalPage({ user, data }) {
   const { mutate } = useSWRConfig()
   const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
@@ -29,12 +28,15 @@ export default function PersonalPage({ user, data }) {
   const router = useRouter()
   const { data: session, status } = useSession()
   const [saved, setSaved] = useState(0)
+  const [unsaved, setUnsaved] = useState(0)
+  console.log('saved', saved)
+  console.log('unSaved', unsaved)
+
   const [form, setForm] = useState({
     userId: '',
     photo: '',
     about_me: '',
     city: '',
-    email: '',
     location: '',
     name: '',
     phone: '',
@@ -44,8 +46,8 @@ export default function PersonalPage({ user, data }) {
     categories: [],
     street: '',
     surname: '',
-    work_begin: '',
-    work_end: '',
+    work_begin: '9',
+    work_end: '18',
     interval: 10,
     horizon: 3,
     url: '',
@@ -53,43 +55,6 @@ export default function PersonalPage({ user, data }) {
     isPageVisibleInCat: 0,
     isBookingActivated: 0,
   })
-
-
-  async function buttonHandler(e) {
-    newUser()
-    e.preventDefault(e)
-    // const response = await fetch('/api/userdata', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ email: session.user.email, userData: form }),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    // const data = await response.json()
-    // const settingsUpdate = await fetch(`/api/userdata`, {
-    //   method: 'PATCH',
-    //   body: JSON.stringify({ email: session.user.email, userSettings: settings }),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    // const responseUpdate = await settingsUpdate.json()
-    // setSaved(1)
-    // console.log(responseUpdate)
-    // setTimeout(() => {
-    //   setSaved(0)
-    // }, 1000)
-  }
-
-  useEffect(() => {
-    if (uData) {
-      setForm({ ...uData.userData, userId: uData._id })
-      setSettings(uData.userSettings)
-    }
-    // else if (uData === null) {
-    //   newUser()
-    // }
-  }, [uData, saved])
 
   const [settings, setSettings] = useState({
     mon: { labelShort: 'Пн', label: 'Понеділок', checked: true, id: 'mon' },
@@ -101,18 +66,35 @@ export default function PersonalPage({ user, data }) {
     sun: { labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' },
   })
 
+  useEffect(() => {
+    if (uData) {
+      setForm({ ...uData.userData, userId: uData._id })
+      setSettings(uData.userSettings)
+    }
+  }, [uData, saved])
+
+  async function buttonHandler(e) {
+    e.preventDefault(e)
+    saveData()
+    setSaved(1)
+    setSaved(0)
+  }
+
   async function settingsHandler(e) {
     const update = {
       ...settings,
       [e.target.id]: { ...settings[e.target.id], checked: e.target.checked },
     }
     setSettings(update)
+    setUnsaved(1)
+    setSaved(0)
   }
-
 
   function inputHandler(e) {
     let key = e.target.id
     setForm({ ...form, [key]: e.target.value })
+    setUnsaved(1)
+    setSaved(0)
   }
 
   function checkboxToggle(e) {
@@ -123,14 +105,17 @@ export default function PersonalPage({ user, data }) {
     } else {
       setForm({ ...form, categories: [e.target.value] })
     }
+    setUnsaved(1)
+    setSaved(0)
   }
 
   function avatarHandler(result) {
     setForm(() => ({ ...form, photo: result.secure_url }))
+    setUnsaved(1)
+    setSaved(0)
   }
 
-
-  async function newUser() {
+  async function saveData() {
     const response = await fetch('/api/userdata', {
       method: 'POST',
       body: JSON.stringify({ email: session.user.email, userData: form, userSettings: settings }),
@@ -143,7 +128,7 @@ export default function PersonalPage({ user, data }) {
     mutate(`/api/userdata?q=${user.email}`)
     setSaved(1)
     setTimeout(() => {
-      setSaved(0)
+      setUnsaved(0)
     }, 1000)
   }
 
@@ -315,6 +300,8 @@ export default function PersonalPage({ user, data }) {
             state={form}
           />
         </div>
+      </div>
+      <div className={s.settings}>
         <h2 className={s.title_h2}>Налаштування</h2>
 
         <p className={s.paragraph}>Відображати сторінку в каталозі?</p>
@@ -344,7 +331,7 @@ export default function PersonalPage({ user, data }) {
 
         <p className={s.paragraph}>Виділіть робочі дні</p>
 
-        <CheckboxButtons data={settings} handler={settingsHandler} status={settings} default={0}/>
+        <CheckboxButtons data={settings} handler={settingsHandler} status={settings} default={0} />
 
         <p className={s.paragraph}>О котрій годині починаєте працювати?</p>
         <RadioButtons
@@ -375,9 +362,13 @@ export default function PersonalPage({ user, data }) {
       </div>
 
       <div className={s.button_container}>
-        <button onClick={buttonHandler} className={s.submit_btn}>
-          {saved > 0 ? 'Інформацію збережено' : 'Зберегти'}
-        </button>
+        {unsaved ? (
+          <button onClick={buttonHandler} className={s.submit_btn}>
+            {saved > 0 ? 'Інформацію збережено' : 'Зберегти'}
+          </button>
+        ) : (
+          ''
+        )}
       </div>
     </>
   )

@@ -32,14 +32,14 @@ export default function Navbar() {
         </Link>
       </div>
       <div className={s.navButtons}>
-        <div className={s.orders_container}>
-          {/* <span className={s.counter}>{store.orders.length}</span> */}
+        {/* <div className={s.orders_container}>
+          <span className={s.counter}>{store.orders.length}</span>
           <Link href='/bookmarks'>
             <a>
               <Image className={s.orders} src='/images/bookmarks.png' width={25} height={25} alt='logo' />
             </a>
           </Link>
-        </div>
+        </div> */}
         <div className={s.orders_container}>
           {/* <span className={s.counter}>{store.orders.length}</span> */}
           <Link href='/history'>

@@ -2,6 +2,13 @@
   width: 100%;
 }
 
+.title_h2 {
+  padding: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  text-decoration: 3px underline var(--main-yellow-color);
+}
+
 .masterNav {
   margin-bottom: 20px;
 }
@@ -25,7 +32,7 @@
   background-color: #ebebeb;
   padding: 5px;
   border-radius: 5px;
-  
+
   height: 70px;
 }
 
@@ -42,15 +49,19 @@
   display: block;
   position: relative;
   border-radius: 50%;
-  transition: 1s;
+  transition: 0.5s;
 }
 
 .avatar_img {
   border-radius: 50%;
-  transition: 1s;
+  transition: 0.5s;
 }
 
 .button_container {
+  position: fixed;
+  z-index: 1000;
+  right:10px;
+  bottom: 0;
   height: 130px;
   display: flex;
   align-items: center;
@@ -58,7 +69,6 @@
 }
 
 .nav_button {
-
   height: 30px;
   background-color: #a6eaff;
   border-radius: 5px;
@@ -105,4 +115,10 @@
 
 .label {
   color: var(--faded-text-color);
+}
+
+
+.settings {
+  /* overflow: overlay; */
+  /* padding-left: 10px; */
 }

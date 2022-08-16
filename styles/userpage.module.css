@@ -37,7 +37,7 @@
 .avatar_img {
   border-radius: 50%;
   margin-right: 10px;
-  transition: 1s;
+  transition: 0.5s;
 }
 
 .social {

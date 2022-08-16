@@ -1,0 +1,22 @@
+.contacts {
+  /* color: grey; */
+  font-size: 14px;
+  opacity: 0.3;
+}
+.social_link {
+  display: flex;
+  justify-content: center;
+}
+
+.link_text {
+  padding-left: 10px;
+}
+
+.link_title {
+  padding: 0 10px;
+}
+
+
+.wrapper{
+    margin-top: auto;
+}

@@ -20,7 +20,7 @@ export default function ServicesEditPage({ user, category }) {
   const router = useRouter()
   const { data: uData } = useSWR(user ? `/api/user/${user.email}` : null, fetcher)
   const [newService, setNewService] = useState(false)
-  uData && console.log(newService);
+  console.log(category);
   
   const servicesModel = {
     // ownerId:
@@ -36,7 +36,6 @@ export default function ServicesEditPage({ user, category }) {
     pic: [],
   }
   const [serv, setServ] = useState(servicesModel)
-  console.log(serv)
 
   useEffect(() => {
     if (router.query.serviceid !== 'serviceadd') {
@@ -73,7 +72,6 @@ export default function ServicesEditPage({ user, category }) {
     
   }, [uData])
 
-uData && console.log(uData.userData.userId);
 
   const categories = category.categories
   const poslugi = category.poslugi
@@ -117,7 +115,6 @@ uData && console.log(uData.userData.userId);
     console.log(data)
   }
 
-  console.log(serv);
   async function removeData(e) {
     e.preventDefault(e)
     const response = await fetch(`/api/services_api/?q=${router.query.serviceid}`, {
@@ -254,7 +251,7 @@ uData && console.log(uData.userData.userId);
             ))}
           </div>
           <div className={s.images_add}>
-            <Cloudinary uploadHandler={photoHandler} multiple={true} picArrayLength={serv.pic.length} />
+            {serv.pic.length < 8 && <Cloudinary uploadHandler={photoHandler} multiple={true} />}
           </div>
         </div>
         <h3>Виберіть розділ</h3>

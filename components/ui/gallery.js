@@ -32,7 +32,7 @@ export default function GallerySlide({ data }) {
       : ''
   }
 
-  const view = fullView === '1' ? { width: '300px', height: '300px' } : { width: '40px', height: '40px' }
+  const view = fullView === '1' ? { width: '300px', height: '300px' } : { width: '90px', height: '90px' }
   return (
     <div className={s.gallery_wrapper}>
       <div className={s.images}>

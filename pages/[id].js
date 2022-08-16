@@ -17,10 +17,9 @@ export default function ServiceEdit() {
   // const { data: session, status } = useSession()
   const { data: user } = useSWR(router.query.id ? `/api/user/${router.query.id}` : null, fetcher)
   const { data: services } = useSWR(user ? `/api/services/${router.query.id}` : null, fetcher)
-  services && console.log(services);
+  services && console.log(services)
 
   // const [store, setStore] = useStoreContext()
-
 
   return user && services ? (
     <>
@@ -39,19 +38,21 @@ export default function ServiceEdit() {
                 src={user.userData.photo ? user.userData.photo : '/images/userplaceholder.png'}
                 alt='avatar'
               />
-              <div className={s.bookmark_add}>
+              {/* <div className={s.bookmark_add}>
                 <Image width={20} height={20} src='/images/bookmarks.png' alt='instagram' />
-              </div>
+              </div> */}
             </div>
 
             <div className={s.social}>
-              <Link href={`https://www.instagram.com/${user.userData.social_1}`}>
-                <div className={s.social_link}>
-                  <a target='_blank' className='social_link'>
-                    <Image width={30} height={30} src='/images/instagram.png' alt='instagram' />
-                  </a>
-                </div>
-              </Link>
+              {user.userData.social_1 && (
+                <Link href={`https://www.instagram.com/${user.userData.social_1}`}>
+                  <div className={s.social_link}>
+                    <a target='_blank' className='social_link'>
+                      <Image width={30} height={30} src='/images/instagram.png' alt='instagram' />
+                    </a>
+                  </div>
+                </Link>
+              )}
               {user.userData.social_2 && (
                 <Link href={`https://t.me/${user.userData.social_2}`}>
                   <div className={s.social_link}>
@@ -113,11 +114,12 @@ export default function ServiceEdit() {
               <Image width={20} height={20} src='/images/orders.png' alt='instagram' />
             </div>
             <div className={s.daytime}>
-              {user.userSettings && Object.values(user.userSettings).map((i) => (
-                <div key={i.id} className={s.working_days}>
-                  {i.checked ? i.labelShort : null}
-                </div>
-              ))}
+              {user.userSettings &&
+                Object.values(user.userSettings).map((i) => (
+                  <div key={i.id} className={s.working_days}>
+                    {i.checked ? i.labelShort : null}
+                  </div>
+                ))}
               <div className={s.working_time}>
                 {user.userData.work_begin}-{user.userData.work_end}
               </div>
