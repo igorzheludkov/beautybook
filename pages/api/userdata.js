@@ -7,11 +7,11 @@ const dbName = 'beautybook'
 
 export default async function UserData(req, res) {
   const db = client.db(dbName)
-  await client.connect()
-  const collection = db.collection('user_public')
   const userEmail = req.query.q
   const newUser = req.body
   const method = req.method
+  const collection = db.collection('user_public')
+  await client.connect()
 
   switch (method) {
     case 'GET':
@@ -28,6 +28,7 @@ export default async function UserData(req, res) {
       const updateDoc = {
         $set: {
           userData: req.body.userData,
+          userSettings: req.body.userSettings
         },
       }
       const result = await collection.updateOne(filter, updateDoc, options)

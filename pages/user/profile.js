@@ -15,12 +15,13 @@ import CheckboxButtons from '../../components/ui/checkboxbuttons'
 import RadioButtons from '../../components/ui/radiobuttons'
 import ToggleButtons from '../../components/ui/togglebuttons'
 import Input from '../../components/ui/input'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-let counter = 0
+
 export default function PersonalPage({ user, data }) {
+  const { mutate } = useSWRConfig()
   const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
 
   const categories = data.categories
@@ -28,7 +29,6 @@ export default function PersonalPage({ user, data }) {
   const router = useRouter()
   const { data: session, status } = useSession()
   const [saved, setSaved] = useState(0)
-  const [userPublic, setUserPublic] = useState([])
   const [form, setForm] = useState({
     userId: '',
     photo: '',
@@ -54,53 +54,52 @@ export default function PersonalPage({ user, data }) {
     isBookingActivated: 0,
   })
 
-  console.log(form)
 
   async function buttonHandler(e) {
+    newUser()
     e.preventDefault(e)
-    const response = await fetch('/api/userdata', {
-      method: 'POST',
-      body: JSON.stringify({ email: session.user.email, userData: form }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const data = await response.json()
-    const settingsUpdate = await fetch(`/api/userdata`, {
-      method: 'PATCH',
-      body: JSON.stringify({ email: session.user.email, userSettings: settings }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const responseUpdate = await settingsUpdate.json()
-    setSaved(1)
-    console.log(responseUpdate)
-    setTimeout(() => {
-      setSaved(0)
-    }, 1000)
+    // const response = await fetch('/api/userdata', {
+    //   method: 'POST',
+    //   body: JSON.stringify({ email: session.user.email, userData: form }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    // const data = await response.json()
+    // const settingsUpdate = await fetch(`/api/userdata`, {
+    //   method: 'PATCH',
+    //   body: JSON.stringify({ email: session.user.email, userSettings: settings }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    // const responseUpdate = await settingsUpdate.json()
+    // setSaved(1)
+    // console.log(responseUpdate)
+    // setTimeout(() => {
+    //   setSaved(0)
+    // }, 1000)
   }
 
   useEffect(() => {
     if (uData) {
-      setUserPublic(uData)
       setForm({ ...uData.userData, userId: uData._id })
       setSettings(uData.userSettings)
-    } else if (uData === null) {
-      newUser()
     }
-  }, [uData])
+    // else if (uData === null) {
+    //   newUser()
+    // }
+  }, [uData, saved])
 
   const [settings, setSettings] = useState({
-    mon: { labelShort: 'Пн', label: 'Понеділок', checked: false, id: 'mon' },
-    tue: { labelShort: 'Вт', label: 'Вівторок', checked: false, id: 'tue' },
-    wen: { labelShort: 'Ср', label: 'Середа', checked: false, id: 'wen' },
-    thu: { labelShort: 'Чт', label: 'Четвер', checked: false, id: 'thu' },
-    fri: { labelShort: 'Пт', label: 'П`ятниця', checked: false, id: 'fri' },
+    mon: { labelShort: 'Пн', label: 'Понеділок', checked: true, id: 'mon' },
+    tue: { labelShort: 'Вт', label: 'Вівторок', checked: true, id: 'tue' },
+    wen: { labelShort: 'Ср', label: 'Середа', checked: true, id: 'wen' },
+    thu: { labelShort: 'Чт', label: 'Четвер', checked: true, id: 'thu' },
+    fri: { labelShort: 'Пт', label: 'П`ятниця', checked: true, id: 'fri' },
     sat: { labelShort: 'Сб', label: 'Субота', checked: false, id: 'sat' },
     sun: { labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' },
   })
-  console.log('settings', settings)
 
   async function settingsHandler(e) {
     const update = {
@@ -110,7 +109,6 @@ export default function PersonalPage({ user, data }) {
     setSettings(update)
   }
 
-  console.log('form', form)
 
   function inputHandler(e) {
     let key = e.target.id
@@ -131,20 +129,24 @@ export default function PersonalPage({ user, data }) {
     setForm(() => ({ ...form, photo: result.secure_url }))
   }
 
-  // console.log('settings', settings)
 
   async function newUser() {
     const response = await fetch('/api/userdata', {
-      method: 'PUT',
+      method: 'POST',
       body: JSON.stringify({ email: session.user.email, userData: form, userSettings: settings }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
     const data = await response.json()
+    console.log(data)
+    mutate(`/api/userdata?q=${user.email}`)
+    setSaved(1)
+    setTimeout(() => {
+      setSaved(0)
+    }, 1000)
   }
 
-  // console.log(form);
   const aboutMe = {
     id: 'about_me',
     tp: 'text',
@@ -165,7 +167,7 @@ export default function PersonalPage({ user, data }) {
 
       <div className='container'>
         <div className={s.profile_nav}>
-          {form.userId.length > 0 ?  (
+          {form.userId.length > 0 ? (
             <button className={s.nav_button}>
               <Link href={`/${form.userId}`}>
                 <a>Відкрити вашу сторінку</a>
@@ -342,7 +344,7 @@ export default function PersonalPage({ user, data }) {
 
         <p className={s.paragraph}>Виділіть робочі дні</p>
 
-        <CheckboxButtons data={settings} handler={settingsHandler} status={settings} />
+        <CheckboxButtons data={settings} handler={settingsHandler} status={settings} default={0}/>
 
         <p className={s.paragraph}>О котрій годині починаєте працювати?</p>
         <RadioButtons

@@ -12,7 +12,7 @@ export default async function UserData(req, res) {
     method,
 } = req
 
-const filter = services.includes('@') ? { owner: services } : { userId: services}
+const filter = services.includes('@') ? { owner: services } : { owner_id: services}
 
 
   switch (method) {

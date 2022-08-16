@@ -20,23 +20,7 @@ export default function CheckboxButtons({ data, handler, status }) {
             <span className={s.checkmark_category}></span>
           </label>
         ))}
-        {/* {categories.map((i) => (
-                     
-
-                    <labelkey={data.label} className={s.container_category}>
-                    
-                        <input
-                            name={i.label}
-                            id={i.id}
-                            // value={status[i.id]}
-                            // checked={status[i.id]}
-                            type='checkbox'
-                            onChange={settingsHandler}
-                        />
-                        <span className={s.name_category}>{i.label}</span>
-                        <span className={s.checkmark_category}></span>
-                    </label>
-                ))} */}
+       
       </div>
     </div>
   )
