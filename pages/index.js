@@ -12,7 +12,8 @@ export default function Home() {
     const { data: allusers } = useSWR(`/api/getall`, fetcher)
 
     if (!allusers) return <div>Loading</div>
-
+    
+    allusers && console.log(allusers);
 
     return (
         <div className={styles.container}>
@@ -27,7 +28,7 @@ export default function Home() {
               
                 // <h1 key={i._id} className={styles.title}>
                 //     Page of{' '}
-                //     <Link href={`/catalog/${i.email}`}>
+                //     <Link href={`/catalog/${i.userId}`}>
                 //         <a>{i.email}</a>
                 //     </Link>
                 // </h1>

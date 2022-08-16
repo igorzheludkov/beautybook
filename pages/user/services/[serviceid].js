@@ -13,9 +13,13 @@ import ScrollBox from '../../../components/scrollbox'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-export default function ServicesEditPage({ user, category }) {
-  const router = useRouter()
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
+export default function ServicesEditPage({ user, category }) {
+
+  const router = useRouter()
+  const { data: uData } = useSWR(user ? `/api/user/${user.email}` : null, fetcher)
+  
   const servicesModel = {
     // ownerId:
     owner: user.email,
@@ -94,7 +98,7 @@ export default function ServicesEditPage({ user, category }) {
     e.preventDefault(e)
     const response = await fetch(`/api/services_api?q=${router.query.serviceid}`, {
       method: 'PATCH',
-      body: JSON.stringify(serv),
+      body: JSON.stringify({...serv, userId: uData.userData.userId}),
       headers: {
         'Content-Type': 'application/json',
       },

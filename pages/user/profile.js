@@ -331,7 +331,7 @@ export default function PersonalPage({ user, data }) {
        
         <p className={s.paragraph}>Виділіть робочі дні</p>
 
-        <CheckboxButtons data={settings} handler={settingsHandler} status={settings} />
+        {uData?.userSettings && <CheckboxButtons data={settings} handler={settingsHandler} status={settings} />}
 
         <p className={s.paragraph}>О котрій годині починаєте працювати?</p>
         <RadioButtons

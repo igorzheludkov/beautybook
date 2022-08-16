@@ -27,7 +27,7 @@ export default function PersonalInfo({ props }) {
   return (
     <div style={global}>
       <div style={nameStyle}>
-        <Link href={`/catalog/${props[5]}`}>
+        <Link href={`/${props[5]}`}>
           <a>
             {props[0]} {props[1]}
           </a>

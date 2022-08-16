@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router'
 // import { useEffect, useState } from 'react'
-import s from '../../styles/userpage.module.css'
+import s from '../styles/userpage.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
 // import { server } from '../../config/index'
 // import { getSession } from 'next-auth/react'
 // import { useStoreContext } from '../../context/store'
 import useSWR from 'swr'
-import ServiceItem from '../../components/serviceitem'
+import ServiceItem from '../components/serviceitem'
 // import { useSession } from 'next-auth/react'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
@@ -15,12 +15,11 @@ const fetcher = (url) => fetch(url).then((res) => res.json())
 export default function ServiceEdit() {
   const router = useRouter()
   // const { data: session, status } = useSession()
-  const { data: user } = useSWR(router ? `/api/user/${router.query.id}` : null, fetcher)
-  const { data: services } = useSWR(router ? `/api/services/${router.query.id}` : null, fetcher)
+  const { data: user } = useSWR(router.query.id ? `/api/user/${router.query.id}` : null, fetcher)
+  const { data: services } = useSWR(user ? `/api/services/${router.query.id}` : null, fetcher)
+  services && console.log(services);
 
   // const [store, setStore] = useStoreContext()
-
-
 
 
   return user && services ? (
@@ -63,7 +62,7 @@ export default function ServiceEdit() {
                 </Link>
               )}
               {user.userData.social_3 && (
-                <Link href={`viber://chat?number=%2B${user.userData.viber_phone}`}>
+                <Link href={`viber://chat?number=%2B${user.userData.social_3}`}>
                   <div className={s.social_link}>
                     <a className='social_link'>
                       <Image width={30} height={30} src='/images/viber.png' alt='viber' />
@@ -114,7 +113,7 @@ export default function ServiceEdit() {
               <Image width={20} height={20} src='/images/orders.png' alt='instagram' />
             </div>
             <div className={s.daytime}>
-              {Object.values(user.userSettings).map((i) => (
+              {user.userSettings && Object.values(user.userSettings).map((i) => (
                 <div key={i.id} className={s.working_days}>
                   {i.checked ? i.labelShort : null}
                 </div>
