@@ -27,9 +27,9 @@
 .photo_wrapper {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 30px;
 }
 .photo_container {
+  position: relative;
   width: 75px;
   height: 80px;
   margin: 5px;
@@ -57,11 +57,33 @@
   margin-bottom: 50px;
 }
 
+.button_rempicture{
+   position: absolute;
+   background-color: #ffffffa4;
+   border: none;
+   border-radius: 5px;
+   bottom: 5px;
+   right: 0;
+   padding: 2px 5px;
+}
+
 .subtitle{
+  padding-top: 20px;
   font-size: 13px;
   font-weight: 600;
 }
 
 .spec{
   margin-bottom: 20px;
+}
+
+.buttons_block{
+  display: flex;
+  
+}
+
+
+.images_add {
+  display: block;
+  height: 30px;
 }

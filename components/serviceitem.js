@@ -6,14 +6,13 @@ import { useState } from 'react'
 import { Router } from 'next/router'
 import { useRouter } from 'next/router'
 import AliceCarousel from 'react-alice-carousel'
-import Gallery from './gallery'
+import Gallery from './ui/gallery'
 
 export default function ServiceItem({ data, user }) {
   const router = useRouter()
   const [store, setStore] = useStoreContext()
   const { data: session, status } = useSession()
   const [checked, setChecked] = useState()
-  const handleDragStart = (e) => e.preventDefault()
 
   console.log(user.userData.isBookingActivated);
 
@@ -40,6 +39,8 @@ export default function ServiceItem({ data, user }) {
     })
     setChecked(1)
   }
+
+
 
   return (
     <>

@@ -14,6 +14,8 @@ import { server } from '../../../config/index'
 import ScrollBox from '../../../components/scrollbox'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
+import Gallery from '../../../components/ui/gallery'
+
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
@@ -93,7 +95,9 @@ export default function Services({ user, data }) {
                                 <span className={s.serv_desc}>{i.about.description}</span>
                             </div> */}
                         </div>
-                        <div className={s.images}>
+                        <Gallery data={i.pic} />
+
+                        {/* <div className={s.images}>
                             <div className={s.images_wrapper}>
                                 {i.pic.map((i) => (
                                     <div key={i} className={s.images_container}>
@@ -109,7 +113,7 @@ export default function Services({ user, data }) {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
                         <button className={s.remove}>
                             <Link href={`/user/services/${i._id}`}>
                                 <a>Редагувати</a>

@@ -68,12 +68,12 @@
 
 .remove {
     position: absolute;
-    bottom: 5px;
-    right: 30px;
+    bottom: 0;
+    right: 5px;
     width: 100px;
-    height: 30px;
+    height: 35px;
     background-color: #aaffbd;
-    font-size: 12px;
+    font-size: 14px;
     border: none;
     border-radius: 5px;
     font-weight: 400;
