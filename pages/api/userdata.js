@@ -12,7 +12,6 @@ export default async function UserData(req, res) {
   const userEmail = req.query.q
   const newUser = req.body
   const method = req.method
-  console.log('userSettings', req.body.userSettings);
 
   switch (method) {
     case 'GET':

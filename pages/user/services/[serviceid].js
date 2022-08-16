@@ -19,6 +19,8 @@ export default function ServicesEditPage({ user, category }) {
 
   const router = useRouter()
   const { data: uData } = useSWR(user ? `/api/user/${user.email}` : null, fetcher)
+  const [newService, setNewService] = useState(false)
+  uData && console.log(newService);
   
   const servicesModel = {
     // ownerId:
@@ -34,7 +36,7 @@ export default function ServicesEditPage({ user, category }) {
     pic: [],
   }
   const [serv, setServ] = useState(servicesModel)
-  console.log(user)
+  console.log(serv)
 
   useEffect(() => {
     if (router.query.serviceid !== 'serviceadd') {
@@ -47,10 +49,13 @@ export default function ServicesEditPage({ user, category }) {
             console.log(data.result === null)
             console.log('new service')
             setServ(servicesModel)
+            
           } else {
             console.log('existing service')
+            setNewService(false)
             setServ({
               id: data.result._id,
+              owner_id: uData?.userData?.userId,
               owner: data.result.owner,
               cat_top: data.result.cat_top,
               cat_parent: data.result.cat_parent,
@@ -64,8 +69,11 @@ export default function ServicesEditPage({ user, category }) {
             })
           }
         })
-    }
-  }, [])
+    } else {setNewService(true)}
+    
+  }, [uData])
+
+uData && console.log(uData.userData.userId);
 
   const categories = category.categories
   const poslugi = category.poslugi
@@ -93,24 +101,26 @@ export default function ServicesEditPage({ user, category }) {
     setServ({ ...serv, pic: serv.pic.filter((_, index) => index !== +e.target.id) })
   }
 
-
+  
   async function pushData(e) {
     e.preventDefault(e)
     const response = await fetch(`/api/services_api?q=${router.query.serviceid}`, {
-      method: 'PATCH',
-      body: JSON.stringify({...serv, userId: uData.userData.userId}),
+      method: newService ? 'POST' : 'PATCH',
+      body: JSON.stringify(serv),
       headers: {
         'Content-Type': 'application/json',
       },
     })
     const data = await response.json()
     console.log('Sended')
-    if (data.result.modifiedCount > 0) return router.push('/user/services')
+    if (data.result.acknowledged) return router.push('/user/services')
     console.log(data)
   }
+
+  console.log(serv);
   async function removeData(e) {
     e.preventDefault(e)
-    const response = await fetch('/api/services_api', {
+    const response = await fetch(`/api/services_api/?q=${router.query.serviceid}`, {
       method: 'DELETE',
       body: JSON.stringify(serv),
       headers: {

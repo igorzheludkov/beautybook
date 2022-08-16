@@ -54,7 +54,7 @@ export default function PersonalPage({ user, data }) {
     isBookingActivated: 0,
   })
 
-  console.log(form);
+  console.log(form)
 
   async function buttonHandler(e) {
     e.preventDefault(e)
@@ -84,7 +84,7 @@ export default function PersonalPage({ user, data }) {
   useEffect(() => {
     if (uData) {
       setUserPublic(uData)
-      setForm({...uData.userData, userId: uData._id})
+      setForm({ ...uData.userData, userId: uData._id })
       setSettings(uData.userSettings)
     } else if (uData === null) {
       newUser()
@@ -92,13 +92,13 @@ export default function PersonalPage({ user, data }) {
   }, [uData])
 
   const [settings, setSettings] = useState({
-    mon: {labelShort: 'Пн', label: 'Понеділок', checked: false, id: 'mon' },
-    tue: {labelShort: 'Вт', label: 'Вівторок', checked: false, id: 'tue' },
-    wen: {labelShort: 'Ср', label: 'Середа', checked: false, id: 'wen' },
-    thu: {labelShort: 'Чт', label: 'Четвер', checked: false, id: 'thu' },
-    fri: {labelShort: 'Пт', label: 'П`ятниця', checked: false, id: 'fri' },
-    sat: {labelShort: 'Сб', label: 'Субота', checked: false, id: 'sat' },
-    sun: {labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' },
+    mon: { labelShort: 'Пн', label: 'Понеділок', checked: false, id: 'mon' },
+    tue: { labelShort: 'Вт', label: 'Вівторок', checked: false, id: 'tue' },
+    wen: { labelShort: 'Ср', label: 'Середа', checked: false, id: 'wen' },
+    thu: { labelShort: 'Чт', label: 'Четвер', checked: false, id: 'thu' },
+    fri: { labelShort: 'Пт', label: 'П`ятниця', checked: false, id: 'fri' },
+    sat: { labelShort: 'Сб', label: 'Субота', checked: false, id: 'sat' },
+    sun: { labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' },
   })
   console.log('settings', settings)
 
@@ -127,8 +127,6 @@ export default function PersonalPage({ user, data }) {
     }
   }
 
-  
-
   function avatarHandler(result) {
     setForm(() => ({ ...form, photo: result.secure_url }))
   }
@@ -138,7 +136,7 @@ export default function PersonalPage({ user, data }) {
   async function newUser() {
     const response = await fetch('/api/userdata', {
       method: 'PUT',
-      body: JSON.stringify({ email: session.user.email, userData: form }),
+      body: JSON.stringify({ email: session.user.email, userData: form, userSettings: settings }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -167,11 +165,13 @@ export default function PersonalPage({ user, data }) {
 
       <div className='container'>
         <div className={s.profile_nav}>
-          <button className={s.nav_button}>
-            <Link href={`/catalog/${user.email}`}>
-              <a>Відкрити вашу сторінку</a>
-            </Link>
-          </button>
+          {form.userId.length > 0 ?  (
+            <button className={s.nav_button}>
+              <Link href={`/${form.userId}`}>
+                <a>Відкрити вашу сторінку</a>
+              </Link>
+            </button>
+          ) : null}
           <button className={s.nav_button}>
             <Link href='/api/auth/signout'>
               <a
@@ -317,21 +317,32 @@ export default function PersonalPage({ user, data }) {
 
         <p className={s.paragraph}>Відображати сторінку в каталозі?</p>
         <ToggleButtons
-          data={{ label: [{name: 'Так', value: 1}, {name: 'Ні', value: 0}], id: 'isPageVisibleInCat' }}
+          data={{
+            label: [
+              { name: 'Так', value: 1 },
+              { name: 'Ні', value: 0 },
+            ],
+            id: 'isPageVisibleInCat',
+          }}
           inputHandler={inputHandler}
           value={form.isPageVisibleInCat}
         />
         <p className={s.paragraph}>Функція бронювання активна?</p>
         <ToggleButtons
-          data={{ label: [{name: 'Так', value: 1}, {name: 'Ні', value: 0}], id: 'isBookingActivated' }}
+          data={{
+            label: [
+              { name: 'Так', value: 1 },
+              { name: 'Ні', value: 0 },
+            ],
+            id: 'isBookingActivated',
+          }}
           inputHandler={inputHandler}
           value={form.isBookingActivated}
         />
 
-       
         <p className={s.paragraph}>Виділіть робочі дні</p>
 
-        {uData?.userSettings && <CheckboxButtons data={settings} handler={settingsHandler} status={settings} />}
+        <CheckboxButtons data={settings} handler={settingsHandler} status={settings} />
 
         <p className={s.paragraph}>О котрій годині починаєте працювати?</p>
         <RadioButtons

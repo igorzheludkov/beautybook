@@ -22,7 +22,6 @@ const filter = services.includes('@') ? { owner: services } : { userId: services
       .collection('user_services')
       .find(filter).toArray()
       await client.close()
-      console.log('finded', finded);
       res.status(200).json({ message: 'finded services:', services: finded })
       break
   }
