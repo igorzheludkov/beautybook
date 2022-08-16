@@ -14,7 +14,6 @@ export default function ServiceItem({ data, user }) {
   const { data: session, status } = useSession()
   const [checked, setChecked] = useState()
 
-  console.log(user.userData.isBookingActivated);
 
   function cartHandler(e) {
     e.preventDefault()

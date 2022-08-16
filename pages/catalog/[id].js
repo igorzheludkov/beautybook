@@ -1,26 +1,27 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 import s from '../../styles/userpage.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import { server } from '../../config/index'
-import { getSession } from 'next-auth/react'
-import { useStoreContext } from '../../context/store'
+// import { server } from '../../config/index'
+// import { getSession } from 'next-auth/react'
+// import { useStoreContext } from '../../context/store'
 import useSWR from 'swr'
 import ServiceItem from '../../components/serviceitem'
-import { useSession } from 'next-auth/react'
+// import { useSession } from 'next-auth/react'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function ServiceEdit() {
-  const { data: session, status } = useSession()
-
-  const [store, setStore] = useStoreContext()
-
   const router = useRouter()
+  // const { data: session, status } = useSession()
+  const { data: user } = useSWR(router ? `/api/user/${router.query.id}` : null, fetcher)
+  const { data: services } = useSWR(router ? `/api/services/${router.query.id}` : null, fetcher)
 
-  const { data: user } = useSWR(`/api/user/${router.query.id}`, fetcher)
-  const { data: services } = useSWR(`/api/services/${router.query.id}`, fetcher)
+  // const [store, setStore] = useStoreContext()
+
+
+
 
   return user && services ? (
     <>
@@ -28,7 +29,6 @@ export default function ServiceEdit() {
         <div className={s.header}>
           <div className={s.avatar_container}>
             <div className={s.avatar_img_inner}>
-              {console.log(user.userSettings)}
               <Image
                 className={s.avatar_img}
                 placeholder='blur'
@@ -114,7 +114,6 @@ export default function ServiceEdit() {
               <Image width={20} height={20} src='/images/orders.png' alt='instagram' />
             </div>
             <div className={s.daytime}>
-              {console.log(user.userSettings)}
               {Object.values(user.userSettings).map((i) => (
                 <div key={i.id} className={s.working_days}>
                   {i.checked ? i.labelShort : null}

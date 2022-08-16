@@ -1,10 +1,8 @@
 const { MongoClient } = require('mongodb')
 
-// Connection URL
 const url = process.env.MONGODB_URI
 const client = new MongoClient(url)
 
-// Database Name
 const dbName = 'beautybook'
 
 export default async function UserData(req, res) {
@@ -42,19 +40,6 @@ export default async function UserData(req, res) {
         const user = await collection.insertOne(newUser)
         await client.close()
         res.status(200).json({ message: 'user registered successfully', result: user })
-      
-      // const findUser = await collection.findOne({
-      //   email: req.body.email,
-      // })
-
-      // if (findUser === null) {
-      //   const result = await collection.insertOne(newUser)
-      //   await client.close()
-      //   res.status(200).json({ message: 'user registered success', result: result })
-      // } else if (findUser.email === req.body.email) {
-      //   await client.close()
-      //   res.status(200).json({ result: 'such user allready registered' })
-      // }
       break
 
     case 'PATCH':
