@@ -25,13 +25,12 @@ export default function PersonalPage({ user, data }) {
 
   const categories = data.categories
 
-  counter++
-  console.log('COUNTER', counter)
   const router = useRouter()
   const { data: session, status } = useSession()
   const [saved, setSaved] = useState(0)
   const [userPublic, setUserPublic] = useState([])
   const [form, setForm] = useState({
+    userId: '',
     photo: '',
     about_me: '',
     city: '',
@@ -54,6 +53,8 @@ export default function PersonalPage({ user, data }) {
     isPageVisibleInCat: 0,
     isBookingActivated: 0,
   })
+
+  console.log(form);
 
   async function buttonHandler(e) {
     e.preventDefault(e)
@@ -83,7 +84,7 @@ export default function PersonalPage({ user, data }) {
   useEffect(() => {
     if (uData) {
       setUserPublic(uData)
-      setForm(uData.userData)
+      setForm({...uData.userData, userId: uData._id})
       setSettings(uData.userSettings)
     } else if (uData === null) {
       newUser()

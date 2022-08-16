@@ -45,7 +45,6 @@ export default function Services({ user, data }) {
     if (!services) return <div>Loading...</div>
 
     const srv = services.services
-    console.log(srv)
 
     return (
         <div>

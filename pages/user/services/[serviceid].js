@@ -30,6 +30,7 @@ export default function ServicesEditPage({ user, category }) {
     pic: [],
   }
   const [serv, setServ] = useState(servicesModel)
+  console.log(user)
 
   useEffect(() => {
     if (router.query.serviceid !== 'serviceadd') {
