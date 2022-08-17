@@ -37,7 +37,7 @@ export default function ServicesEditPage({ user, category }) {
   const [serv, setServ] = useState(servicesModel)
 
   useEffect(() => {
-    setServ({ ...serv, owner_id: uData._id })
+    setServ({ ...serv, owner_id: uData?._id })
   }, [uData])
 
 console.log(serv);
