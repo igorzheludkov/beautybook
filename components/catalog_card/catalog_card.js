@@ -5,8 +5,9 @@ export default function CatalogCard({ item }) {
   const user = item.userData
   console.log(item)
   const masterInfo = {
-    display: 'flex',
-    padding: '10px',
+    display: 'grid',
+    gridTemplateColumns: '1fr 4fr',
+    padding: '10px'
   }
 console.log(item);
   return (

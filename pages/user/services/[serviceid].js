@@ -16,14 +16,13 @@ import useSWR from 'swr'
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function ServicesEditPage({ user, category }) {
-
   const router = useRouter()
   const { data: uData } = useSWR(user ? `/api/user/${user.email}` : null, fetcher)
   const [newService, setNewService] = useState(false)
-  console.log(category);
-  
+  console.log(category)
+
   const servicesModel = {
-    // ownerId:
+    owner_id: '',
     owner: user.email,
     cat_top: '',
     cat_parent: '',
@@ -38,6 +37,11 @@ export default function ServicesEditPage({ user, category }) {
   const [serv, setServ] = useState(servicesModel)
 
   useEffect(() => {
+    setServ({ ...serv, owner_id: uData._id })
+  }, [uData])
+
+console.log(serv);
+  useEffect(() => {
     if (router.query.serviceid !== 'serviceadd') {
       fetch(`/api/services_api?q=${router.query.serviceid}`, {
         method: 'GET',
@@ -48,13 +52,12 @@ export default function ServicesEditPage({ user, category }) {
             console.log(data.result === null)
             console.log('new service')
             setServ(servicesModel)
-            
           } else {
             console.log('existing service')
             setNewService(false)
             setServ({
               id: data.result._id,
-              owner_id: uData?.userData?.userId,
+              owner_id: uData?._id,
               owner: data.result.owner,
               cat_top: data.result.cat_top,
               cat_parent: data.result.cat_parent,
@@ -68,10 +71,10 @@ export default function ServicesEditPage({ user, category }) {
             })
           }
         })
-    } else {setNewService(true)}
-    
+    } else {
+      setNewService(true)
+    }
   }, [uData])
-
 
   const categories = category.categories
   const poslugi = category.poslugi
@@ -95,11 +98,10 @@ export default function ServicesEditPage({ user, category }) {
   }
 
   function photoDeleteHandler(e) {
-    console.log(e);
+    console.log(e)
     setServ({ ...serv, pic: serv.pic.filter((_, index) => index !== +e.target.id) })
   }
 
-  
   async function pushData(e) {
     e.preventDefault(e)
     const response = await fetch(`/api/services_api?q=${router.query.serviceid}`, {
@@ -245,7 +247,9 @@ export default function ServicesEditPage({ user, category }) {
                 />
                 <button className={s.button_rempicture} onClick={photoDeleteHandler}>
                   {/* x */}
-                  <div><Image  id={index} src='/images/remove.png' width={20} height={20} alt='remove' /></div>
+                  <div>
+                    <Image id={index} src='/images/remove.png' width={20} height={20} alt='remove' />
+                  </div>
                 </button>
               </div>
             ))}
@@ -259,9 +263,11 @@ export default function ServicesEditPage({ user, category }) {
           <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={serv.cat_top} />
         </div>
         <div className={s.buttons_block}>
-          {router.query.serviceid !== 'serviceadd' && <button className={s.btn_rem} onClick={removeData}>
-            Видалити
-          </button>}
+          {router.query.serviceid !== 'serviceadd' && (
+            <button className={s.btn_rem} onClick={removeData}>
+              Видалити
+            </button>
+          )}
           <button className={s.btn_add} onClick={pushData}>
             Зберегти
           </button>

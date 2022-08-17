@@ -71,13 +71,15 @@ export default function ServiceEdit() {
                   </div>
                 </Link>
               )}
-              <Link href={`tel:${user.userData.phone}`}>
-                <div className={s.social_link}>
-                  <a className='social_link'>
-                    <Image width={30} height={30} src='/images/phone.png' alt='phone' />
-                  </a>
-                </div>
-              </Link>
+              {user.userData.phone && (
+                <Link href={`tel:${user.userData.phone}`}>
+                  <div className={s.social_link}>
+                    <a className='social_link'>
+                      <Image width={30} height={30} src='/images/phone.png' alt='phone' />
+                    </a>
+                  </div>
+                </Link>
+              )}
             </div>
           </div>
           <div className={s.header_block}>
