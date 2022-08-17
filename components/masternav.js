@@ -5,6 +5,15 @@ import { useState } from 'react'
 
 export default function MasterNav({ path, status }) {
   const route = useRouter()
+  console.log(route.pathname === '/user/services')
+  const active =
+    route.pathname === '/user/services'
+      ? {
+          fontWeight: '800',
+        }
+      : {}
+
+      console.log(active);
 
   return (
     <div className={s.master_nav}>
@@ -15,7 +24,11 @@ export default function MasterNav({ path, status }) {
         <Link href='/user/booking'>Бронювання</Link>
       </button>
       <button className={s.nav_button}>
-        <Link href='/user/services'>Послуги</Link>
+        <Link  href='/user/services'><a style={route.pathname === '/user/services'
+      ? {
+          fontWeight: '800',
+        }
+      : {}}>Послуги</a></Link>
       </button>
 
       <button className={[`${s.nav_button} `]}>
