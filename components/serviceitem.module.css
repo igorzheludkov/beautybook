@@ -11,6 +11,8 @@
 .serv_item:nth-child(1) {
   background-color: #eeeeee;
   border-radius: 5px;
+  min-height: 50px;
+
 }
 .serv_item {
   padding: 5px;
@@ -64,23 +66,31 @@
   flex-basis: fit-content;
 }
 
-.addtocart {
-  height: 55px;
-  background-color: #deffff;
-  font-size: 14px;
-  border: none;
-  border-radius: 20px;
-  font-weight: 400;
-}
 .gotocart {
-  height: 55px;
-  background-color: #feffac;
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  /* width: 100px; */
+  height: 35px;
+  background-color: #feffaa;
   font-size: 14px;
   border: none;
-  border-radius: 20px;
+  border-radius: 5px;
   font-weight: 400;
 }
 
+.addtocart {
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  /* width: 100px; */
+  height: 35px;
+  background-color: #aaffbd;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 400;
+}
 
 .buttons {
   display: flex;

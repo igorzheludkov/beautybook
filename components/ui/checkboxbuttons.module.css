@@ -26,12 +26,12 @@
   .container_category {
     display: block;
     max-width: 300px;
-    width: 95px;
+    width: 85px;
 
     position: relative;
-    padding: 5px 5px;
+    padding: 5px 0;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

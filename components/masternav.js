@@ -21,9 +21,6 @@ export default function MasterNav({ path, status }) {
       <button className={[`${s.nav_button} `]}>
         <Link href='/user/profile'>Профіль</Link>
       </button>
-      <button className={[`${s.nav_button} `]}>
-        <Link href='/user/firststeps'>Перші кроки</Link>
-      </button>
     </div>
   )
 }

@@ -72,7 +72,14 @@ export default function ServiceItem({ data, user }) {
             <div className={s.desc}>
               <div className={s.serv_desc}>{data.about.description}</div>
               <div className={s.buttons}>
-                {user.userData.isBookingActivated == '1' && ((checked) ? (
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Gallery data={data.pic} />
+        {user.userData.isBookingActivated == '1' && ((checked) ? (
                   <button
                     className={s.gotocart}
                     onClick={() => {
@@ -88,12 +95,6 @@ export default function ServiceItem({ data, user }) {
                     Додати в кошик
                   </button>
                 ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <Gallery data={data.pic} />
       </div>
     </>
   )

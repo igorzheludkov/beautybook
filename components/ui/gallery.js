@@ -32,7 +32,7 @@ export default function GallerySlide({ data }) {
       : ''
   }
 
-  const view = fullView === '1' ? { width: '300px', height: '300px' } : { width: '90px', height: '90px' }
+  const view = fullView === '1' ? { width: '300px', height: '300px' } : { width: '80px', height: '80px' }
   return (
     <div className={s.gallery_wrapper}>
       <div className={s.images}>
@@ -64,7 +64,7 @@ export default function GallerySlide({ data }) {
       ) : (
         <div className={s.btn_wrapper}>
           <button className={s.gallery_btn} onClick={fullViewHandler} value='0'>
-            Згорнути фото
+            Згорнути
           </button>
           <button className={s.gallery_btn} onClick={scrollHandler} id='left'>
             Ліворуч
