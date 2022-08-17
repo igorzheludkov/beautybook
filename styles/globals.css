@@ -1,3 +1,7 @@
+:root {
+  color-scheme: light;
+}
+
 @font-face {
   font-family: Nunito;
   src: url('../asset/fonts/nunito/Nunito-Regular.ttf')
