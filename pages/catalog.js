@@ -11,6 +11,8 @@ const fetcher = (url) => fetch(url).then((res) => res.json())
 export default function Home() {
     const { data: allusers } = useSWR(`/api/getall`, fetcher)
 
+   
+
     if (!allusers) return <div>Loading</div>
     
     allusers && console.log(allusers);
