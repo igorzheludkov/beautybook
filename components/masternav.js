@@ -6,34 +6,34 @@ import { useState } from 'react'
 export default function MasterNav({ path, status }) {
   const route = useRouter()
   console.log(route.pathname === '/user/services')
-  const active =
-    route.pathname === '/user/services'
-      ? {
-          fontWeight: '800',
-        }
-      : {}
 
-      console.log(active);
+
+  const routes = [
+    { link: '/user', label: 'Головна' },
+    { link: '/user/booking', label: 'Бронювання' },
+    { link: '/user/services', label: 'Послуги' },
+    { link: '/user/profile', label: 'Профіль' },
+  ]
 
   return (
     <div className={s.master_nav}>
-      <button className={s.nav_button}>
-        <Link href='/user'>Головна</Link>
-      </button>
-      <button className={s.nav_button}>
-        <Link href='/user/booking'>Бронювання</Link>
-      </button>
-      <button className={s.nav_button}>
-        <Link  href='/user/services'><a style={route.pathname === '/user/services'
-      ? {
-          fontWeight: '800',
-        }
-      : {}}>Послуги</a></Link>
-      </button>
-
-      <button className={[`${s.nav_button} `]}>
-        <Link href='/user/profile'>Профіль</Link>
-      </button>
+      {routes.map((i) => (
+        <button key={i.label} className={s.nav_button}>
+          <Link href={i.link}>
+            <a
+              style={
+                route.pathname === i.link
+                  ? {
+                      fontWeight: '800',
+                    }
+                  : {}
+              }
+            >
+              {i.label}
+            </a>
+          </Link>
+        </button>
+      ))}
     </div>
   )
 }
