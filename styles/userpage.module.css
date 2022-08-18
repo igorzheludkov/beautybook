@@ -12,7 +12,7 @@
 .title_h2 {
   font-size: 22px;
   font-weight: 600;
-  text-decoration: 3px underline var(--main-yellow-color);
+  text-decoration: 3px underline #fcdcff;
 }
 
 .title,
@@ -69,7 +69,7 @@
 }
 .about_me {
   font-size: 16px;
-  text-decoration: 3px underline var(--main-yellow-color);
+  text-decoration: 3px underline #fcdcff;
 }
 
 .adress_info {
@@ -90,6 +90,7 @@
   grid-template-columns: 24px 110px;
   width: 130px;
   align-items: center;
+  padding: 0 10px;
 }
 .work_time_logo {
   width: 20px;
@@ -103,13 +104,13 @@
 .working_days {
   padding: 2px 3px;
 }
-.working_time {
+/* .working_time {
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  
   background-color: antiquewhite;
   border-radius: 5px;
-}
+} */
 /* .history_wrapper {} */
 
 .info_a,

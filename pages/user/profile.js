@@ -244,12 +244,6 @@ export default function PersonalPage({ user, data }) {
             state={form}
           />
         </div>
-        </div>
-        <div className={s.scrollbox_wrapper}>
-          <p className={s.paragraph}>Виділіть ваші навики</p>
-          <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
-        </div>
-        <div className='container'>
         <div className={s.aboutme_wrapper}>
           <div className={s.aboutme_container}>
             <Image src={aboutMe.icon} width={20} height={20} alt='social profile' />
@@ -265,7 +259,12 @@ export default function PersonalPage({ user, data }) {
             </span>
           </div>
         </div>
-
+      </div>
+      <div className={s.scrollbox_wrapper}>
+        <p className={s.paragraph}>Виділіть ваші навики</p>
+        <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
+      </div>
+      <div className='container'>
         <h4>Додайте робочу адресу</h4>
         <div className={s.workplace_wrapper}>
           <Input

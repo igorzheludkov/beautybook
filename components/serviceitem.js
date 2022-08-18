@@ -44,39 +44,18 @@ export default function ServiceItem({ data, user }) {
   return (
     <>
       <div className={s.serv_wrapper}>
-        <div className='container'>
           <div className={s.serv_inner}>
             <div className={s.serv_item}>
               <span className={s.serv_title}>{data.item_1.name}</span>
               <span className={s.serv_price}>{data.item_1.price} грн</span>
               <span className={s.serv_duration}>{data.item_1.dur} хв</span>
             </div>
-            <div className={s.serv_item}>
-              {data.item_2.name && (
-                <>
-                  <span className={s.serv_subtitle}>{data.item_2.name}</span>
-                  <span className={s.serv_subprice}>{data.item_2.price} грн</span>
-                  <span className={s.serv_subduration}>{data.item_2.dur} хв</span>
-                </>
-              )}
-            </div>
-            <div className={s.serv_item}>
-              {data.item_3.name && (
-                <>
-                  <span className={s.serv_subtitle}>{data.item_3.name}</span>
-                  <span className={s.serv_subprice}>{data.item_3.price} грн</span>
-                  <span className={s.serv_subduration}>{data.item_3.dur} хв</span>
-                </>
-              )}
-            </div>
-            <div className={s.desc}>
+            
+           
               <div className={s.serv_desc}>{data.about.description}</div>
-              <div className={s.buttons}>
-                
-              </div>
-            </div>
+              
+           
           </div>
-        </div>
 
         <Gallery data={data.pic} />
         {user.userData.isBookingActivated == '1' && ((checked) ? (

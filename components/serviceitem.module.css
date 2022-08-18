@@ -10,12 +10,11 @@
 
 .serv_item:nth-child(1) {
   background-color: #eeeeee;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   min-height: 50px;
-
 }
 .serv_item {
-  padding: 5px;
+  padding: 10px;
   display: grid;
   align-items: center;
   grid-gap: 10px;
@@ -42,7 +41,7 @@
   font-weight: 800;
 }
 
-.serv_price{
+.serv_price {
   font-size: 14px;
   font-weight: 800;
 }
@@ -58,10 +57,9 @@
   text-decoration: 3px underline var(--main-yellow-color);
 }
 
-
 .serv_desc {
   font-size: 14px;
-  /* margin-bottom: 10px; */
+  padding: 10px;
   color: rgb(58, 58, 58);
   flex-basis: fit-content;
 }
@@ -95,9 +93,4 @@
 .buttons {
   display: flex;
   justify-content: center;
-}
-
-
-.desc{
-display: flex;
 }

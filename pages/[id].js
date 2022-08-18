@@ -16,7 +16,7 @@ export default function ServiceEdit() {
   const router = useRouter()
   // const { data: session, status } = useSession()
   const { data: user } = useSWR(router.query.id ? `/api/user/${router.query.id}` : null, fetcher)
-  const { data: services } = useSWR(user ? `/api/services/${router.query.id}` : null, fetcher)
+  const { data: services } = useSWR(router.query.id ? `/api/services/${router.query.id}` : null, fetcher)
   services && console.log(services)
 
   // const [store, setStore] = useStoreContext()
