@@ -17,11 +17,24 @@ export default function Landing() {
         <h2 className={s.title_h2}>Інтуїтивна система онлайн-бронювання</h2>
         <Image src='/images/profile.png' width={80} height={80} alt='personal site' />
         <h2 className={s.title_h2}>Публікація в каталозі спеціалістів</h2>
-        <h3>Подивитись як виглядає заповнений профіль можна <Link href='https://beautybook.vercel.app/62e6840acf4d88a22c64aeed'>
-          <a style={{color: 'blue'}}>тут</a>
-        </Link></h3>
-       
-<br></br>
+        <h3>
+          Подивитись як виглядає заповнений профіль можна{' '}
+          <Link href='/62e6840acf4d88a22c64aeed'>
+            <a style={{ color: 'blue' }}>тут</a>
+          </Link>
+        </h3>
+        {/* <div style={{width: '100%', height: '500px'}}><Image
+          layout='responsive'
+          sizes="(min-width: 75em) 33vw,
+          (min-width: 48em) 50vw,
+          100vw"
+          // objectFit='fixed'
+          src='/images/first-screen.png'
+          width='100'
+          height='100'
+          alt='first-screen'
+        /></div> */}
+        <br></br>
 
         <button
           className={s.button}
