@@ -9,20 +9,30 @@
 }
 
 .serv_item:nth-child(1) {
-  background-color: #eeeeee;
   /* border-radius: 5px; */
-  min-height: 50px;
+  min-height: 60px;
 }
 .serv_item {
-  padding: 10px;
+  line-height: 26px;
+  padding: 0 10px;
   display: grid;
   align-items: center;
   grid-gap: 10px;
-  grid-template-columns: 1fr 70px 50px;
+  grid-template-columns: 1fr 105px;
   background-color: #fff;
   color: #444;
   margin-bottom: 5px;
   font-size: 14px;
+}
+
+.order_item {
+  transition: 0.5s;
+  overflow: hidden;
+}
+
+.price_dur {
+  display: flex;
+  justify-content: space-between;
 }
 .number {
   font-weight: 600;

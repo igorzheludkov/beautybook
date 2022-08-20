@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
-// import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import s from '../styles/userpage.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
+import clientPromise from '../lib/mongodb'
 // import { server } from '../../config/index'
 // import { getSession } from 'next-auth/react'
 // import { useStoreContext } from '../../context/store'
@@ -11,17 +12,51 @@ import ServiceItem from '../components/serviceitem'
 // import { useSession } from 'next-auth/react'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
+// const { MongoClient, ObjectId } = require('mongodb')
+import { ObjectId } from 'mongodb'
+// const url = process.env.MONGODB_URI
+// const client = new MongoClient(url)
 
-export default function ServiceEdit() {
+export async function getServerSideProps(context) {
+  const client = await clientPromise
+  const { id } = context.query
+  const filter = id.includes('@') ? { email: id } : { _id: ObjectId(id) }
+  const filterServ = id.includes('@') ? { owner: id } : { owner_id: id }
+  
+
+  try {
+    const uResponse = await client.db('beautybook').collection('user_public').findOne(filter)
+    const uData = JSON.stringify(uResponse)
+    const sResponse = await client.db('beautybook').collection('user_services').find(filterServ).toArray()
+    const uServ = JSON.stringify(sResponse)
+
+    return { props: { isConnected: true, user: uData, services: uServ } }
+
+  } catch (e) {
+    console.log(e)
+    return {
+      props: { isConnected: false },
+    }
+  }
+}
+
+export default function UserPage(props) {
+  const user = JSON.parse(props.user)
+  const services = JSON.parse(props.services)
+  const { data: bookedOrders } = useSWR(user.email ? `/api/bookedtime?q=${user.email}` : null, fetcher)
+
+  console.log(bookedOrders);
   const router = useRouter()
   // const { data: session, status } = useSession()
-  const { data: user } = useSWR(router.query.id ? `/api/user/${router.query.id}` : null, fetcher)
-  const { data: services } = useSWR(router.query.id ? `/api/services/${router.query.id}` : null, fetcher)
-  services && console.log(services)
+  // const { data: user } = useSWR(router.query.id ? `/api/user/${router.query.id}` : null, fetcher)
+  // const { data: services } = useSWR(router.query.id ? `/api/services/${router.query.id}` : null, fetcher)
+  // const { data: bookedOrders } = useSWR(user ? `/api/bookedtime?q=${user.email}` : null, fetcher)
 
-  // const [store, setStore] = useStoreContext()
+  // services && console.log(bookedOrders)
 
-  return user && services ? (
+  // // const [store, setStore] = useStoreContext()
+
+  return (
     <>
       <div className='container'>
         <div className={s.header}>
@@ -135,11 +170,11 @@ export default function ServiceEdit() {
           <h1 className={s.title_h2}>Послуги</h1>
         </div>
         <div className='serv_wrapper'>
-          {services.services.map((i) => (
-            <ServiceItem key={i._id} data={i} user={user} />
+          {services.map((i) => (
+            <ServiceItem key={i._id} data={i} user={user} bookedOrders={bookedOrders}/>
           ))}
         </div>
       </section>
     </>
-  ) : null
+  )
 }

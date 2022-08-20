@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default function MasterPage({client}) {
+export default function Orders({client}) {
     const { data: session, status } = useSession()
     const [store, setStore] = useStoreContext()
 

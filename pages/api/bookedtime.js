@@ -21,7 +21,7 @@ export default async function Order(req, res) {
         visitDateTime: 1,
         visitDur: 1
     }
-
+    
     switch (method) {
         case 'GET':
             const finded = await collection.find({masterEmail: query}).project(projection).toArray()

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { getMonthLabel } from '../lib/calendarLabels'
 
 export default function Calendar({ props }) {
-  const { visitHandler, choosenOpt, user, bookedOrders, choosenTimeStamp, confirmedOrder } = props
+  const { visitHandler, user, bookedOrders, item } = props
   const monthLabel = getMonthLabel()
 
   const currentTime = new Date()
@@ -83,7 +83,7 @@ export default function Calendar({ props }) {
           add = add + 10
         }
         let sub = 0
-        for (let rem = 0; rem < ((+choosenOpt.dur ?? 40) + +work.interval) / 10; rem++) {
+        for (let rem = 0; rem < ((+i.visitDur ?? 40) + +work.interval) / 10; rem++) {
           testArr.push({ time: timeInMinutes - sub, free: false })
           sub = sub + 10
         }

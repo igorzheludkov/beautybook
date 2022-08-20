@@ -1,79 +1,35 @@
-import Image from 'next/image'
-import { useStoreContext } from '../context/store'
-import s from './serviceitem.module.css'
-import { useSession } from 'next-auth/react'
 import { useState } from 'react'
-import { Router } from 'next/router'
-import { useRouter } from 'next/router'
-import AliceCarousel from 'react-alice-carousel'
+import s from './serviceitem.module.css'
 import Gallery from './ui/gallery'
+import OrderItem from './orderitem'
+import { BookingButton } from './ui/button'
 
-export default function ServiceItem({ data, user }) {
-  const router = useRouter()
-  const [store, setStore] = useStoreContext()
-  const { data: session, status } = useSession()
-  const [checked, setChecked] = useState()
-
-
-  function cartHandler(e) {
-    e.preventDefault()
-    setStore({
-      ...store,
-      orders: [
-        ...store.orders,
-        {
-          orderId: Date.now(),
-          masterEmail: user.email,
-          masterId: user._id,
-          masterName: user.userData.name,
-          masterSurname: user.userData.surname,
-          street: user.userData.street,
-          city: user.userData.city,
-          location: user.userData.location,
-          masterPhone: user.userData.phone,
-          photo: user.userData.photo,
-          serviceItem: data,
-        },
-      ],
-    })
-    setChecked(1)
+export default function ServiceItem({ data, user, bookedOrders }) {
+  const [showBooking, setShowBooking] = useState(0)
+  function showBookingHandler() {
+    showBooking === 0 ? setShowBooking(1) : setShowBooking(0)
   }
-
-
 
   return (
     <>
       <div className={s.serv_wrapper}>
-          <div className={s.serv_inner}>
-            <div className={s.serv_item}>
-              <span className={s.serv_title}>{data.item_1.name}</span>
-              <span className={s.serv_price}>{data.item_1.price} грн</span>
-              <span className={s.serv_duration}>{data.item_1.dur} хв</span>
+        <div className={s.serv_inner}>
+          <div className={s.serv_item}>
+            <span className={s.serv_title}>{data.item_1.name}</span>
+            <div>
+              <div className={s.price_dur}>
+                <span className={s.serv_price}>{data.item_1.price} грн</span>
+                <span className={s.serv_duration}>{data.item_1.dur} хв</span>
+              </div>
+              <BookingButton onClick={showBookingHandler}>
+                {showBooking ? 'Приховати' : 'Забронювати'}
+              </BookingButton>
             </div>
-            
-           
-              <div className={s.serv_desc}>{data.about.description}</div>
-              
-           
           </div>
-
+          <OrderItem item={data} user={user} bookedOrders={bookedOrders} showBooking={showBooking} />
+          <div className={s.serv_desc}>{data.about.description}</div>
+        </div>
         <Gallery data={data.pic} />
-        {user.userData.isBookingActivated == '1' && ((checked) ? (
-                  <button
-                    className={s.gotocart}
-                    onClick={() => {
-                      router.push({
-                        pathname: '/orders',
-                      })
-                    }}
-                  >
-                    Вибрати час і забронювати
-                  </button>
-                ) : (
-                  <button className={s.addtocart} onClick={cartHandler}>
-                    Додати в кошик
-                  </button>
-                ))}
       </div>
     </>
   )

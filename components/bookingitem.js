@@ -38,10 +38,10 @@ export default function OrderItem({ item }) {
     return (
         <div className={s.booking_wrapper}>
             <div className={s.header}>
-                <div className={s.title}>{item.opt.name}</div>
+                <div className={s.title}>{item.item_1.name}</div>
                 <div className={s.title_info}>
-                    <div className={s.price}>{item.opt.price} грн</div>
-                    <div className={s.dur}>{item.opt.dur} хв</div>
+                    <div className={s.price}>{item.item_1.price} грн</div>
+                    <div className={s.dur}>{item.item_1.dur} хв</div>
                 </div>
             </div>
             <div className={s.booking_details}>

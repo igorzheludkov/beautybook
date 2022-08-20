@@ -20,9 +20,9 @@ export default function OrdersHistoryItem({ order }) {
     return (
         <div className={s.orders_wrapper}>
             <div className={s.serv}>
-                <div className={s.serv_name}>{order.opt.name}</div>
-                <div className={s.serv_price}>{order.opt.price} грн</div>
-                <div className={s.serv_dur}>{order.opt.dur} хв </div>
+                <div className={s.serv_name}>{order.item_1.name}</div>
+                <div className={s.serv_price}>{order.item_1.price} грн</div>
+                <div className={s.serv_dur}>{order.item_1.dur} хв </div>
             </div>
             <div className={s.master_info}>
                 <div className={s.master_inner}>

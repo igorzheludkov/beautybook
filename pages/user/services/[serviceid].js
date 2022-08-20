@@ -170,59 +170,7 @@ console.log(serv);
               value={serv.item_1.dur}
             />
           </span>
-          <p className={s.subtitle}>Додайте варіації, якщо є. </p>
-          <span className={s.serv_item}>
-            <input
-              className={s.input_serv}
-              id='item_2'
-              data-type='name'
-              onChange={inputHandler}
-              placeholder='Введіть назву'
-              value={serv.item_2.name}
-            />
-            <input
-              className={s.input_serv}
-              id='item_2'
-              data-type='price'
-              onChange={inputHandler}
-              placeholder='Ціна'
-              value={serv.item_2.price}
-            />
-            <input
-              className={s.input_serv}
-              id='item_2'
-              data-type='dur'
-              onChange={inputHandler}
-              placeholder='Хв'
-              value={serv.item_2.dur}
-            />
-          </span>
-          <span className={s.serv_item}>
-            <input
-              className={s.input_serv}
-              id='item_3'
-              data-type='name'
-              onChange={inputHandler}
-              placeholder='Введіть назву'
-              value={serv.item_3.name}
-            />
-            <input
-              className={s.input_serv}
-              id='item_3'
-              data-type='price'
-              onChange={inputHandler}
-              placeholder='Ціна'
-              value={serv.item_3.price}
-            />
-            <input
-              className={s.input_serv}
-              id='item_3'
-              data-type='dur'
-              onChange={inputHandler}
-              placeholder='Хв'
-              value={serv.item_3.dur}
-            />
-          </span>
+
           <textarea
             className={s.input_desc}
             id='about'

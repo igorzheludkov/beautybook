@@ -48,14 +48,14 @@ export default function Navbar() {
             </a>
           </Link>
         </div>
-        <div className={s.orders_container}>
+        {/* <div className={s.orders_container}>
           {store.orders?.length ? <span className={s.counter}>{store.orders.length}</span> : ''}
           <Link href='/orders'>
             <a>
               <Image className={s.orders} src='/images/cart.png' width={25} height={25} alt='logo' />
             </a>
           </Link>
-        </div>
+        </div> */}
         {!session && (
           <>
             <div className={s.login_wrapper}>
