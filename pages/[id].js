@@ -45,7 +45,6 @@ export default function UserPage(props) {
   const services = JSON.parse(props.services)
   const { data: bookedOrders } = useSWR(user.email ? `/api/bookedtime?q=${user.email}` : null, fetcher)
 
-  console.log(bookedOrders);
   const router = useRouter()
   // const { data: session, status } = useSession()
   // const { data: user } = useSWR(router.query.id ? `/api/user/${router.query.id}` : null, fetcher)

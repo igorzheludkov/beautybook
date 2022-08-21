@@ -76,8 +76,6 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
     visitDateTime: dayTime,
     orderId: Date.now(),
   }
-  console.log('user', user)
-  console.log('merged', orderData)
   // merged data - об'єднує інформацію в єдине замовлення
   // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
   function visitHandler(e) {

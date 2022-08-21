@@ -7,9 +7,8 @@ export default function Calendar({ props }) {
   const monthLabel = getMonthLabel()
 
   const currentTime = new Date()
-  const currentHour = currentTime.getHours()
   const [stateTime, setStateTime] = useState(currentTime)
-
+  const [yearState, setYearState] = useState(currentTime.getFullYear())
   let curYear = stateTime.getFullYear()
   let curMonth = stateTime.getMonth()
   let curDay = stateTime.getDate()
@@ -17,7 +16,6 @@ export default function Calendar({ props }) {
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
   const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
-  const [checkTime, setCheckTime] = useState()
 
   const horizonMonths = monthLabel.length - checkMonth
 
@@ -32,9 +30,21 @@ export default function Calendar({ props }) {
 
   function yearHandler(e) {
     e.preventDefault()
-    e.target.value === '2023' && setStateTime(new Date(`2023-01-01T09:00:00`))
-    e.target.value === '2022' && setStateTime(new Date())
+    e.target.value === '1'
+      ? setYearState(yearState + 1)
+      : yearState > currentTime.getFullYear()
+      ? setYearState(yearState - 1)
+      : setYearState(currentTime.getFullYear())
   }
+
+  useEffect(() => {
+ if(yearState === currentTime.getFullYear()) {
+  setStateTime(new Date())
+ } else {
+  setStateTime(new Date(`${yearState}-01-01T00:00:00`))
+ }
+  }, [yearState])
+  
   function monthHandler(e) {
     setCheckMonths(e.target.value)
   }
@@ -64,7 +74,6 @@ export default function Calendar({ props }) {
     for (i; i <= countDays; i++) {
       genArr.push(getFormatedDay(checkYear, month, i))
     }
-
     return genArr
   }
 
@@ -107,7 +116,7 @@ export default function Calendar({ props }) {
         bufferArr.push({ time: i, free: true })
       }
     }
-    // console.log(bufferArr.filter(el => el.free === false));
+
     return bufferArr
   }
 
@@ -157,8 +166,8 @@ export default function Calendar({ props }) {
   }
 
   const monthStyle = {
-    height: '20px',
-    borderRadius: '10px',
+    height: '25px',
+    borderRadius: '20px',
     padding: '0 5px',
   }
   const dayStyle = {
@@ -176,11 +185,7 @@ export default function Calendar({ props }) {
   return (
     <>
       <form className={s.wrapper_month}>
-        <div className={s.years_wrapper}>
-          <button className={s.years} value='2022' onClick={yearHandler}>
-            {2022}
-          </button>
-        </div>
+        <div className={s.years_wrapper}></div>
         {generatedMonths.map((i) => (
           <label key={i.index} style={monthStyle} className={s.container_month}>
             <input
@@ -199,8 +204,12 @@ export default function Calendar({ props }) {
           </label>
         ))}
         <div className={s.years_wrapper}>
-          <button className={s.years} value='2023' onClick={yearHandler}>
-            {curYear + 1}
+          <button className={s.years} value='0' onClick={yearHandler}>
+            {'-'}
+          </button>
+          {yearState}
+          <button className={s.years} value='1' onClick={yearHandler}>
+            {'+'}
           </button>
         </div>
       </form>
