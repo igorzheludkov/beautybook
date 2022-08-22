@@ -3,6 +3,7 @@ import s from './serviceitem.module.css'
 import Gallery from './ui/gallery'
 import OrderItem from './orderitem'
 import { BookingButton } from './ui/button'
+import Image from 'next/image'
 
 export default function ServiceItem({ data, user, bookedOrders }) {
   const [showBooking, setShowBooking] = useState(0)
@@ -15,7 +16,13 @@ export default function ServiceItem({ data, user, bookedOrders }) {
       <div className={s.serv_wrapper}>
         <div className={s.serv_inner}>
           <div className={s.serv_item}>
-            <span className={s.serv_title}>{data.item_1.name}</span>
+            <div className={s.name_wrapper}>
+              {data.pic.length === 1 && (
+                // <div className={s.serv_icon} style={{ backgroundImage: `url(${data.pic[0]})` }}></div>
+                <div className={s.serv_icon}><Image style={{borderRadius: 5}} src={data.pic[0]} width={25} height={25} alt='icon'/></div>
+              )}
+              <span className={s.serv_title}>{data.item_1.name}</span>
+            </div>
             <div>
               <div className={s.price_dur}>
                 <span className={s.serv_price}>{data.item_1.price} грн</span>

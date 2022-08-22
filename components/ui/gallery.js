@@ -3,6 +3,7 @@ import s from './gallery.module.css'
 import { useState } from 'react'
 
 export default function GallerySlide({ data }) {
+  const imageSize = 40
   const [fullView, setFullView] = useState('0')
   const [sliderPosition, setSliderPosition] = useState(0)
   const slideWidth = 300
@@ -24,6 +25,7 @@ export default function GallerySlide({ data }) {
     }
   }
 
+
   function scrollHandler(e) {
     e.target.id === 'right' && sliderPosition > minPosition
       ? setSliderPosition(sliderPosition - slideWidth)
@@ -32,7 +34,8 @@ export default function GallerySlide({ data }) {
       : ''
   }
 
-  const view = fullView === '1' ? { width: '300px', height: '300px' } : { width: '80px', height: '80px' }
+  const view = fullView === '1' ? { width: '300px', height: '300px' } : { width: imageSize, height: imageSize }
+  if (data.length < 2) return ''
   return (
     <div className={s.gallery_wrapper}>
       <div className={s.images}>
