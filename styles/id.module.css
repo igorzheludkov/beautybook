@@ -70,6 +70,7 @@
 .about_me {
   font-size: 16px;
   text-decoration: 3px underline #fcdcff;
+  margin-bottom: 25px;
 }
 
 .adress_info {
@@ -88,9 +89,18 @@
 .work_time {
   display: grid;
   grid-template-columns: 24px 110px;
-  width: 130px;
+  width: 140px;
   align-items: center;
   padding: 0 10px;
+}
+
+.working_hours {
+  margin-right: 50px;
+  padding: 0 7px;
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  border-radius: 5px;
 }
 .work_time_logo {
   width: 20px;

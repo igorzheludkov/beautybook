@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import s from '../styles/userpage.module.css'
+import s from '../styles/id.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import clientPromise from '../lib/mongodb'
@@ -22,7 +22,6 @@ export async function getServerSideProps(context) {
   const { id } = context.query
   const filter = id.includes('@') ? { email: id } : { _id: ObjectId(id) }
   const filterServ = id.includes('@') ? { owner: id } : { owner_id: id }
-  
 
   try {
     const uResponse = await client.db('beautybook').collection('user_public').findOne(filter)
@@ -31,7 +30,6 @@ export async function getServerSideProps(context) {
     const uServ = JSON.stringify(sResponse)
 
     return { props: { isConnected: true, user: uData, services: uServ } }
-
   } catch (e) {
     console.log(e)
     return {
@@ -46,14 +44,6 @@ export default function UserPage(props) {
   const { data: bookedOrders } = useSWR(user.email ? `/api/bookedtime?q=${user.email}` : null, fetcher)
 
   const router = useRouter()
-  // const { data: session, status } = useSession()
-  // const { data: user } = useSWR(router.query.id ? `/api/user/${router.query.id}` : null, fetcher)
-  // const { data: services } = useSWR(router.query.id ? `/api/services/${router.query.id}` : null, fetcher)
-  // const { data: bookedOrders } = useSWR(user ? `/api/bookedtime?q=${user.email}` : null, fetcher)
-
-  // services && console.log(bookedOrders)
-
-  // // const [store, setStore] = useStoreContext()
 
   return (
     <>
@@ -76,7 +66,19 @@ export default function UserPage(props) {
                 <Image width={20} height={20} src='/images/bookmarks.png' alt='instagram' />
               </div> */}
             </div>
-
+          </div>
+          <div className={s.header_block}>
+            <div className={s.header_name}>
+              <div className={s.title}>{user.userData.name}</div>
+              <div className={s.title}>{user.userData.surname}</div>
+              <div className={s.spec_wrapper}>
+                {user.userData.categories.map((i) => (
+                  <div key={i} className={s.spec}>
+                    {i}
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className={s.social}>
               {user.userData.social_1 && (
                 <Link href={`https://www.instagram.com/${user.userData.social_1}`}>
@@ -116,21 +118,8 @@ export default function UserPage(props) {
               )}
             </div>
           </div>
-          <div className={s.header_block}>
-            <div className={s.header_name}>
-              <div className={s.title}>{user.userData.name}</div>
-              <div className={s.title}>{user.userData.surname}</div>
-              <div className={s.spec_wrapper}>
-                {user.userData.categories.map((i) => (
-                  <div key={i} className={s.spec}>
-                    {i}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className={s.about_me}>{user.userData.about_me}</div>
-          </div>
         </div>
+        <div className={s.about_me}>{user.userData.about_me}</div>
 
         <div className={s.adress_info}>
           <div className={s.adress}>
@@ -150,15 +139,15 @@ export default function UserPage(props) {
               <Image width={20} height={20} src='/images/orders.png' alt='instagram' />
             </div>
             <div className={s.daytime}>
+              <div className={s.working_hours}>
+                {user.userData.work_begin}-{user.userData.work_end}
+              </div>
               {user.userSettings &&
                 Object.values(user.userSettings).map((i) => (
                   <div key={i.id} className={s.working_days}>
                     {i.checked ? i.labelShort : null}
                   </div>
                 ))}
-              <div className={s.working_time}>
-                {user.userData.work_begin}-{user.userData.work_end}
-              </div>
             </div>
           </div>
         </div>
@@ -170,7 +159,7 @@ export default function UserPage(props) {
         </div>
         <div className='serv_wrapper'>
           {services.map((i) => (
-            <ServiceItem key={i._id} data={i} user={user} bookedOrders={bookedOrders}/>
+            <ServiceItem key={i._id} data={i} user={user} bookedOrders={bookedOrders} />
           ))}
         </div>
       </section>
