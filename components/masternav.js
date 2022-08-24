@@ -5,7 +5,6 @@ import { useState } from 'react'
 
 export default function MasterNav({ path, status }) {
   const route = useRouter()
-  console.log(route.pathname === '/user/services')
 
 
   const routes = [

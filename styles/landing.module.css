@@ -1,7 +1,7 @@
 .title_h2 {
     font-size: 22px;
     font-weight: 600;
-    text-decoration: 2px underline var(--main-yellow-color);
+    /* text-decoration: 2px underline var(--main-yellow-color); */
     margin: 0 0 40px;
   }
   

@@ -45,6 +45,8 @@ export default function UserPage(props) {
 
   const router = useRouter()
 
+  // console.log(services);
+
   return (
     <>
       <div className='container'>

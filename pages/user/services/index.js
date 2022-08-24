@@ -15,6 +15,8 @@ import ScrollBox from '../../../components/scrollbox'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import Gallery from '../../../components/ui/gallery'
+import ServiceItem from '../../../components/serviceitem'
+
 
 
 export async function getServerSideProps(context) {
@@ -45,6 +47,7 @@ export default function Services({ user, data }) {
     if (!services) return <div>Loading...</div>
 
     const srv = services.services
+    console.log(srv);
 
     return (
         <div>
@@ -57,70 +60,10 @@ export default function Services({ user, data }) {
                     </Link>
                 </div>
             </div>
-            <div className='serv_wrapper'>
-                {srv.map((i, index) => (
-                    <div key={i._id} className={s.serv_inner}>
-                        <div className='container'>
-                            <div className={s.serv_item}>
-                                <span className={s.serv_title}>
-                                    {index + 1}. {i.item_1.name}
-                                </span>
-                                <span className={s.serv_price}>{i.item_1.price} грн</span>
-                                <span className={s.serv_duration}>{i.item_1.dur} хв</span>
-                            </div>
-                            <div className={s.serv_item}>
-                                <span className={s.serv_subtitle}>
-                                    {i.item_2.name ? `${i.item_2.name}` : null}
-                                </span>
-                                <span className={s.serv_subprice}>
-                                    {i.item_2.price ? `${i.item_2.price} грн` : null}
-                                </span>
-                                <span className={s.serv_subduration}>
-                                    {i.item_2.dur ? `${i.item_2.dur} хв` : null}
-                                </span>
-                            </div>
-                            <div className={s.serv_item}>
-                                <span className={s.serv_subtitle}>
-                                    {i.item_3.name ? `${i.item_3.name}` : null}
-                                </span>
-                                <span className={s.serv_subprice}>
-                                    {i.item_3.price ? `${i.item_3.price} грн` : null}
-                                </span>
-                                <span className={s.serv_subduration}>
-                                    {i.item_3.dur ? `${i.item_3.dur} хв` : null}
-                                </span>
-                            </div>
-                            {/* <div className={s.serv_about}>
-                                <span className={s.serv_desc}>{i.about.description}</span>
-                            </div> */}
-                        </div>
-                        <Gallery data={i.pic} />
-
-                        {/* <div className={s.images}>
-                            <div className={s.images_wrapper}>
-                                {i.pic.map((i) => (
-                                    <div key={i} className={s.images_container}>
-                                        <Image
-                                            style={{ borderRadius: '10px' }}
-                                            layout='responsive'
-                                            objectFit='cover'
-                                            width={50}
-                                            height={50}
-                                            src={i}
-                                            alt='service'
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div> */}
-                        <button className={s.remove}>
-                            <Link href={`/user/services/${i._id}`}>
-                                <a>Редагувати</a>
-                            </Link>
-                        </button>
-                    </div>
-                ))}
-            </div>
+            {srv.map((i) => (
+            <ServiceItem key={i._id} data={i} adminPanel={true}/>
+          ))}
+            
         </div>
     )
 }
