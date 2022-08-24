@@ -12,6 +12,7 @@ export default function BookingAdd({ user }) {
     const [store, setStore] = useStoreContext()
     const [item, setItem] = useState([])
 
+
     useEffect(() => {
         setItem(...store.booking.filter(i=> router.query.bookingid === i._id))
     }, [router])

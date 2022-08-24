@@ -1,39 +1,13 @@
-import { useStoreContext } from '../context/store'
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import Avatar from './avatar'
 import s from './bookingitem.module.css'
 import GetFormatedDay from './getFormatedDay'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 export default function OrderItem({ item }) {
-    const router = useRouter()
 
-    const [store, setStore] = useStoreContext()
 
     const getDay = GetFormatedDay(item.visitDateTime.year, item.visitDateTime.month, item.visitDateTime.day)
 
-    function clientContactsHandler(e) {
-        setContacts({ ...contacts, [e.target.id]: e.target.value })
-    }
 
-    async function shiftOrderHandler(e) {
-        e.preventDefault(e)
-        const response = await fetch(`/api/order/`, {
-            method: 'POST',
-            body: JSON.stringify(mergedData),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        const res = await response.json()
-        console.log('Sended')
-    }
-
-    function cancelOrderHandler(e) {
-        e.preventDefault()
-    }
 
     return (
         <div className={s.booking_wrapper}>

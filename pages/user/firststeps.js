@@ -4,6 +4,23 @@ import Image from 'next/image'
 import s from '../../styles/firststeps.module.css'
 import { signIn } from 'next-auth/react'
 import MasterNav from '../../components/masternav'
+import { getSession } from 'next-auth/react'
+
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+  if (!session) {
+      context.res.writeHead(302, { Location: '/login' })
+      context.res.end()
+      return {}
+  }
+  return {
+      props: {
+          user: session.user,
+      },
+  }
+}
+
 
 export default function Login() {
   return (

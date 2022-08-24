@@ -8,10 +8,11 @@ export default function MasterNav({ path, status }) {
 
 
   const routes = [
-    { link: '/user', label: 'Головна' },
-    { link: '/user/booking', label: 'Бронювання' },
+    { link: '/user/admincalendar', label: 'Календар' },
+    { link: '/user/booking', label: 'Записи' },
     { link: '/user/services', label: 'Послуги' },
     { link: '/user/profile', label: 'Профіль' },
+    { link: '/user', label: '?' },
   ]
 
   return (

@@ -29,8 +29,6 @@ export default function PersonalPage({ user, data }) {
   const { data: session, status } = useSession()
   const [saved, setSaved] = useState(0)
   const [unsaved, setUnsaved] = useState(0)
-  console.log('saved', saved)
-  console.log('unSaved', unsaved)
 
   const [form, setForm] = useState({
     userId: '',

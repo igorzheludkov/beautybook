@@ -20,20 +20,20 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/login',
-    newUser: '/user/profile' // New users will be directed here on first sign in (leave the property out if not of interest)
+    // newUser: '/user/profile' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   
-  // jwt: {
+  jwt: {
 
-  //   maxAge: 60 * 60 * 24 * 30,
-  //   // You can define your own encode/decode functions for signing and encryption
-  //   async encode() {},
-  //   async decode() {},
-  // },
-  // jwt: {
-  //   encryption: true,
-  // },
-  // secret: 'd339ab14c0829f1e4ecf94196f2a743d',
+    maxAge: 60 * 60 * 24 * 30,
+    // You can define your own encode/decode functions for signing and encryption
+    async encode() {},
+    async decode() {},
+  },
+  jwt: {
+    encryption: true,
+  },
+  secret: 'd339ab14c0829f1e4ecf94196f2a743d',
 
   callbacks: {
     // async jwt({ token }) {

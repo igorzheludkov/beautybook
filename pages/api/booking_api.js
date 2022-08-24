@@ -7,7 +7,7 @@ const client = new MongoClient(url)
 // Database Connevtion
 const dbName = 'beautybook'
 
-export default async function UserData(req, res) {
+export default async function BookingData(req, res) {
     await client.connect()
     const db = client.db(dbName)
     const collection = db.collection('orders')

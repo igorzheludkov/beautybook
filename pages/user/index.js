@@ -1,15 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import {useState} from 'react'
-import Layout from '../../components/layout'
 import { getSession } from 'next-auth/react'
 import MasterNav from '../../components/masternav'
-import { useStoreContext } from '../../context/store'
-import { useSession } from 'next-auth/react'
-import useSWR from 'swr'
-import OrdersHistoryItem from '../../components/orderhistoryitem'
-import CheckboxButtons from '../../components/ui/checkboxbuttons'
 import s from '../../styles/firststeps.module.css'
 
 
@@ -26,7 +19,6 @@ export async function getServerSideProps(context) {
         },
     }
 }
-const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function OrdersHistory({ user }) {
 
