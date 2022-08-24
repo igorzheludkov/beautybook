@@ -13,7 +13,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json())
 export default function DayCalendar({ user }) {
   const { data: bookedOrders } = useSWR(user.email ? `/api/bookedtime?q=${user.email}` : null, fetcher)
   const orders = bookedOrders?.orders ?? []
-  console.log(orders);
+  console.log(orders)
   const monthLabel = getMonthLabel()
   const currentTime = new Date()
   const bookingInterval = 10
@@ -51,7 +51,7 @@ export default function DayCalendar({ user }) {
     return genArr
   }
 
-  const generatedTime = useMemo(() => generateBaseTime(600, 1140, bookingInterval), [checkDay])
+  const generatedTime = useMemo(() => generateBaseTime(600, 1200, bookingInterval), [checkDay])
 
   function generateBaseTime(begin, end, interval) {
     let bufferArr = []
@@ -69,9 +69,9 @@ export default function DayCalendar({ user }) {
     let filteredTime = []
     orders.forEach((i) => {
       if (
-        +i.visitDateTime.year == +checkYear &&
-        +i.visitDateTime.month == +checkMonth &&
-        +i.visitDateTime.day == +checkDay
+        +i.visitDateTime.year == +year &&
+        +i.visitDateTime.month == +month &&
+        +i.visitDateTime.day == +day
       ) {
         let orderTimeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
         filteredTime.push({ time: orderTimeInMinutes, dur: +i.visitDur })
@@ -85,10 +85,10 @@ export default function DayCalendar({ user }) {
     let baseTime = gTime
     let baseOrders = nfTime
 
-    baseOrders.forEach((bo) => {
+    baseOrders.forEach((bo, index) => {
       baseTime.forEach((bt) => {
-        if (bt.time >= bo.time && bt.time <= bo.time+bo.dur) {
-          bt.free = false
+        if (bt.time >= bo.time && bt.time <= bo.time + bo.dur) {
+          bt.free = index
         }
       })
     })
@@ -112,6 +112,8 @@ export default function DayCalendar({ user }) {
     backgroundColor: '#ece226',
     borderRadius: '7px',
   }
+
+  const colorPalette = ['#FFFAC8', '#DCFAC8', '#B1F0E5', '#A7D5FF', '#E3CDFF', '#B9CBBF', '#FFECE4']
 
   const scrollMonth = useRef(null)
   const scrollDay = useRef(null)
@@ -192,7 +194,12 @@ export default function DayCalendar({ user }) {
                 data-type-indexminutes={i.minutes}
                 data-type-fieldminutes='minute'
               />
-              <span style={i.free ? {} : timeStyle}  className={s.name_time}>{i.minutes ? i.hours + ':' + i.minutes : i.hours}</span>
+              <span
+                style={notFreeTime.length > 0 ? {borderRadius: '7px',  backgroundColor: `${colorPalette[i.free]}` } : {}}
+                className={s.name_time}
+              >
+                {i.minutes ? i.hours + ':' + i.minutes : i.hours}
+              </span>
               <span className={s.checkmark_time}></span>
             </label>
           </div>
