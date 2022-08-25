@@ -27,8 +27,6 @@ export default function DayCalendar({ user }) {
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
   const [checkTime, setCheckTime] = useState(stateTime.getHours() * 60 + stateTime.getMinutes())
 
-  
-
   function yearHandler(e) {
     e.preventDefault()
     e.target.value === '1' ? setCheckYear(checkYear + 1) : setCheckYear(checkYear - 1)
@@ -53,7 +51,6 @@ export default function DayCalendar({ user }) {
     }
     return genArr
   }
-
 
   const generatedTime = useMemo(
     () => generateBaseTime(workBegin, workEnd, bookingInterval),
@@ -137,16 +134,21 @@ export default function DayCalendar({ user }) {
 
   useEffect(() => {
     setTimeout(() => {
-      scrollMonth.current.scrollLeft = checkMonth * monthStyle.minWidth + 40
-    scrollDay.current.scrollLeft = checkDay * 106 - 212
-    }, 300);
+      // scrollMonth.current.scrollLeft = checkMonth * monthStyle.minWidth + 40
+      scrollMonth.current.scrollTo({ left: checkMonth * monthStyle.minWidth + 40, behavior: 'smooth' })
+      // scrollDay.current.scrollLeft = checkDay * 106 - 212
+      scrollDay.current.scrollTo({ left: checkDay * 106 - 212, behavior: 'smooth' })
+    }, 100)
   }, [checkDay])
 
   useEffect(() => {
     if (stateTime.getDate() === checkDay) {
-      scrollTime.current.scrollTop = ((checkTime - workBegin) / 15) * 24
+      // scrollTime.current.scrollTop = ((checkTime - workBegin) / 15) * 24
+      scrollTime.current.scrollTo({ top: checkTime - (workBegin / 15) * 24, behavior: 'smooth' })
     } else {
-      scrollTime.current.scrollTop = 0
+      scrollTime.current.scrollTo({ top: 0, behavior: 'smooth' })
+
+      // scrollTime.current.scrollTop = 0
     }
   }, [checkDay, bookedOrders])
 
