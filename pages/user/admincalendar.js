@@ -11,20 +11,22 @@ import useSWR from 'swr'
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function DayCalendar({ user }) {
-  const { data: bookedOrders } = useSWR(user.email ? `/api/bookedtime?q=${user.email}` : null, fetcher)
+  const { data: bookedOrders } = useSWR(user.email ? `/api/order?q=${user.email}` : null, fetcher)
+  const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
   const orders = bookedOrders?.orders ?? []
-  console.log(orders)
   const monthLabel = getMonthLabel()
   const currentTime = new Date()
-  const bookingInterval = 10
+  const workBegin = uData?.userData.work_begin ?? 9
+  const workEnd = uData?.userData.work_end ?? 18
+  const bookingInterval = uData?.userData.interval ?? 15
   const [stateTime, setStateTime] = useState(currentTime)
+
+  console.log(workBegin, workEnd, bookingInterval)
 
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
   const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
-  const [checkTime, setCheckTime] = useState()
-
-  console.log(checkYear, checkMonth, checkDay)
+  const [checkTime, setCheckTime] = useState(stateTime.getHours() * 60 + stateTime.getMinutes())
 
   function yearHandler(e) {
     e.preventDefault()
@@ -51,19 +53,30 @@ export default function DayCalendar({ user }) {
     return genArr
   }
 
-  const generatedTime = useMemo(() => generateBaseTime(600, 1200, bookingInterval), [checkDay])
+  console.log('generatedDays', generatedDays)
+
+  const generatedTime = useMemo(
+    () => generateBaseTime(workBegin, workEnd, bookingInterval),
+    [bookedOrders, uData, checkYear, checkMonth, checkDay]
+  )
 
   function generateBaseTime(begin, end, interval) {
     let bufferArr = []
-    for (let i = begin; i <= end; i = i + interval) {
+    for (let i = +begin * 60; i <= +end * 60; i = i + +interval) {
       let formattedTime = getFormattedTime(i)
-      bufferArr.push({ time: i, free: true, hours: formattedTime.hours, minutes: formattedTime.minutes })
+      bufferArr.push({
+        time: i,
+        free: true,
+        hours: formattedTime.hours,
+        minutes: formattedTime.minutes,
+        order: '',
+      })
     }
-
+    console.log(begin, end, interval)
     return bufferArr
   }
 
-  const notFreeTime = useMemo(() => bookedTime(checkYear, checkMonth, checkDay, orders), [checkDay])
+  const notFreeTime = useMemo(() => bookedTime(checkYear, checkMonth, checkDay, orders), [checkDay, orders])
 
   function bookedTime(year, month, day, orders) {
     let filteredTime = []
@@ -74,29 +87,36 @@ export default function DayCalendar({ user }) {
         +i.visitDateTime.day == +day
       ) {
         let orderTimeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
-        filteredTime.push({ time: orderTimeInMinutes, dur: +i.visitDur })
+        filteredTime.push({ ...i, time: orderTimeInMinutes, visitDur: +i.visitDur })
       }
     })
     return filteredTime
   }
-  const getRenderedTime = useMemo(() => renderTime(generatedTime, notFreeTime), [checkDay])
+  const getRenderedTime = useMemo(
+    () => renderTime(generatedTime, notFreeTime),
+    [checkDay, bookedOrders, uData]
+  )
 
   function renderTime(gTime, nfTime) {
+    console.log(nfTime)
     let baseTime = gTime
     let baseOrders = nfTime
 
     baseOrders.forEach((bo, index) => {
       baseTime.forEach((bt) => {
-        if (bt.time >= bo.time && bt.time <= bo.time + bo.dur) {
+        if (bt.time >= bo.time && bt.time <= bo.time + bo.visitDur) {
           bt.free = index
+        }
+        if (bt.time === bo.time) {
+          bt.order = bo
         }
       })
     })
     return baseTime
   }
 
-  console.log(notFreeTime)
-  console.log(getRenderedTime)
+  // console.log('getRenderedTime', getRenderedTime)
+  console.log('generatedTime', generatedTime)
 
   const monthStyle = {
     minWidth: 70,
@@ -117,11 +137,17 @@ export default function DayCalendar({ user }) {
 
   const scrollMonth = useRef(null)
   const scrollDay = useRef(null)
+  const scrollTime = useRef(null)
 
   useEffect(() => {
     scrollMonth.current.scrollLeft = checkMonth * monthStyle.minWidth + 40
     scrollDay.current.scrollLeft = checkDay * 106 - 106
   }, [])
+  useEffect(() => {
+    if (stateTime.getDate() === checkDay) {
+      scrollTime.current.scrollTop = ((checkTime - workBegin) / 15) * 24
+    }
+  }, [checkDay, bookedOrders])
 
   return (
     <>
@@ -180,9 +206,9 @@ export default function DayCalendar({ user }) {
           </div>
         ))}
       </form>
-      <form id='time' className={s.wrapper_time}>
-        {generatedTime.map((i, index) => (
-          <div key={index}>
+      <form id='time' className={s.wrapper_time} ref={scrollTime}>
+        {getRenderedTime.map((i, index) => (
+          <div className={s.time_slot} key={index}>
             <label className={s.container_time}>
               <input
                 name='radio'
@@ -195,13 +221,25 @@ export default function DayCalendar({ user }) {
                 data-type-fieldminutes='minute'
               />
               <span
-                style={notFreeTime.length > 0 ? {borderRadius: '7px',  backgroundColor: `${colorPalette[i.free]}` } : {}}
+                style={
+                  notFreeTime.length > 0
+                    ? { borderRadius: '7px', backgroundColor: `${colorPalette[i.free]}` }
+                    : {}
+                }
                 className={s.name_time}
               >
                 {i.minutes ? i.hours + ':' + i.minutes : i.hours}
               </span>
               <span className={s.checkmark_time}></span>
             </label>
+            {i.order && (
+              <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 +1) * 24}px` }}>
+                <div>{i.order.clientName}</div>
+                <div>{i.order.clientPhone}</div>
+                <div>{i.order.visitDur} хв</div>
+                <div>{i.order.item_1.name} хв</div>
+              </div>
+            )}
           </div>
         ))}
       </form>

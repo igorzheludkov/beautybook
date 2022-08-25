@@ -1,257 +1,233 @@
 .wrapper_month {
-    display: flex;
-    transition: 0.5s;
-    /* margin-bottom: 5px; */
-    overflow-x: auto;
-  }
-  
-  /* .container_month:focus-within {
-      color: white;
-  } */
-  
-  .container_month::-webkit-scrollbar {
-    display: none;
-  }
-  .container_month {
-    display: block;
-    position: relative;
-    /* padding: 0 5px; */
-    cursor: pointer;
-    font-size: 12px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    /* height: var(--month-height); */
-    margin: 3px;
-    color: rgb(148, 148, 148);
-  }
-  
-  .name_month {
-    position: relative;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Hide the browser's default checkbox */
-  .container_month input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-  
-  /* Create a custom checkbox */
-  .checkmark_month {
-    position: absolute;
-    top: 0;
-    left: 0;
-    /* height:var(--month-height); */
-    width: 100%;
-    background-color: rgb(255, 255, 255);
-    /* border-radius: var(--month-border-radius); */
-    border: 1px solid rgb(255, 255, 255);
-  }
-  
-  /* On mouse-over, add a grey background color */
-  .container_month:hover input ~ .checkmark_month {
-    /* background-color: rgb(235, 235, 235); */
-    border: 2px solid grey;
-  }
-  
-  /* When the checkbox is checked, add a blue background */
-  .container_month input:checked ~ .checkmark_month {
-    /* background-color: #7bc3ff; */
-    border: 2px solid #a6eaff;
-  }
-  
-  /* ------------- styles for days --------------------- */
-  .wrapper_day {
-    display: flex;
-    overflow-x: auto;
-  }
-  
-  .container_day {
-    display: block;
-    position: relative;
-    padding: 0 5px;
-    cursor: pointer;
-    font-size: 14px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    /* height: var(--day-height); */
-    margin: 3px;
-  }
-  .container_day::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .name_day {
-    position: relative;
-    z-index: 100;
-    /* height: var(--day-height); */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 90px;
-  }
-  
-  /* Hide the browser's default checkbox */
-  .container_day input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-  
-  /* Create a custom checkbox */
-  .checkmark_day {
-    position: absolute;
-    top: 0;
-    left: 0;
-    /* height:var(--day-height); */
-    width: 100%;
-    background-color: rgb(255, 255, 255);
-    /* border-radius: var(--day-border-radius); */
-    border: 2px solid rgb(230, 230, 230);
-  }
-  
-  /* On mouse-over, add a grey background color */
-  .container_day:hover input ~ .checkmark_day {
-    /* background-color: rgb(235, 235, 235); */
-    border: 2px solid grey;
-  }
-  
-  /* When the checkbox is checked, add a blue background */
-  .container_day input:checked ~ .checkmark_day {
-    /* background-color: #2196f3; */
-    border: 2px solid #2196f3;
-  }
-  
-  .weekday {
-    text-transform: capitalize;
-  }
-  
-  .weekday_num {
-    font-size: 12px;
-    color: grey;
-  }
-  
-  /* ------------- styles for time --------------------- */
-  
-  .wrapper_time {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-    transition: 0.3s;
-    width: 360px;
-    min-width: 360px;
-    overflow-x: scroll;
+  display: flex;
+  transition: 0.5s;
+  overflow-x: auto;
+}
 
-  }
-  /* .wrapper_time {
-    display: grid;
-    grid-template-rows: 50px 50px;
-    grid-auto-flow: column;
-    margin-bottom: 15px;
-    transition: 0.3s;
-    overflow-x: scroll;
-    height: 100px;
-    justify-content: start;
-  } */
-  
-  .wrapper_time::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .container_time {
-    display: block;
-    position: relative;
-    padding: 0;
-    cursor: pointer;
-    font-size: 14px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    height: 40px;
-        width: 50px;
-    margin: 2px 4px;
-  }
-  
-  .name_time {
-    position: relative;
-    z-index: 100;
-    height: 40px;
-    width: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Hide the browser's default checkbox */
-  .container_time input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-  
-  /* Create a custom checkbox */
-  .checkmark_time {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 40px;
-    width: 50px;
-    background-color: rgb(245, 245, 245);
-    border-radius: 7px  ;
-    /* border: 2px solid rgb(230, 230, 230); */
-  }
-  
-  /* On mouse-over, add a grey background color */
-  .container_time:hover input ~ .checkmark_time {
-    background-color: rgb(235, 235, 235);
-    border: 2px solid grey;
-  }
-  
-  /* When the checkbox is checked, add a blue background */
-  .container_time input:checked ~ .checkmark_time {
-    /* background-color: #2196f3; */
-    border: 2px solid #2196f3;
-  }
-  
-  .showmore {
-    border: none;
-    border-radius: 10px;
-    color: rgb(0, 0, 0);
-    background-color: #bce4ff;
-    width: 130px;
-    margin: 0 auto;
-    margin-bottom: 20px;
-  }
-  
-  .years_wrapper {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-  
-  }
-  .years {
-    border: none;
-    border-radius: 10px;
-    color: rgb(0, 0, 0);
-    background-color: #bce4ff;
-    width: 25px;
-    height: 25px;
-    margin: 0 5px;
-  }
-  
+.container_month::-webkit-scrollbar {
+  display: none;
+}
+.container_month {
+  display: block;
+  position: relative;
+  /* padding: 0 5px; */
+  cursor: pointer;
+  font-size: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* height: var(--month-height); */
+  margin: 3px;
+  color: rgb(148, 148, 148);
+}
+
+.name_month {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container_month input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark_month {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(255, 255, 255);
+}
+
+.container_month:hover input ~ .checkmark_month {
+  /* background-color: rgb(235, 235, 235); */
+  border: 2px solid grey;
+}
+
+.container_month input:checked ~ .checkmark_month {
+  /* background-color: #7bc3ff; */
+  border: 2px solid #a6eaff;
+}
+
+/* ------------- styles for days --------------------- */
+.wrapper_day {
+  display: flex;
+  overflow-x: auto;
+}
+
+.container_day {
+  display: block;
+  position: relative;
+  padding: 0 5px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 3px;
+}
+.container_day::-webkit-scrollbar {
+  display: none;
+}
+
+.name_day {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+}
+
+.container_day input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark_day {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(230, 230, 230);
+}
+
+.container_day:hover input ~ .checkmark_day {
+  border: 2px solid grey;
+}
+
+.container_day input:checked ~ .checkmark_day {
+  border: 2px solid #2196f3;
+}
+
+.weekday {
+  text-transform: capitalize;
+}
+
+.weekday_num {
+  font-size: 12px;
+  color: grey;
+}
+
+/* ------------- styles for time --------------------- */
+
+.wrapper_time {
+  display: grid;
+  justify-items: end;
+  margin-bottom: 15px;
+  transition: 0.3s;
+  width: 360px;
+  min-width: 360px;
+  overflow-x: scroll;
+  height: 70vh;
+}
+
+.wrapper_time::-webkit-scrollbar {
+  display: none;
+}
+
+.container_time {
+  display: block;
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  height: 20px;
+  width: 50px;
+  margin: 2px 4px;
+}
+
+.name_time {
+  position: relative;
+  z-index: 100;
+  height: 20px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container_time input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark_time {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 50px;
+  background-color: rgb(245, 245, 245);
+  border-radius: 7px;
+}
+
+.container_time:hover input ~ .checkmark_time {
+  background-color: rgb(235, 235, 235);
+  border: 2px solid grey;
+}
+
+.container_time input:checked ~ .checkmark_time {
+  border: 2px solid #2196f3;
+}
+
+.showmore {
+  border: none;
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  background-color: #bce4ff;
+  width: 130px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.years_wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.years {
+  border: none;
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  background-color: #bce4ff;
+  width: 25px;
+  height: 25px;
+  margin: 0 5px;
+}
+
+.time_slot {
+  position: relative;
+}
+
+.order_card {
+  position: absolute;
+  right: 70px;
+  top: 0;
+  width: 250px;
+  background: #e9e9e9;
+  padding: 5px;
+  border-radius: 7px;
+  font-size: 14px;
+}

@@ -22,11 +22,12 @@ export default function Calendar({ props }) {
   const work = {
     startTime: +user?.userData.work_begin * 60 ?? 9 * 60,
     endTime: +user?.userData.work_end * 60 ?? 20 * 60,
-    interval: +user?.userData.interval ?? 20,
+    interval: +user?.userData.interval ?? 15,
     except: '',
   }
   const [renderTime, setRenderTime] = useState([])
   // const [renderTime, setRenderTime] = useState(generatedClassicTime(timeTransform()))
+  console.log(work.interval);
 
   function yearHandler(e) {
     e.preventDefault()
@@ -87,14 +88,14 @@ export default function Calendar({ props }) {
       ) {
         let timeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
         let add = 0
-        for (let rem = 0; rem < (+work.interval + +i.visitDur) / 10; rem++) {
+        for (let rem = 0; rem < (+work.interval + +i.visitDur) / 15; rem++) {
           testArr.push({ time: timeInMinutes + add, free: false })
-          add = add + 10
+          add = add + 15
         }
         let sub = 0
-        for (let rem = 0; rem < ((+i.visitDur ?? 40) + +work.interval) / 10; rem++) {
+        for (let rem = 0; rem < ((+i.visitDur ?? 40)  ) / 15; rem++) {
           testArr.push({ time: timeInMinutes - sub, free: false })
-          sub = sub + 10
+          sub = sub + 15
         }
       }
     })
@@ -105,18 +106,17 @@ export default function Calendar({ props }) {
     let bufferArr = []
     if (checkDay == curDay) {
       for (
-        let i = currentTime.getHours() * 60 + Math.round(currentTime.getMinutes() / 10) * 10;
+        let i = currentTime.getHours() * 60 + Math.round(currentTime.getMinutes() / 15) * 15;
         i <= work.endTime;
-        i = i + 10
+        i = i + 15
       ) {
         bufferArr.push({ time: i, free: true })
       }
     } else {
-      for (let i = work.startTime; i <= work.endTime; i = i + 10) {
+      for (let i = work.startTime; i <= work.endTime; i = i + 15) {
         bufferArr.push({ time: i, free: true })
       }
     }
-
     return bufferArr
   }
 

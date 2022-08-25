@@ -15,7 +15,7 @@ export default function Layout({ children }) {
         <Navbar />
         <div className='padding-top'></div>
         <div className={s.content_wrapper}>{children}</div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   )

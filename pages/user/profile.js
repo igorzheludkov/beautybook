@@ -46,7 +46,7 @@ export default function PersonalPage({ user, data }) {
     surname: '',
     work_begin: '9',
     work_end: '18',
-    interval: 10,
+    interval: 15,
     horizon: 3,
     url: '',
     work_days: '',
@@ -352,7 +352,7 @@ export default function PersonalPage({ user, data }) {
         />
         <p className={s.paragraph}>Скільки хвилин має бути інтервал між бронюваннями?</p>
         <RadioButtons
-          data={{ label: [10, 20, 30], id: 'interval' }}
+          data={{ label: [15, 30], id: 'interval' }}
           inputHandler={inputHandler}
           value={form.interval}
         />

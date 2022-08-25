@@ -7,7 +7,6 @@ import Avatar from './avatar'
 import Calendar from './calendar'
 import Link from 'next/link'
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   const [booked, setBooked] = useState(0)
