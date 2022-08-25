@@ -231,3 +231,12 @@
   border-radius: 7px;
   font-size: 14px;
 }
+
+
+.color_identificator {
+    width: 10px;
+    position: absolute;
+    top: 0;
+    right: -10px;
+    border-radius: 7px;
+}

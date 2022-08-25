@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 import MasterNav from '../../components/masternav'
 import useSWR from 'swr'
+import OrderTemplate from '../../components/utils/orderTemplate'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -21,12 +22,12 @@ export default function DayCalendar({ user }) {
   const bookingInterval = uData?.userData.interval ?? 15
   const [stateTime, setStateTime] = useState(currentTime)
 
-  console.log(workBegin, workEnd, bookingInterval)
-
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
   const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
   const [checkTime, setCheckTime] = useState(stateTime.getHours() * 60 + stateTime.getMinutes())
+
+  
 
   function yearHandler(e) {
     e.preventDefault()
@@ -53,7 +54,6 @@ export default function DayCalendar({ user }) {
     return genArr
   }
 
-  console.log('generatedDays', generatedDays)
 
   const generatedTime = useMemo(
     () => generateBaseTime(workBegin, workEnd, bookingInterval),
@@ -115,14 +115,10 @@ export default function DayCalendar({ user }) {
     return baseTime
   }
 
-  // console.log('getRenderedTime', getRenderedTime)
-  console.log('generatedTime', generatedTime)
-
   const monthStyle = {
     minWidth: 70,
     height: 25,
     borderRadius: 20,
-    // padding: '0 5px',
   }
   const dayStyle = {
     height: '40px',
@@ -140,12 +136,17 @@ export default function DayCalendar({ user }) {
   const scrollTime = useRef(null)
 
   useEffect(() => {
-    scrollMonth.current.scrollLeft = checkMonth * monthStyle.minWidth + 40
-    scrollDay.current.scrollLeft = checkDay * 106 - 106
-  }, [])
+    setTimeout(() => {
+      scrollMonth.current.scrollLeft = checkMonth * monthStyle.minWidth + 40
+    scrollDay.current.scrollLeft = checkDay * 106 - 212
+    }, 300);
+  }, [checkDay])
+
   useEffect(() => {
     if (stateTime.getDate() === checkDay) {
       scrollTime.current.scrollTop = ((checkTime - workBegin) / 15) * 24
+    } else {
+      scrollTime.current.scrollTop = 0
     }
   }, [checkDay, bookedOrders])
 
@@ -220,25 +221,25 @@ export default function DayCalendar({ user }) {
                 data-type-indexminutes={i.minutes}
                 data-type-fieldminutes='minute'
               />
-              <span
-                style={
-                  notFreeTime.length > 0
-                    ? { borderRadius: '7px', backgroundColor: `${colorPalette[i.free]}` }
-                    : {}
-                }
-                className={s.name_time}
-              >
-                {i.minutes ? i.hours + ':' + i.minutes : i.hours}
-              </span>
+              <span className={s.name_time}>{i.minutes ? i.hours + ':' + i.minutes : i.hours}</span>
               <span className={s.checkmark_time}></span>
             </label>
             {i.order && (
-              <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 +1) * 24}px` }}>
-                <div>{i.order.clientName}</div>
-                <div>{i.order.clientPhone}</div>
-                <div>{i.order.visitDur} хв</div>
-                <div>{i.order.item_1.name} хв</div>
-              </div>
+              <>
+                <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 + 1) * 24}px` }}>
+                  <div
+                    className={s.color_identificator}
+                    style={{
+                      backgroundColor: `${colorPalette[i.free]}`,
+                      height: `${(i.order.visitDur / 15 + 1) * 24}px`,
+                    }}
+                  ></div>
+                  <div>{i.order.clientName}</div>
+                  <div>{i.order.clientPhone}</div>
+                  <div>{i.order.visitDur} хв</div>
+                  <div>{i.order.item_1.name} хв</div>
+                </div>
+              </>
             )}
           </div>
         ))}
