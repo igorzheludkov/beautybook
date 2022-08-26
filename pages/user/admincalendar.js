@@ -6,7 +6,7 @@ import getFormattedTime from '../../components/utils/getFormattedTime'
 import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 import MasterNav from '../../components/masternav'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import OrderAdd from '../../components/orderadd'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
@@ -26,7 +26,7 @@ export default function DayCalendar({ user }) {
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
   const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
-  
+
   const currentTimeInMinutes = stateTime.getHours() * 60 + stateTime.getMinutes()
   const formattedTime = getFormattedTime(currentTimeInMinutes)
   const [checkTime, setCheckTime] = useState(formattedTime)
@@ -35,8 +35,8 @@ export default function DayCalendar({ user }) {
     year: checkYear,
     month: checkMonth,
     day: checkDay,
-    hour: formattedTime.hour,
-    minute: formattedTime.minute,
+    hour: '',
+    minute: '',
   })
 
   useEffect(() => {
@@ -50,7 +50,24 @@ export default function DayCalendar({ user }) {
     })
   }, [checkYear, checkMonth, checkDay, checkTime])
 
-
+  async function removeHandler(e) {
+    e.preventDefault(e)
+    const response = await fetch('/api/booking_api', {
+      method: 'DELETE',
+      body: JSON.stringify({ _id: e.target.value }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    console.log('Sended')
+    console.log(data)
+    if (data.result.deletedCount > 0) {
+      mutate(`/api/order?q=${user.email}`)
+    }
+    // if (data.result.deletedCount > 0) return router.push('/user/booking')
+    console.log(data.result.deletedCount > 0)
+  }
 
   function yearHandler(e) {
     e.preventDefault()
@@ -117,6 +134,7 @@ export default function DayCalendar({ user }) {
     () => renderTime(generatedTime, notFreeTime),
     [checkDay, bookedOrders, uData]
   )
+  console.log(getRenderedTime)
 
   function renderTime(gTime, nfTime) {
     let baseTime = gTime
@@ -168,9 +186,10 @@ export default function DayCalendar({ user }) {
         top: Math.round(((currentTimeInMinutes - workBegin * 60) / 15) * 24 - 24),
         behavior: 'smooth',
       })
-    } else {
-      scrollTime.current.scrollTo({ top: 0, behavior: 'smooth' })
     }
+    // else {
+    //   scrollTime.current.scrollTo({ top: 0, behavior: 'smooth' })
+    // }
   }, [checkDay, bookedOrders])
 
   return (
@@ -251,25 +270,35 @@ export default function DayCalendar({ user }) {
               </label>
               {i.order && (
                 <>
-                  <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 + 1) * 24}px` }}>
+                  <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 + 1) * 24 -2}px` }}>
                     <div
                       className={s.color_identificator}
                       style={{
                         backgroundColor: `${colorPalette[i.free]}`,
-                        height: `${(i.order.visitDur / 15 + 1) * 24}px`,
+                        height: `${(i.order.visitDur / 15 + 1) * 24 -2 }px`,
                       }}
                     ></div>
                     <div>{i.order.clientName}</div>
                     <div>{i.order.clientPhone}</div>
-                    <div>{i.order.visitDur} хв</div>
-                    <div>{i.order.item_1.name}</div>
+                    <div></div>
+                    <div>
+                      {i.order.item_1.name}, {i.order.visitDur} хв
+                    </div>
+                    <div className={s.edit_buttons}>
+                      <button onClick={removeHandler} value={i.order._id} className={s.remove_btn}>
+                        Видалити
+                      </button>
+                      <button value={i.order._id} className={s.shift_btn}>
+                        Перенести
+                      </button>
+                    </div>
                   </div>
                 </>
               )}
             </div>
           ))}
         </form>
-        {uData && uServ && <OrderAdd visitDateTime={visitDateTime} user={uData} serv={uServ} client={''}/>}
+        {uData && uServ && <OrderAdd visitDateTime={visitDateTime} user={uData} serv={uServ} client={''} />}
       </div>
     </>
   )
