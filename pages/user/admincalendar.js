@@ -7,13 +7,14 @@ import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 import MasterNav from '../../components/masternav'
 import useSWR from 'swr'
-import OrderTemplate from '../../components/utils/orderTemplate'
+import OrderAdd from '../../components/orderadd'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function DayCalendar({ user }) {
   const { data: bookedOrders } = useSWR(user.email ? `/api/order?q=${user.email}` : null, fetcher)
   const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
+  const { data: uServ } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
   const orders = bookedOrders?.orders ?? []
   const monthLabel = getMonthLabel()
   const currentTime = new Date()
@@ -25,7 +26,31 @@ export default function DayCalendar({ user }) {
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
   const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
-  const [checkTime, setCheckTime] = useState(stateTime.getHours() * 60 + stateTime.getMinutes())
+  
+  const currentTimeInMinutes = stateTime.getHours() * 60 + stateTime.getMinutes()
+  const formattedTime = getFormattedTime(currentTimeInMinutes)
+  const [checkTime, setCheckTime] = useState(formattedTime)
+
+  const [visitDateTime, setVisitDateTime] = useState({
+    year: checkYear,
+    month: checkMonth,
+    day: checkDay,
+    hour: formattedTime.hour,
+    minute: formattedTime.minute,
+  })
+
+  useEffect(() => {
+    setVisitDateTime({
+      ...visitDateTime,
+      year: checkYear,
+      month: checkMonth,
+      day: checkDay,
+      hour: checkTime.hour,
+      minute: checkTime.minute,
+    })
+  }, [checkYear, checkMonth, checkDay, checkTime])
+
+
 
   function yearHandler(e) {
     e.preventDefault()
@@ -64,12 +89,11 @@ export default function DayCalendar({ user }) {
       bufferArr.push({
         time: i,
         free: true,
-        hours: formattedTime.hours,
-        minutes: formattedTime.minutes,
+        hours: formattedTime.hour,
+        minutes: formattedTime.minute,
         order: '',
       })
     }
-    console.log(begin, end, interval)
     return bufferArr
   }
 
@@ -95,7 +119,6 @@ export default function DayCalendar({ user }) {
   )
 
   function renderTime(gTime, nfTime) {
-    console.log(nfTime)
     let baseTime = gTime
     let baseOrders = nfTime
 
@@ -134,21 +157,19 @@ export default function DayCalendar({ user }) {
 
   useEffect(() => {
     setTimeout(() => {
-      // scrollMonth.current.scrollLeft = checkMonth * monthStyle.minWidth + 40
       scrollMonth.current.scrollTo({ left: checkMonth * monthStyle.minWidth + 40, behavior: 'smooth' })
-      // scrollDay.current.scrollLeft = checkDay * 106 - 212
       scrollDay.current.scrollTo({ left: checkDay * 106 - 212, behavior: 'smooth' })
     }, 100)
   }, [checkDay])
 
   useEffect(() => {
     if (stateTime.getDate() === checkDay) {
-      // scrollTime.current.scrollTop = ((checkTime - workBegin) / 15) * 24
-      scrollTime.current.scrollTo({ top: checkTime - (workBegin / 15) * 24, behavior: 'smooth' })
+      scrollTime.current.scrollTo({
+        top: Math.round(((currentTimeInMinutes - workBegin * 60) / 15) * 24 - 24),
+        behavior: 'smooth',
+      })
     } else {
       scrollTime.current.scrollTo({ top: 0, behavior: 'smooth' })
-
-      // scrollTime.current.scrollTop = 0
     }
   }, [checkDay, bookedOrders])
 
@@ -158,94 +179,98 @@ export default function DayCalendar({ user }) {
         <title>Day Calendar</title>
       </Head>
       <MasterNav />
-      <form className={s.wrapper_month} ref={scrollMonth}>
-        {generatedMonths.map((i) => (
-          <label key={i.index} style={monthStyle} className={s.container_month}>
-            <input
-              value={i.index}
-              name='radio'
-              type='radio'
-              defaultChecked={i.index === checkMonth}
-              onChange={() => setCheckMonths(i.index)}
-              data-type-index={i.index}
-              data-type-field='month'
-              //   onClick={monthHandler}
-            />
-            <span style={monthStyle} className={s.name_month}>
-              {i.month}
-            </span>
-            <span style={monthStyle} className={s.checkmark_month}></span>
-          </label>
-        ))}
-        <div className={s.years_wrapper}>
-          <button className={s.years} value='0' onClick={yearHandler}>
-            {'-'}
-          </button>
-          {checkYear}
-          <button className={s.years} value='1' onClick={yearHandler}>
-            {'+'}
-          </button>
-        </div>
-      </form>
-      <form className={s.wrapper_day} ref={scrollDay}>
-        {generatedDays.map((i, index) => (
-          <div key={index}>
-            <label style={dayStyle} className={s.container_day}>
+      <div className={s.calendear_wrapper}>
+        <form className={s.wrapper_month} ref={scrollMonth}>
+          {generatedMonths.map((i) => (
+            <label key={i.index} style={monthStyle} className={s.container_month}>
               <input
                 value={i.index}
                 name='radio'
                 type='radio'
-                defaultChecked={i.index === checkDay}
-                onChange={() => setCheckDay(i.index)}
+                defaultChecked={i.index === checkMonth}
+                onChange={() => setCheckMonths(i.index)}
                 data-type-index={i.index}
-                data-type-field='day'
+                data-type-field='month'
+                //   onClick={monthHandler}
               />
-              <span style={dayStyle} className={s.name_day}>
-                <div className={s.weekday}>{i.weekday} </div>
-                <div className={s.weekday_num}>{i.number}</div>
+              <span style={monthStyle} className={s.name_month}>
+                {i.month}
               </span>
-              <span style={dayStyle} className={s.checkmark_day}></span>
+              <span style={monthStyle} className={s.checkmark_month}></span>
             </label>
+          ))}
+          <div className={s.years_wrapper}>
+            <button className={s.years} value='0' onClick={yearHandler}>
+              {'-'}
+            </button>
+            {checkYear}
+            <button className={s.years} value='1' onClick={yearHandler}>
+              {'+'}
+            </button>
           </div>
-        ))}
-      </form>
-      <form id='time' className={s.wrapper_time} ref={scrollTime}>
-        {getRenderedTime.map((i, index) => (
-          <div className={s.time_slot} key={index}>
-            <label className={s.container_time}>
-              <input
-                name='radio'
-                type='radio'
-                // value={}
-                // onChange={visitHandler}
-                data-type-index={i.hours}
-                data-type-field='hour'
-                data-type-indexminutes={i.minutes}
-                data-type-fieldminutes='minute'
-              />
-              <span className={s.name_time}>{i.minutes ? i.hours + ':' + i.minutes : i.hours}</span>
-              <span className={s.checkmark_time}></span>
-            </label>
-            {i.order && (
-              <>
-                <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 + 1) * 24}px` }}>
-                  <div
-                    className={s.color_identificator}
-                    style={{
-                      backgroundColor: `${colorPalette[i.free]}`,
-                      height: `${(i.order.visitDur / 15 + 1) * 24}px`,
-                    }}
-                  ></div>
-                  <div>{i.order.clientName}</div>
-                  <div>{i.order.clientPhone}</div>
-                  <div>{i.order.visitDur} хв</div>
-                  <div>{i.order.item_1.name} хв</div>
-                </div>
-              </>
-            )}
-          </div>
-        ))}
-      </form>
+        </form>
+        <form className={s.wrapper_day} ref={scrollDay}>
+          {generatedDays.map((i, index) => (
+            <div key={index}>
+              <label style={dayStyle} className={s.container_day}>
+                <input
+                  value={i.index}
+                  name='radio'
+                  type='radio'
+                  defaultChecked={i.index === checkDay}
+                  onChange={() => setCheckDay(i.index)}
+                  data-type-index={i.index}
+                  data-type-field='day'
+                />
+                <span style={dayStyle} className={s.name_day}>
+                  <div className={s.weekday}>{i.weekday} </div>
+                  <div className={s.weekday_num}>{i.number}</div>
+                </span>
+                <span style={dayStyle} className={s.checkmark_day}></span>
+              </label>
+            </div>
+          ))}
+        </form>
+        <form id='time' className={s.wrapper_time} ref={scrollTime}>
+          {getRenderedTime.map((i, index) => (
+            <div className={s.time_slot} key={index}>
+              <label className={s.container_time}>
+                <input
+                  name='radio'
+                  type='radio'
+                  onChange={() => setCheckTime({ hour: i.hours, minute: i.minutes })}
+                  // value={}
+                  // onChange={visitHandler}
+                  data-type-index={i.hours}
+                  data-type-field='hour'
+                  data-type-indexminutes={i.minutes}
+                  data-type-fieldminutes='minute'
+                />
+                <span className={s.name_time}>{i.minutes ? i.hours + ':' + i.minutes : i.hours}</span>
+                <span className={s.checkmark_time}></span>
+              </label>
+              {i.order && (
+                <>
+                  <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 + 1) * 24}px` }}>
+                    <div
+                      className={s.color_identificator}
+                      style={{
+                        backgroundColor: `${colorPalette[i.free]}`,
+                        height: `${(i.order.visitDur / 15 + 1) * 24}px`,
+                      }}
+                    ></div>
+                    <div>{i.order.clientName}</div>
+                    <div>{i.order.clientPhone}</div>
+                    <div>{i.order.visitDur} хв</div>
+                    <div>{i.order.item_1.name}</div>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </form>
+        {uData && uServ && <OrderAdd visitDateTime={visitDateTime} user={uData} serv={uServ} client={''}/>}
+      </div>
     </>
   )
 }

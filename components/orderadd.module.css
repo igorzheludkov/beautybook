@@ -1,0 +1,45 @@
+.order_add {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+}
+
+.client_data {
+  width: 140px;
+  background-color: #ebf5f9;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.input_name,
+.input_phone,
+.input_service {
+  width: 100%;
+  border: 2px solid #78ceff;
+  border-radius: 30px;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  height: 35px;
+}
+
+.submit_btn {
+  border-radius: 10px;
+  background-color: #d6ffda;
+  border: none;
+  height: 45px;
+  width: 140px;
+}
+
+.date,
+.time {
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+.selectServ {
+  width: 100%;
+  border: none;
+  border-radius: 30px;
+  padding: 5px;
+  height: 35px;
+}

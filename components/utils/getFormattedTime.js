@@ -5,6 +5,6 @@ export default function GetFormattedTime(time) {
     const minutes = (hours - rhours) * 60
     const rminutes = Math.round(minutes)
 
-    return rminutes > 0 ? { hours: rhours, minutes: rminutes } : { hours: rhours, minutes: 0 }
+    return rminutes > 0 ? { hour: rhours, minute: rminutes } : { hour: rhours, minute: 0 }
    } 
    

@@ -7,5 +7,5 @@ export default function getFormattedDay(year, month, day) {
   const dayLong = new Intl.DateTimeFormat('uk-UA', options).format(date)
   const optionsNum = { day: 'numeric', month: 'numeric' }
   const dayNum = new Intl.DateTimeFormat('uk-UA', optionsNum).format(date)
-  return { weekday: dayLong, number: dayNum, index: date.getDate() }
+  return { weekday: dayLong, number: dayNum, index: date.getDate(), year: date.getFullYear() }
 }
