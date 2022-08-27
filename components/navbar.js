@@ -3,7 +3,7 @@ import Link from 'next/link'
 import s from './navbar.module.css'
 import { signIn, signOut, useSession, getSession, getProviders } from 'next-auth/react'
 import { useStoreContext } from '../context/store'
-import Avatar from './avatar'
+import MasterNav from './masternav'
 
 export async function getServerSideProps(context) {
   return {
@@ -42,9 +42,9 @@ export default function Navbar() {
         </div> */}
         <div className={s.orders_container}>
           {/* <span className={s.counter}>{store.orders.length}</span> */}
-          <Link href='/history'>
-            <a>
-              <Image className={s.orders} src='/images/orders.png' width={25} height={25} alt='logo' />
+          <Link href='/user/admincalendar'>
+            <a style={!session ? {pointerEvents: 'none'} : {}}>
+              <Image className={s.orders} src='/images/booking.png' width={25} height={25} alt='logo' />
             </a>
           </Link>
         </div>
@@ -83,11 +83,8 @@ export default function Navbar() {
         {session?.user && (
           <>
             <div className={s.login_wrapper}>
-              <Link href='/user'>
-                <a className={s.link}>
-                  <Avatar h={40} w={40} src={session.user.image} />
-                </a>
-              </Link>
+              <MasterNav avatar={session.user.image} />
+              
             </div>
           </>
         )}

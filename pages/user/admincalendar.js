@@ -5,14 +5,31 @@ import getFormattedDay from '../../components/utils/getFormattedDay'
 import getFormattedTime from '../../components/utils/getFormattedTime'
 import { getSession } from 'next-auth/react'
 import Head from 'next/head'
-import MasterNav from '../../components/masternav'
 import useSWR, { mutate } from 'swr'
 import OrderAdd from '../../components/orderadd'
 
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+  if (!session) {
+    context.res.writeHead(302, { Location: '/login' })
+    context.res.end()
+    return {}
+  }
+
+  return {
+    props: {
+      user: session.user,
+    },
+  }
+}
+
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
+
 export default function DayCalendar({ user }) {
-  const { data: bookedOrders } = useSWR(user.email ? `/api/order?q=${user.email}` : null, fetcher)
+  // if (!user) return <div className={s.authorize}>Для перегляду даного розділу потрібно увійти в систему</div>
+  const { data: bookedOrders } = useSWR(user?.email ? `/api/order?q=${user.email}` : null, fetcher)
   const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
   const { data: uServ } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
   const orders = bookedOrders?.orders ?? []
@@ -44,7 +61,6 @@ export default function DayCalendar({ user }) {
     e.preventDefault(e)
     setEditOrder(...bookedOrders.orders.filter((i) => i._id === e.target.value))
   }
-
 
   function cancelOrderHandler(e) {
     e?.preventDefault(e)
@@ -97,10 +113,11 @@ export default function DayCalendar({ user }) {
   const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth, checkDay])
 
   function genDays(month) {
+    const type = 'short'
     let countDays = new Date(checkYear, checkMonth + 1, 0).getDate()
     let genArr = []
     for (let i = 1; i <= countDays; i++) {
-      genArr.push(getFormattedDay(checkYear, month, i))
+      genArr.push(getFormattedDay(checkYear, month, i, type))
     }
     return genArr
   }
@@ -186,7 +203,7 @@ export default function DayCalendar({ user }) {
   useEffect(() => {
     setTimeout(() => {
       scrollMonth.current.scrollTo({ left: checkMonth * monthStyle.minWidth + 40, behavior: 'smooth' })
-      scrollDay.current.scrollTo({ left: checkDay * 106 - 212, behavior: 'smooth' })
+      scrollDay.current.scrollTo({ left: checkDay * 49 - 98, behavior: 'smooth' })
     }, 100)
   }, [checkDay])
 
@@ -207,59 +224,60 @@ export default function DayCalendar({ user }) {
       <Head>
         <title>Day Calendar</title>
       </Head>
-      <MasterNav />
-      <div className={s.calendear_wrapper}>
-        <form className={s.wrapper_month} ref={scrollMonth}>
-          {generatedMonths.map((i) => (
-            <label key={i.index} style={monthStyle} className={s.container_month}>
-              <input
-                value={i.index}
-                name='radio'
-                type='radio'
-                defaultChecked={i.index === checkMonth}
-                onChange={() => setCheckMonths(i.index)}
-                data-type-index={i.index}
-                data-type-field='month'
-                //   onClick={monthHandler}
-              />
-              <span style={monthStyle} className={s.name_month}>
-                {i.month}
-              </span>
-              <span style={monthStyle} className={s.checkmark_month}></span>
-            </label>
-          ))}
-          <div className={s.years_wrapper}>
-            <button className={s.years} value='0' onClick={yearHandler}>
-              {'-'}
-            </button>
-            {checkYear}
-            <button className={s.years} value='1' onClick={yearHandler}>
-              {'+'}
-            </button>
-          </div>
-        </form>
-        <form className={s.wrapper_day} ref={scrollDay}>
-          {generatedDays.map((i, index) => (
-            <div key={index}>
-              <label style={dayStyle} className={s.container_day}>
+      <div className={s.calendar_wrapper}>
+        <div className={s.monthDay}>
+          <form className={s.wrapper_month} ref={scrollMonth}>
+            {generatedMonths.map((i) => (
+              <label key={i.index} style={monthStyle} className={s.container_month}>
                 <input
                   value={i.index}
                   name='radio'
                   type='radio'
-                  defaultChecked={i.index === checkDay}
-                  onChange={() => setCheckDay(i.index)}
+                  defaultChecked={i.index === checkMonth}
+                  onChange={() => setCheckMonths(i.index)}
                   data-type-index={i.index}
-                  data-type-field='day'
+                  data-type-field='month'
+                  //   onClick={monthHandler}
                 />
-                <span style={dayStyle} className={s.name_day}>
-                  <div className={s.weekday}>{i.weekday} </div>
-                  <div className={s.weekday_num}>{i.number}</div>
+                <span style={monthStyle} className={s.name_month}>
+                  {i.month}
                 </span>
-                <span style={dayStyle} className={s.checkmark_day}></span>
+                <span style={monthStyle} className={s.checkmark_month}></span>
               </label>
+            ))}
+            <div className={s.years_wrapper}>
+              <button className={s.years} value='0' onClick={yearHandler}>
+                {'-'}
+              </button>
+              {checkYear}
+              <button className={s.years} value='1' onClick={yearHandler}>
+                {'+'}
+              </button>
             </div>
-          ))}
-        </form>
+          </form>
+          <form className={s.wrapper_day} ref={scrollDay}>
+            {generatedDays.map((i, index) => (
+              <div key={index}>
+                <label style={dayStyle} className={s.container_day}>
+                  <input
+                    value={i.index}
+                    name='radio'
+                    type='radio'
+                    defaultChecked={i.index === checkDay}
+                    onChange={() => setCheckDay(i.index)}
+                    data-type-index={i.index}
+                    data-type-field='day'
+                  />
+                  <span style={dayStyle} className={s.name_day}>
+                    <div className={s.weekday}>{i.weekday} </div>
+                    <div className={s.weekday_num}>{i.number}</div>
+                  </span>
+                  <span style={dayStyle} className={s.checkmark_day}></span>
+                </label>
+              </div>
+            ))}
+          </form>
+        </div>
         <form id='time' className={s.wrapper_time} ref={scrollTime}>
           {getRenderedTime.map((i, index) => (
             <div className={s.time_slot} key={index}>
@@ -327,17 +345,3 @@ export default function DayCalendar({ user }) {
   )
 }
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
-  if (!session) {
-    context.res.writeHead(302, { Location: '/login' })
-    context.res.end()
-    return {}
-  }
-
-  return {
-    props: {
-      user: session.user,
-    },
-  }
-}

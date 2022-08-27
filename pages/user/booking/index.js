@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getSession } from 'next-auth/react'
 import DashNav from '../../../components/dashnav'
-import MasterNav from '../../../components/masternav'
 import s from '../../../styles/booking.module.css'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
@@ -43,7 +42,6 @@ export default function Booking({ master, data }) {
 
     return (
         <div>
-            <MasterNav />
             <div className='container'>
                 <div className={s.header}>
                     <h1 className={s.title_h2}>Бронювання</h1>

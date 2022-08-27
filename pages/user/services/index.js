@@ -2,7 +2,6 @@ import { useStoreContext } from '../../../context/store'
 import Head from 'next/head'
 import Link from 'next/link'
 import { getSession } from 'next-auth/react'
-import MasterNav from '../../../components/masternav'
 import s from '../../../styles/services.module.css'
 import useSWR from 'swr'
 import ServiceItem from '../../../components/serviceitem'
@@ -32,7 +31,6 @@ export default function Services({ user, data }) {
 
   return (
     <div>
-      <MasterNav />
       <div className='container'>
         <div className={s.header}>
           <h1 className={s.title_h2}>Послуги</h1>

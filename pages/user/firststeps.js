@@ -3,7 +3,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import s from '../../styles/firststeps.module.css'
 import { signIn } from 'next-auth/react'
-import MasterNav from '../../components/masternav'
 import { getSession } from 'next-auth/react'
 
 
@@ -28,7 +27,6 @@ export default function Login() {
       <Head>
         <title>Перші кроки</title>
       </Head>
-      <MasterNav />
       <div className='container'>
         <h1>Перші кроки</h1>
         <p>

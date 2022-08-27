@@ -2,7 +2,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getSession } from 'next-auth/react'
-import MasterNav from '../../components/masternav'
 import s from '../../styles/profile.module.css'
 import { useState, useEffect } from 'react'
 import Script from 'next/script'
@@ -146,7 +145,6 @@ export default function PersonalPage({ user, data }) {
       </Head>
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
-      <MasterNav path='/' status='active_tab' />
 
       <div className='container'>
         <div className={s.profile_nav}>

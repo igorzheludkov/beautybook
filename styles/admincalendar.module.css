@@ -91,7 +91,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 90px;
+  width: 33px;
 }
 
 .container_day input {
@@ -138,7 +138,6 @@
   /* width: 360px;
   min-width: 360px; */
   overflow-x: scroll;
-  height: 70vh;
 }
 
 .wrapper_time::-webkit-scrollbar {
@@ -256,4 +255,15 @@
   height: 20px;
   width: 90px;
   background-color: rgb(243, 243, 243);
+}
+
+.calendar_wrapper {
+  position: relative;
+}
+
+.monthDay {
+ position: sticky;
+top: 60px;
+z-index: 101;
+background-color: white;
 }

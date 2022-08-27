@@ -2,7 +2,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getSession } from 'next-auth/react'
-import MasterNav from '../../components/masternav'
 import s from '../../styles/firststeps.module.css'
 
 
@@ -29,7 +28,6 @@ export default function OrdersHistory({ user }) {
       <Head>
         <title>Перші кроки</title>
       </Head>
-      <MasterNav />
       <div className='container'>
         <h1>Перші кроки</h1>
         <p>

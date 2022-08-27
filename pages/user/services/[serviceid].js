@@ -2,7 +2,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getSession } from 'next-auth/react'
-import MasterNav from '../../../components/masternav'
 import s from '../../../styles/services_add.module.css'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
@@ -137,7 +136,6 @@ console.log(serv);
       <Head>
         <title>Додати або редагувати послугу</title>
       </Head>
-      <MasterNav />
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
       <div className='container'>

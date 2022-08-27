@@ -33,6 +33,7 @@
 }
 
 .login_wrapper {
+    position: relative;
     height: 50px;
     border-radius: 45px;
     display: flex;
