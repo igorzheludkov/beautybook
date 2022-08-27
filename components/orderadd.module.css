@@ -1,5 +1,6 @@
 .order_add {
   position: fixed;
+  z-index: 101;
   left: 10px;
   bottom: 10px;
   transition: 0.5s;
@@ -32,6 +33,16 @@
   width: 80px;
   position: absolute;
   right: 0;
+  bottom: 0;
+}
+.cancel_btn {
+  border-radius: 10px;
+  background-color: #ffbfb6;
+  border: none;
+  height: 45px;
+  width: 80px;
+  position: absolute;
+  right: 90px;
   bottom: 0;
 }
 .add_btn {

@@ -3,10 +3,36 @@ import s from './orderadd.module.css'
 import getFormattedDay from './utils/getFormattedDay'
 import useSWR, { mutate } from 'swr'
 
-export default function OrderAdd({ user, serv, client, visitDateTime }) {
-  const formattedDate = getFormattedDay(visitDateTime.year, visitDateTime.month, visitDateTime.day)
-  const [servIndex, setServIndex] = useState(0)
+export default function OrderAdd({ user, serv, client, visitTime, editOrder, cancelOrderHandler }) {
+  const [method, setMethod] = useState('POST')
+  const formattedDate = getFormattedDay(visitTime.year, visitTime.month, visitTime.day)
   const [formVisible, setFormVisible] = useState(0)
+  const [visitDateTime, setVisitDateTime] = useState(visitTime)
+
+console.log(visitTime);
+console.log(visitDateTime);
+
+useEffect(() => {
+      setVisitDateTime({...visitDateTime, year: visitTime.year, month: visitTime.month, day: visitTime.day,  hour:visitTime.hour, minute: visitTime.minute})
+}, [visitTime])
+
+
+  useEffect(() => {
+    if (editOrder._id?.length > 0) {
+      setMethod('PATCH')
+      setFormVisible(1)
+      setClientData({
+        clientName: editOrder.clientName,
+        clientEmail: editOrder.clientEmail,
+        clientPhone: editOrder.clientPhone,
+        suggestions: editOrder.suggestions,
+      })
+      setServData({...servData, id: editOrder._id})
+      setVisitDateTime({...visitDateTime, hour:editOrder.visitDateTime.hour, minute: editOrder.visitDateTime.minute})
+    }
+  }, [editOrder])
+
+
 
   const clientDataState = {
     clientName: '',
@@ -14,6 +40,7 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
     clientPhone: '',
     suggestions: '',
   }
+ 
 
   const [clientData, setClientData] = useState(clientDataState)
 
@@ -31,13 +58,22 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
     masterEmail: user.email,
     visitDur: serv.services[0].item_1.dur,
     orderId: Date.now(),
+   
   })
+
+  function cancelHandler (e) {
+    e?.preventDefault(e)
+    setMethod('POST')
+    setFormVisible(0)
+    cancelOrderHandler(e)
+    setClientData(clientDataState)
+  }
 
   function inputHandler(e) {
     setClientData({ ...clientData, [e.target.id]: e.target.value })
   }
   function servHandler(e) {
-    console.log(e.target.value);
+    console.log(e.target.value)
     setServData({
       ...servData,
       item_1: serv.services[e.target.value].item_1,
@@ -48,8 +84,10 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
 
   const createdOrder = { ...clientData, ...servData, visitDateTime }
 
+  console.log(createdOrder);
 
-  function formPositionHandler (e) {
+
+  function formPositionHandler(e) {
     formVisible === 0 ? setFormVisible(1) : setFormVisible(0)
   }
 
@@ -57,7 +95,7 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
     e.preventDefault(e)
     // if (validate) {
     const response = await fetch(`/api/order/`, {
-      method: 'POST',
+      method: method,
       body: JSON.stringify(createdOrder),
       headers: {
         'Content-Type': 'application/json',
@@ -68,9 +106,8 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
       mutate(`/api/order?q=${user.email}`)
     }
     setTimeout(() => {
-      setClientData(clientDataState)
-      setFormVisible(0)
-    }, 500);
+      cancelHandler()
+    }, 1)
     console.log('Sended')
     console.log(res.result.acknowledged)
     // showMessage()
@@ -79,8 +116,9 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
     console.log('statusMessage')
   }
 
+
   return (
-    <div className={s.order_add} style={formVisible ? {left: 10} : {left: -360}}>
+    <div className={s.order_add} style={formVisible ? { left: 10 } : { left: -360 }}>
       <div className={s.daytime}>
         <div className={s.time}>
           {visitDateTime.hour}:{visitDateTime.minute}
@@ -89,9 +127,21 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
           {formattedDate.number}.{visitDateTime.year}
         </div>
       </div>
-      <form className={s.client_data} >
-        <input value={clientData.name} id='clientName' className={s.input_name} placeholder='Ім`я' onChange={inputHandler} />
-        <input value={clientData.phone} id='clientPhone' className={s.input_phone} placeholder='Телефон' onChange={inputHandler} />
+      <form className={s.client_data}>
+        <input
+          value={clientData.clientName}
+          id='clientName'
+          className={s.input_name}
+          placeholder='Ім`я'
+          onChange={inputHandler}
+        />
+        <input
+          value={clientData.clientPhone}
+          id='clientPhone'
+          className={s.input_phone}
+          placeholder='Телефон'
+          onChange={inputHandler}
+        />
         <select className={s.selectServ} onChange={servHandler}>
           {serv.services.map((i, index) => (
             <option key={i._id} value={index}>
@@ -99,9 +149,12 @@ export default function OrderAdd({ user, serv, client, visitDateTime }) {
             </option>
           ))}
         </select>
-        <button className={s.submit_btn} onClick={orderHandler}>
-        Зберегти
-      </button>
+        <button className={s.cancel_btn} onClick={cancelHandler} value='cancel'>
+          Відмінити
+        </button>
+        <button className={s.submit_btn} onClick={orderHandler} value='save'>
+          Зберегти
+        </button>
       </form>
       <button className={s.add_btn} onClick={formPositionHandler}>
         {formVisible ? 'Згорнути' : 'Додати'}

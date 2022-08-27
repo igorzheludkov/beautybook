@@ -39,6 +39,17 @@ export default function DayCalendar({ user }) {
     minute: '',
   })
 
+  const [editOrder, setEditOrder] = useState({})
+  function orderEditHandler(e) {
+    e.preventDefault(e)
+    setEditOrder(...bookedOrders.orders.filter((i) => i._id === e.target.value))
+  }
+
+
+  function cancelOrderHandler(e) {
+    e?.preventDefault(e)
+    setEditOrder('')
+  }
   useEffect(() => {
     setVisitDateTime({
       ...visitDateTime,
@@ -120,9 +131,9 @@ export default function DayCalendar({ user }) {
     let filteredTime = []
     orders.forEach((i) => {
       if (
-        +i.visitDateTime.year == +year &&
-        +i.visitDateTime.month == +month &&
-        +i.visitDateTime.day == +day
+        +i?.visitDateTime?.year == +year &&
+        +i?.visitDateTime?.month == +month &&
+        +i?.visitDateTime?.day == +day
       ) {
         let orderTimeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
         filteredTime.push({ ...i, time: orderTimeInMinutes, visitDur: +i.visitDur })
@@ -134,7 +145,6 @@ export default function DayCalendar({ user }) {
     () => renderTime(generatedTime, notFreeTime),
     [checkDay, bookedOrders, uData]
   )
-  console.log(getRenderedTime)
 
   function renderTime(gTime, nfTime) {
     let baseTime = gTime
@@ -190,7 +200,7 @@ export default function DayCalendar({ user }) {
     // else {
     //   scrollTime.current.scrollTo({ top: 0, behavior: 'smooth' })
     // }
-  }, [checkDay, bookedOrders])
+  }, [checkDay])
 
   return (
     <>
@@ -270,12 +280,15 @@ export default function DayCalendar({ user }) {
               </label>
               {i.order && (
                 <>
-                  <div className={s.order_card} style={{ height: `${(i.order.visitDur / 15 + 1) * 24 -2}px` }}>
+                  <div
+                    className={s.order_card}
+                    style={{ height: `${(i.order.visitDur / 15 + 1) * 24 - 2}px` }}
+                  >
                     <div
                       className={s.color_identificator}
                       style={{
                         backgroundColor: `${colorPalette[i.free]}`,
-                        height: `${(i.order.visitDur / 15 + 1) * 24 -2 }px`,
+                        height: `${(i.order.visitDur / 15 + 1) * 24 - 2}px`,
                       }}
                     ></div>
                     <div>{i.order.clientName}</div>
@@ -288,8 +301,8 @@ export default function DayCalendar({ user }) {
                       <button onClick={removeHandler} value={i.order._id} className={s.remove_btn}>
                         Видалити
                       </button>
-                      <button value={i.order._id} className={s.shift_btn}>
-                        Перенести
+                      <button onClick={orderEditHandler} value={i.order._id} className={s.shift_btn}>
+                        Редагувати
                       </button>
                     </div>
                   </div>
@@ -298,7 +311,17 @@ export default function DayCalendar({ user }) {
             </div>
           ))}
         </form>
-        {uData && uServ && <OrderAdd visitDateTime={visitDateTime} user={uData} serv={uServ} client={''} />}
+        {uData && uServ && (
+          <OrderAdd
+            visitTime={visitDateTime}
+            user={uData}
+            serv={uServ}
+            client={''}
+            editOrder={editOrder}
+            cancelOrderHandler={cancelOrderHandler}
+            bookedOrders={bookedOrders}
+          />
+        )}
       </div>
     </>
   )
