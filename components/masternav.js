@@ -24,6 +24,11 @@ export default function MasterNav({ path, status, avatar }) {
   return (
     <>
       <button className={s.menu_btn} onClick={showMenuHandler}>
+        <div className={s.menu_hamburger}>
+          <span className={s.hamburger_line}></span>
+          <span className={s.hamburger_line}></span>
+          <span className={s.hamburger_line}></span>
+        </div>
         <Avatar h={40} w={40} src={avatar} />
       </button>
       <div className={s.master_nav} style={showMenu ? { display: 'block' } : { display: 'none' }}>

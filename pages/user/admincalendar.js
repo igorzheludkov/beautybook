@@ -8,7 +8,6 @@ import Head from 'next/head'
 import useSWR, { mutate } from 'swr'
 import OrderAdd from '../../components/orderadd'
 
-
 export async function getServerSideProps(context) {
   const session = await getSession(context)
   if (!session) {
@@ -25,7 +24,6 @@ export async function getServerSideProps(context) {
 }
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
-
 
 export default function DayCalendar({ user }) {
   // if (!user) return <div className={s.authorize}>Для перегляду даного розділу потрібно увійти в систему</div>
@@ -55,6 +53,15 @@ export default function DayCalendar({ user }) {
     hour: '',
     minute: '',
   })
+
+  function currentTimeSet() {
+    setStateTime(currentTime)
+  }
+  useEffect(() => {
+    setCheckYear(stateTime.getFullYear())
+    setCheckMonths(stateTime.getMonth())
+    setCheckDay(stateTime.getDate())
+  }, [stateTime])
 
   const [editOrder, setEditOrder] = useState({})
   function orderEditHandler(e) {
@@ -142,7 +149,10 @@ export default function DayCalendar({ user }) {
     return bufferArr
   }
 
-  const notFreeTime = useMemo(() => bookedTime(checkYear, checkMonth, checkDay, orders), [checkDay, orders])
+  const notFreeTime = useMemo(
+    () => bookedTime(checkYear, checkMonth, checkDay, orders),
+    [bookedOrders, uData, checkYear, checkMonth, checkDay]
+  )
 
   function bookedTime(year, month, day, orders) {
     let filteredTime = []
@@ -160,7 +170,7 @@ export default function DayCalendar({ user }) {
   }
   const getRenderedTime = useMemo(
     () => renderTime(generatedTime, notFreeTime),
-    [checkDay, bookedOrders, uData]
+    [bookedOrders, uData, checkYear, checkMonth, checkDay]
   )
 
   function renderTime(gTime, nfTime) {
@@ -198,7 +208,6 @@ export default function DayCalendar({ user }) {
 
   const scrollMonth = useRef(null)
   const scrollDay = useRef(null)
-  const scrollTime = useRef(null)
 
   useEffect(() => {
     setTimeout(() => {
@@ -209,14 +218,14 @@ export default function DayCalendar({ user }) {
 
   useEffect(() => {
     if (stateTime.getDate() === checkDay) {
-      scrollTime.current.scrollTo({
+      window.scrollTo({
         top: Math.round(((currentTimeInMinutes - workBegin * 60) / 15) * 24 - 24),
         behavior: 'smooth',
       })
+    } else {
+      console.log('another day');
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-    // else {
-    //   scrollTime.current.scrollTo({ top: 0, behavior: 'smooth' })
-    // }
   }, [checkDay])
 
   return (
@@ -233,7 +242,8 @@ export default function DayCalendar({ user }) {
                   value={i.index}
                   name='radio'
                   type='radio'
-                  defaultChecked={i.index === checkMonth}
+                  checked={i.index === checkMonth}
+                  // defaultChecked={i.index === checkMonth}
                   onChange={() => setCheckMonths(i.index)}
                   data-type-index={i.index}
                   data-type-field='month'
@@ -263,7 +273,8 @@ export default function DayCalendar({ user }) {
                     value={i.index}
                     name='radio'
                     type='radio'
-                    defaultChecked={i.index === checkDay}
+                    checked={i.index === checkDay}
+                    // defaultChecked={i.index === checkDay}
                     onChange={() => setCheckDay(i.index)}
                     data-type-index={i.index}
                     data-type-field='day'
@@ -278,14 +289,14 @@ export default function DayCalendar({ user }) {
             ))}
           </form>
         </div>
-        <form id='time' className={s.wrapper_time} ref={scrollTime}>
+        <form id='time' className={s.wrapper_time}>
           {getRenderedTime.map((i, index) => (
             <div className={s.time_slot} key={index}>
               <label className={s.container_time}>
                 <input
                   name='radio'
                   type='radio'
-                  onChange={() => setCheckTime({ hour: i.hours, minute: i.minutes })}
+                  onClick={() => setCheckTime({ hour: i.hours, minute: i.minutes })}
                   // value={}
                   // onChange={visitHandler}
                   data-type-index={i.hours}
@@ -317,10 +328,10 @@ export default function DayCalendar({ user }) {
                     </div>
                     <div className={s.edit_buttons}>
                       <button onClick={removeHandler} value={i.order._id} className={s.remove_btn}>
-                        Видалити
+                        Видал.
                       </button>
                       <button onClick={orderEditHandler} value={i.order._id} className={s.shift_btn}>
-                        Редагувати
+                        Змінити
                       </button>
                     </div>
                   </div>
@@ -341,7 +352,15 @@ export default function DayCalendar({ user }) {
           />
         )}
       </div>
+
+      <button
+        className={s.today}
+        onClick={() => {
+          currentTimeSet()
+        }}
+      >
+        Сьогодні
+      </button>
     </>
   )
 }
-

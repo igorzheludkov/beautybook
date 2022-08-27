@@ -7,7 +7,7 @@
 }
 
 .client_data {
-  width: 290px;
+  width: 150px;
   background-color: #ebf5f9;
   border-radius: 10px;
   padding: 10px;
@@ -30,9 +30,9 @@
   background-color: #b6ffbd;
   border: none;
   height: 45px;
-  width: 80px;
+  width: 70px;
   position: absolute;
-  right: 0;
+  right: -70px;
   bottom: 0;
 }
 .cancel_btn {
@@ -40,9 +40,9 @@
   background-color: #ffbfb6;
   border: none;
   height: 45px;
-  width: 80px;
+  width: 70px;
   position: absolute;
-  right: 90px;
+  right: 0px;
   bottom: 0;
 }
 .add_btn {
@@ -50,17 +50,10 @@
   background-color: #feffb6;
   border: none;
   height: 45px;
-  width: 80px;
+  width: 70px;
   position: fixed;
   bottom: 10px;
-  left: 10px;
-}
-
-.date,
-.time {
-  font-size: 14px;
-  padding: 5px 0;
-  color: rgb(99, 99, 99);
+  left: 5px;
 }
 
 .selectServ {
@@ -77,10 +70,11 @@
 
 .time,
 .date {
+  font-size: 14px;
+  color: rgb(99, 99, 99);
   display: flex;
   align-items: center;
   padding: 0 7px;
-  /* margin-right: 5px; */
   border-radius: 20px;
-  background-color: rgb(230, 254, 255);
+  background-color: rgb(238 238 238);
 }

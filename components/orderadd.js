@@ -9,8 +9,6 @@ export default function OrderAdd({ user, serv, client, visitTime, editOrder, can
   const [formVisible, setFormVisible] = useState(0)
   const [visitDateTime, setVisitDateTime] = useState(visitTime)
 
-console.log(visitTime);
-console.log(visitDateTime);
 
 useEffect(() => {
       setVisitDateTime({...visitDateTime, year: visitTime.year, month: visitTime.month, day: visitTime.day,  hour:visitTime.hour, minute: visitTime.minute})
@@ -84,9 +82,6 @@ useEffect(() => {
 
   const createdOrder = { ...clientData, ...servData, visitDateTime }
 
-  console.log(createdOrder);
-
-
   function formPositionHandler(e) {
     formVisible === 0 ? setFormVisible(1) : setFormVisible(0)
   }
@@ -117,11 +112,12 @@ useEffect(() => {
   }
 
 
+  console.log();
   return (
-    <div className={s.order_add} style={formVisible ? { left: 10 } : { left: -360 }}>
+    <div className={s.order_add} style={formVisible ? { left: 5 } : { left: -360 }}>
       <div className={s.daytime}>
         <div className={s.time}>
-          {visitDateTime.hour}:{visitDateTime.minute}
+          {visitDateTime.hour}:{visitDateTime.minute ? visitDateTime.minute : '00'}
         </div>
         <div className={s.date}>
           {formattedDate.number}.{visitDateTime.year}

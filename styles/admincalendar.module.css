@@ -135,9 +135,24 @@
   justify-items: end;
   margin-bottom: 15px;
   transition: 0.3s;
-  /* width: 360px;
-  min-width: 360px; */
+
   overflow-x: scroll;
+  position: relative;
+  padding-bottom: 249px;
+ 
+
+}
+
+.today{
+  position: fixed;
+  bottom: 10px;
+  right: 5px;
+  z-index: 101;
+  border: none;
+  border-radius: 10px;
+  height: 45px;
+  width: 75px;
+  background-color: rgb(162, 224, 248);
 }
 
 .wrapper_time::-webkit-scrollbar {
@@ -227,9 +242,9 @@
 
 .order_card {
   position: absolute;
-  right: 70px;
+  right: 60px;
   top: 0;
-  width: 190px;
+  width: 140px;
   background: #e9e9e9;
   padding: 5px;
   border-radius: 7px;
@@ -241,10 +256,10 @@
 
 
 .color_identificator {
-    width: 10px;
+    width: 4px;
     position: absolute;
     top: 0;
-    right: -10px;
+    right: 0px;
     border-radius: 7px;
 }
 
@@ -253,7 +268,7 @@
   border: none;
   border-radius: 20px;
   height: 20px;
-  width: 90px;
+  width: 62px;
   background-color: rgb(243, 243, 243);
 }
 
@@ -266,4 +281,10 @@
 top: 60px;
 z-index: 101;
 background-color: white;
+}
+
+.edit_buttons {
+  position: absolute;
+  bottom: -5px;
+
 }

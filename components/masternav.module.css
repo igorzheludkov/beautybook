@@ -29,7 +29,8 @@
     height: 50px;
     padding: 0;
     justify-content: center;
-    border: 3px solid rgb(194, 194, 194);
+    border: 5px solid white;
+    background: none;
 }
 
 .logo {
@@ -41,4 +42,19 @@
 
 .link_title{
     font-size: 18px;
+}
+.menu_hamburger{
+    width: 40px;
+    position: absolute;
+    top: 13px;
+    right: 0;
+    z-index: -1;
+}
+.hamburger_line{
+    display: block;
+    height: 3px;
+    width: 60px;
+    margin-bottom: 7px;
+    background-color: black;
+    
 }
