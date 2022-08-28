@@ -17,7 +17,7 @@ export default function Login() {
       <h2>Для входу натисніть кнопку Google</h2>
       
       <button className={s.button}  onClick={()=> signIn('google', {
-      callbackUrl: `/user/profile`,
+      callbackUrl: `/user/calendar`,
     })} >Google</button>
     </>
   )

@@ -9,7 +9,6 @@ import Cloudinary from '../../lib/cloudinary'
 import { server } from '../../config/index'
 import ScrollBox from '../../components/scrollbox'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import CheckboxButtons from '../../components/ui/checkboxbuttons'
 import RadioButtons from '../../components/ui/radiobuttons'
 import ToggleButtons from '../../components/ui/togglebuttons'
@@ -17,19 +16,13 @@ import Input from '../../components/ui/input'
 import useSWR, { useSWRConfig } from 'swr'
 import { useStoreContext } from '../../context/store'
 
-
-const fetcher = (url) => fetch(url).then((res) => res.json())
-
 export default function PersonalPage({ user, data }) {
   const [store, setStore] = useStoreContext()
 
   const { mutate } = useSWRConfig()
-  const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
 
   const categories = data.categories
 
-  const router = useRouter()
-  const { data: session, status } = useSession()
   const [saved, setSaved] = useState(0)
   const [unsaved, setUnsaved] = useState(0)
 
@@ -70,14 +63,11 @@ export default function PersonalPage({ user, data }) {
   const [settings, setSettings] = useState(settingsInitialState)
 
   useEffect(() => {
-    
-    if (uData) {
-  setStore({...store, masterInfo: uData})
-
-      setForm({ ...uData.userData, userId: uData._id })
-      setSettings(uData.userSettings ? uData.userSettings : settingsInitialState)
+    if (store.masterInfo) {
+      setForm({ ...store.masterInfo.userData, userId: store.masterInfo._id })
+      setSettings(store.masterInfo.userSettings ? store.masterInfo.userSettings : settingsInitialState)
     }
-  }, [uData, saved])
+  }, [store])
 
   async function buttonHandler(e) {
     e.preventDefault(e)
@@ -124,7 +114,7 @@ export default function PersonalPage({ user, data }) {
   async function saveData() {
     const response = await fetch('/api/userdata', {
       method: 'POST',
-      body: JSON.stringify({ email: session.user.email, userData: form, userSettings: settings }),
+      body: JSON.stringify({ email: user.email, userData: form, userSettings: settings }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -154,10 +144,9 @@ export default function PersonalPage({ user, data }) {
       </Head>
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
-
       <div className='container'>
         <div className={s.profile_nav}>
-          {form.userId.length > 0 ? (
+          {form.userId?.length > 0 ? (
             <button className={s.nav_button}>
               <Link href={`/${form.userId}`}>
                 <a>Відкрити вашу сторінку</a>

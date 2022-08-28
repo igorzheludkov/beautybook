@@ -14,7 +14,7 @@ export default function MasterNav({ path, status, avatar }) {
   }
 
   const routes = [
-    { link: '/user/admincalendar', label: 'Календар', logo: '/images/booking.png' },
+    { link: '/user/calendar', label: 'Календар', logo: '/images/booking.png' },
     { link: '/user/booking', label: 'Записи', logo: '/images/cart.png' },
     { link: '/user/services', label: 'Послуги', logo: '/images/star.png' },
     { link: '/user/profile', label: 'Профіль', logo: '/images/profile.png' },

@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 import useSWR, { mutate } from 'swr'
 import OrderAdd from '../../components/orderadd'
+import { useStoreContext } from '../../context/store'
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
@@ -26,16 +27,41 @@ export async function getServerSideProps(context) {
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function DayCalendar({ user }) {
-  // if (!user) return <div className={s.authorize}>Для перегляду даного розділу потрібно увійти в систему</div>
+  const [store, setStore] = useStoreContext()
+  const [uData, setUData] = useState([])
   const { data: bookedOrders } = useSWR(user?.email ? `/api/order?q=${user.email}` : null, fetcher)
-  const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
+  // const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
   const { data: uServ } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
+  // const uData = store?.masterInfo ?? null
+
+  useEffect(() => {
+    setUData(store.masterInfo)
+  }, [store?.masterInfo])
+
+  // uData && console.log(uData);
   const orders = bookedOrders?.orders ?? []
   const monthLabel = getMonthLabel()
   const currentTime = new Date()
-  const workBegin = uData?.userData.work_begin ?? 9
-  const workEnd = uData?.userData.work_end ?? 18
-  const bookingInterval = uData?.userData.interval ?? 15
+
+  const initialWorkGraphic = { workBegin: 9, workEnd: 18, bookingInterval: 15 }
+  const [workGraphic, setWorkGraphic] = useState(initialWorkGraphic)
+  const { workBegin, workEnd, bookingInterval } = workGraphic
+
+  useEffect(() => {
+    if (uData.userData) {
+      setWorkGraphic({
+        ...workGraphic,
+        workBegin: +uData?.userData?.work_begin,
+        workEnd: +uData?.userData?.work_end,
+        bookingInterval: +uData?.userData?.interval,
+      })
+    }
+  }, [uData])
+  console.log(uData)
+  console.log(workGraphic)
+  // const workBegin = uData?.userData.work_begin ?? 9
+  // const workEnd = uData?.userData.work_end ?? 18
+  // const bookingInterval = uData?.userData.interval ?? 15
   const [stateTime, setStateTime] = useState(currentTime)
 
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
@@ -131,7 +157,7 @@ export default function DayCalendar({ user }) {
 
   const generatedTime = useMemo(
     () => generateBaseTime(workBegin, workEnd, bookingInterval),
-    [bookedOrders, uData, checkYear, checkMonth, checkDay]
+    [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
   )
 
   function generateBaseTime(begin, end, interval) {
@@ -151,7 +177,7 @@ export default function DayCalendar({ user }) {
 
   const notFreeTime = useMemo(
     () => bookedTime(checkYear, checkMonth, checkDay, orders),
-    [bookedOrders, uData, checkYear, checkMonth, checkDay]
+    [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
   )
 
   function bookedTime(year, month, day, orders) {
@@ -170,7 +196,7 @@ export default function DayCalendar({ user }) {
   }
   const getRenderedTime = useMemo(
     () => renderTime(generatedTime, notFreeTime),
-    [bookedOrders, uData, checkYear, checkMonth, checkDay]
+    [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
   )
 
   function renderTime(gTime, nfTime) {
@@ -223,7 +249,7 @@ export default function DayCalendar({ user }) {
         behavior: 'smooth',
       })
     } else {
-      console.log('another day');
+      console.log('another day')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }, [checkDay])
@@ -340,7 +366,7 @@ export default function DayCalendar({ user }) {
             </div>
           ))}
         </form>
-        {uData && uServ && (
+        {uData.userData && uServ && (
           <OrderAdd
             visitTime={visitDateTime}
             user={uData}

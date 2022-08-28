@@ -42,7 +42,7 @@ export default function Navbar() {
         </div> */}
         <div className={s.orders_container}>
           {/* <span className={s.counter}>{store.orders.length}</span> */}
-          <Link href='/user/admincalendar'>
+          <Link href='/user/calendar'>
             <a style={!session ? {pointerEvents: 'none'} : {}}>
               <Image className={s.orders} src='/images/booking.png' width={25} height={25} alt='logo' />
             </a>

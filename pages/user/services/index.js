@@ -5,6 +5,7 @@ import { getSession } from 'next-auth/react'
 import s from '../../../styles/services.module.css'
 import useSWR from 'swr'
 import ServiceItem from '../../../components/serviceitem'
+import { useState, useEffect } from 'react'
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
@@ -22,12 +23,20 @@ export async function getServerSideProps(context) {
 }
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function Services({ user, data }) {
-  const { data: services } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
+export default function Services({ user }) {
+  const [store, setStore] = useStoreContext()
 
-  if (!services) return <div>Loading...</div>
+  const [srv, setSrv] = useState([])
 
-  const srv = services.services
+  useEffect(() => {
+    setSrv(store.services?.services ?? [])
+  }, [store.services])
+
+  // const { data: services } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
+
+  // if (!services) return <div>Loading...</div>
+
+  // const srv = store.services.services
 
   return (
     <div>
