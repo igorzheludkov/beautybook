@@ -18,6 +18,7 @@ export default function MasterNav({ path, status, avatar }) {
     { link: '/user/booking', label: 'Записи', logo: '/images/cart.png' },
     { link: '/user/services', label: 'Послуги', logo: '/images/star.png' },
     { link: '/user/profile', label: 'Профіль', logo: '/images/profile.png' },
+    { link: '/user/notifications', label: 'Налаштувати сповіщення', logo: '/images/messages.png' },
     { link: '/user', label: 'Довідка', logo: '/images/help.png' },
   ]
 

@@ -47,7 +47,7 @@ export default async function UserData(req, res) {
       const opt = { upsert: true }
       const updateSettings = {
         $set: {
-          userSettings: req.body.userSettings,
+          userNotifications: req.body.userNotifications,
         },
       }
       const updateResult = await collection.updateOne(update, updateSettings, opt)

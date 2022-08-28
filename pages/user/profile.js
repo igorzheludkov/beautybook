@@ -15,10 +15,14 @@ import RadioButtons from '../../components/ui/radiobuttons'
 import ToggleButtons from '../../components/ui/togglebuttons'
 import Input from '../../components/ui/input'
 import useSWR, { useSWRConfig } from 'swr'
+import { useStoreContext } from '../../context/store'
+
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function PersonalPage({ user, data }) {
+  const [store, setStore] = useStoreContext()
+
   const { mutate } = useSWRConfig()
   const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
 
@@ -53,7 +57,7 @@ export default function PersonalPage({ user, data }) {
     isBookingActivated: 0,
   })
 
-  const [settings, setSettings] = useState({
+  const settingsInitialState = {
     mon: { labelShort: 'Пн', label: 'Понеділок', checked: true, id: 'mon' },
     tue: { labelShort: 'Вт', label: 'Вівторок', checked: true, id: 'tue' },
     wen: { labelShort: 'Ср', label: 'Середа', checked: true, id: 'wen' },
@@ -61,12 +65,17 @@ export default function PersonalPage({ user, data }) {
     fri: { labelShort: 'Пт', label: 'П`ятниця', checked: true, id: 'fri' },
     sat: { labelShort: 'Сб', label: 'Субота', checked: false, id: 'sat' },
     sun: { labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' },
-  })
+  }
+
+  const [settings, setSettings] = useState(settingsInitialState)
 
   useEffect(() => {
+    
     if (uData) {
+  setStore({...store, masterInfo: uData})
+
       setForm({ ...uData.userData, userId: uData._id })
-      setSettings(uData.userSettings)
+      setSettings(uData.userSettings ? uData.userSettings : settingsInitialState)
     }
   }, [uData, saved])
 
