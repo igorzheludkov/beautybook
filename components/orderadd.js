@@ -86,10 +86,10 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
       masterName: user.userData.name,
       masterSurname: user.userData.surname,
       masterId: user._id,
-      serv_id: serv?.services[0]._id,
-      item_1: serv?.services[0].item_1,
+      serv_id: serv?.services[0]?._id,
+      item_1: serv?.services[0]?.item_1,
       masterEmail: user.email,
-      visitDur: serv?.services[0].item_1.dur,
+      visitDur: serv?.services[0]?.item_1?.dur,
       orderId: Date.now(),
     })
   }, [serv, user])
@@ -147,7 +147,6 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
   }
 
   // if (!serv.services) return <div className={s.loading}>Loading</div>
-  console.log(createdOrder);
   return (
     <div className={s.order_add} style={formVisible ? { left: 5 } : { left: -360 }}>
       <div className={s.daytime}>

@@ -49,7 +49,6 @@ export default function PersonalPage({ user, data }) {
     isPageVisibleInCat: 0,
     isBookingActivated: 0,
   })
-
   const settingsInitialState = {
     mon: { labelShort: 'Пн', label: 'Понеділок', checked: true, id: 'mon' },
     tue: { labelShort: 'Вт', label: 'Вівторок', checked: true, id: 'tue' },
@@ -110,7 +109,6 @@ export default function PersonalPage({ user, data }) {
     setUnsaved(1)
     setSaved(0)
   }
-
   async function saveData() {
     const response = await fetch('/api/userdata', {
       method: 'POST',
@@ -121,6 +119,18 @@ export default function PersonalPage({ user, data }) {
     })
     const data = await response.json()
     console.log(data)
+    if (form.social_2 && +form.isBookingActivated) {
+      console.log('booking and telegram nickname added');
+      const setNotifications = await fetch('/api/notifications', {
+        method: 'POST',
+        body: JSON.stringify({ email: user.email, telegramNickname: form.social_2, apiMethod: 'getUpdates'}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const notificationsStatus = await setNotifications.json()
+      console.log(notificationsStatus)
+    }
     mutate(`/api/userdata?q=${user.email}`)
     setSaved(1)
     setTimeout(() => {
@@ -226,6 +236,7 @@ export default function PersonalPage({ user, data }) {
             value={form.social_2}
             state={form}
           />
+          <span>Нікнейм в telegram необхідний для можливості отримання сповіщень про бронювання</span>
           <Input
             data={{
               id: 'social_3',

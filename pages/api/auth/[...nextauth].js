@@ -20,7 +20,7 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/login',
-    // newUser: '/user/profile' // New users will be directed here on first sign in (leave the property out if not of interest)
+    newUser: '/user/profile' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   
   jwt: {

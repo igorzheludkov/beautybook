@@ -15,6 +15,7 @@ export async function getServerSideProps(context) {
     context.res.end()
     return {}
   }
+
   return {
     props: {
       user: session.user,
@@ -24,19 +25,23 @@ export async function getServerSideProps(context) {
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function Notifications({ user }) {
+export default function Notifications({ user, updates }) {
+  console.log(updates)
   const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
   const token = '5738708196:AAEWAEYsyVbsW3QjXzpG-W0AaECRL1qeEqw'
-  const { data: chatsList } = useSWR(`https://api.telegram.org/bot${token}/getUpdates?`, fetcher)
+
+  const { data: chatsList } = useSWR(`https://api.telegram.org/bot${token}/getUpdates?` ?? null, fetcher)
   const [store, setStore] = useStoreContext()
 
   const [message, setMessage] = useState('')
   const [chatId, setChatId] = useState('')
 
   useEffect(() => {
-    chatsList && uData && setChatId(
-      chatsList.result.find((i) => i.message.from.username === uData.userData.social_2).message.chat.id
-    )
+    chatsList &&
+      uData &&
+      setChatId(
+        chatsList.result.find((i) => i.message.from.username === uData.userData.social_2).message.chat.id
+      )
   }, [uData, chatsList])
 
   function messageHandler(e) {
@@ -50,8 +55,7 @@ export default function Notifications({ user }) {
     const token = t
     const meth = 'sendMessage'
     const response = await fetch(
-        `https://api.telegram.org/bot${token}/${meth}?chat_id=${chat}&text=${message}`,
-    //   `https://api.telegram.org/bot${token}/${meth}?chat_id=${chat}&text=${message}`,
+      `https://api.telegram.org/bot${token}/${meth}?chat_id=${chat}&text=${message}`,
       {
         method: 'POST',
         //   body: JSON.stringify({ email: user.email, userNotifications: generateBotKey }),
@@ -64,7 +68,8 @@ export default function Notifications({ user }) {
     console.log(data)
   }
 
-  console.log(chatId);
+  console.log(chatId)
+  console.log(chatsList)
 
   return (
     <>
