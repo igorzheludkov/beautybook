@@ -36,21 +36,21 @@ export default async function Notifications(req, res) {
 
   // create new document if chat_id was not finded in db
   if (checkChatId?.chat_id === null || checkChatId === null) {
-    await client.connect()
+    if (userChatId?.message?.chat?.id) {await client.connect()
     user = await collection.updateOne(
       { email: email },
       { $set: { chat_id: userChatId.message.chat.id } },
       { upsert: true }
     )
-    await client.close()
+    await client.close()}
   }
-  console.log('43', checkChatId.chat_id)
+  console.log('43', checkChatId?.chat_id)
 
   // send message to user from telegram bot
   switch (apiMethod) {
     case 'sendMessage':
       const sendMessage = await fetch(
-        `https://api.telegram.org/bot${tokenTelegram}/sendMessage?chat_id=${checkChatId.chat_id}&parse_mode=${parseMode}&text=${message}`,
+        `https://api.telegram.org/bot${tokenTelegram}/sendMessage?chat_id=${checkChatId?.chat_id}&parse_mode=${parseMode}&text=${message}`,
         {
           method: 'POST',
         }
@@ -79,7 +79,7 @@ export default async function Notifications(req, res) {
       //   }
       //   const result = await collection.updateOne(filter, updateDoc, options)
       //   await client.close()
-      res.status(200).json({ result: user })
+      res.status(200).json({ result: checkChatId?.chat_id ? user : 'please press start button in telegram bot and try again'})
       break
 
     // case 'PUT':
