@@ -79,7 +79,7 @@ export default async function Notifications(req, res) {
       //   }
       //   const result = await collection.updateOne(filter, updateDoc, options)
       //   await client.close()
-      res.status(200).json({ result: checkChatId?.chat_id ? user : 'please press start button in telegram bot and try again'})
+      res.status(200).json({ result: user})
       break
 
     // case 'PUT':
