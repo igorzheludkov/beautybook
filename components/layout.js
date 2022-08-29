@@ -15,14 +15,10 @@ export default function Layout({ children }) {
   const { data: services } = useSWR(session ? `/api/services/${session.user.email}` : null, fetcher)
 
   useEffect(() => {
-  
       setStore({ ...store, masterInfo: uData })
-
   }, [uData])
   useEffect(() => {
-   
       setStore({ ...store, services: services })
-  
   }, [services])
   
 

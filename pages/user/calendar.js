@@ -31,7 +31,7 @@ export default function DayCalendar({ user }) {
   const [uData, setUData] = useState([])
   const { data: bookedOrders } = useSWR(user?.email ? `/api/order?q=${user.email}` : null, fetcher)
   // const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
-  const { data: uServ } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
+  // const { data: uServ } = useSWR(user ? `/api/services/${user.email}` : null, fetcher)
   // const uData = store?.masterInfo ?? null
 
   useEffect(() => {
@@ -57,8 +57,6 @@ export default function DayCalendar({ user }) {
       })
     }
   }, [uData])
-  console.log(uData)
-  console.log(workGraphic)
   // const workBegin = uData?.userData.work_begin ?? 9
   // const workEnd = uData?.userData.work_end ?? 18
   // const bookingInterval = uData?.userData.interval ?? 15
@@ -254,6 +252,7 @@ export default function DayCalendar({ user }) {
     }
   }, [checkDay])
 
+
   return (
     <>
       <Head>
@@ -366,11 +365,10 @@ export default function DayCalendar({ user }) {
             </div>
           ))}
         </form>
-        {uData.userData && uServ && (
+        {uData.userData && (
           <OrderAdd
             visitTime={visitDateTime}
             user={uData}
-            serv={uServ}
             client={''}
             editOrder={editOrder}
             cancelOrderHandler={cancelOrderHandler}
