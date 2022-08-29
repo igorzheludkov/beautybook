@@ -22,10 +22,11 @@ export default async function Notifications(req, res) {
   const getUpdates = await fetch(`https://api.telegram.org/bot${tokenTelegram}/getUpdates`, {
     method: 'POST',
   })
+  console.log('25', getUpdates);
   const data = await getUpdates.json()
   // filter current user from updates list
-  const userChatId = await data.result.find((i) => i.message.from.username === telegramNickname)
-  console.log('25', userChatId)
+  const userChatId = await data.result.find((i) => i?.message?.from?.username === telegramNickname)
+  console.log('29', userChatId)
 
   // check if db has chat_id prorerty
   const checkChatId = await collection.findOne({
