@@ -6,43 +6,58 @@ const tokenTelegram = process.env.TELEGRAM_BOT_TOKEN
 
 const dbName = 'beautybook'
 
-export default async function UserData(req, res) {
+export default async function Notifications(req, res) {
   const db = client.db(dbName)
   const collection = db.collection('user_private')
   await client.connect()
 
   const {
-    body: { email, telegramNickname, apiMethod },
+    body: { email, telegramNickname, apiMethod, parseMode, message },
     method,
   } = req
 
-  const response = await fetch(`https://api.telegram.org/bot${tokenTelegram}/${apiMethod}`, {
+  let user = 'chat_id is already added'
+
+  // telegram bot getUpdates method
+  const getUpdates = await fetch(`https://api.telegram.org/bot${tokenTelegram}/getUpdates`, {
     method: 'POST',
   })
-  const data = await response.json()
-  // const userChatId = await data.result.find((i) => i.message.from.username === telegramNickname)
+  const data = await getUpdates.json()
+  // filter current user from updates list
   const userChatId = await data.result.find((i) => i.message.from.username === telegramNickname)
   console.log('25', userChatId)
 
+  // check if db has chat_id prorerty
   const checkChatId = await collection.findOne({
     email: email,
     chat_id: { $exists: true },
   })
   await client.close()
 
-  let user= 'chat_id is added'
+  // create new document if chat_id was not finded in db
   if (checkChatId?.chat_id === null || checkChatId === null) {
-    console.log('add to db')
     await client.connect()
     user = await collection.updateOne(
       { email: email },
-      { $set: { tg_nickname: telegramNickname, chat_id: userChatId.message.chat.id } },
+      { $set: { chat_id: userChatId.message.chat.id } },
       { upsert: true }
     )
-    console.log(user);
     await client.close()
   }
-  console.log('43', checkChatId)
+  console.log('43', checkChatId.chat_id)
+
+  // send message to user from telegram bot
+  switch (apiMethod) {
+    case 'sendMessage':
+      const sendMessage = await fetch(
+        `https://api.telegram.org/bot${tokenTelegram}/sendMessage?chat_id=${checkChatId.chat_id}&parse_mode=${parseMode}&text=${message}`,
+        {
+          method: 'POST',
+        }
+      )
+      const data = await sendMessage.json()
+      console.log(data);
+  }
 
   switch (method) {
     case 'GET':

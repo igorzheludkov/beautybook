@@ -1,7 +1,6 @@
 import s from './orderitem.module.css'
 import useSWR, { mutate } from 'swr'
 import Image from 'next/image'
-import { useStoreContext } from '../context/store'
 import { useState, useEffect } from 'react'
 import Avatar from './avatar'
 import Calendar from './calendar'
@@ -10,9 +9,9 @@ import Link from 'next/link'
 
 export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   const [booked, setBooked] = useState(0)
-  function showBookingHandler() {
-    booked === 0 ? setShowBooking(1) : setShowBooking(0)
-  }
+  // function showBookingHandler() {
+  //   booked === 0 ? setShowBooking(1) : setShowBooking(0)
+  // }
 
   const currentTime = new Date()
   const [servData, setServData] = useState({
@@ -28,7 +27,7 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
     item_1: '',
     masterEmail: '',
   })
-  const [store, setStore] = useStoreContext()
+
   const [statusMessage, setStatusMessage] = useState({ status: 0, message: 'Оберіть місяць, дату та час' })
 
   useEffect(() => {
@@ -75,7 +74,7 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
     visitDateTime: dayTime,
     orderId: Date.now(),
   }
-  // merged data - об'єднує інформацію в єдине замовлення
+  // orderData - об'єднує інформацію в єдине замовлення
   // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
   function visitHandler(e) {
     const typeMinute =
@@ -95,7 +94,7 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   function clientContactsHandler(e) {
     setContacts({ ...contacts, [e.target.id]: e.target.value, visitDur: item.item_1.dur })
   }
-
+console.log(dayTime);
   async function orderHandler(e) {
     e.preventDefault(e)
     if (validate) {
@@ -107,8 +106,10 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
         },
       })
       const res = await response.json()
+      console.log(res);
       if (res.result.acknowledged) {
         mutate(`/api/bookedtime?q=${item.masterEmail}`)
+        sendNotification()
       }
       console.log('Sended')
       console.log(res.result.acknowledged)
@@ -118,8 +119,27 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
     console.log('statusMessage')
   }
 
-  function removeHandler(e) {
-    e.preventDefault()
+  async function sendNotification() {
+    const sendMessage = await fetch('/api/notifications', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: servData.masterEmail,
+        apiMethod: 'sendMessage',
+        parseMode: 'HTML',
+        message:
+        `<b>У вас нове бронювання</b><pre>...</pre>
+        Ім'я клієнта: ${contacts.clientName}<pre>...</pre>
+        Телефон: ${contacts.clientPhone}<pre>...</pre>
+        Дата: ${dayTime.day}.${+dayTime.month+1}.${dayTime.year}<pre>...</pre>
+        Час: ${dayTime.hour}:${dayTime.minute}<pre>...</pre>
+        <a href="http://krasa.uno/user/calendar/">Перейдіть в кабінет за даним посиланням щоб перенести або відмінити</a>`,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const notificationsStatus = await sendMessage.json()
+    console.log(notificationsStatus)
   }
 
   const validate = dayTime.month > 0 && dayTime.day > 0 && dayTime.hour > 0

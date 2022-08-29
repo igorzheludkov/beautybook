@@ -26,8 +26,6 @@ export default function Calendar({ props }) {
     except: '',
   }
   const [renderTime, setRenderTime] = useState([])
-  // const [renderTime, setRenderTime] = useState(generatedClassicTime(timeTransform()))
-  console.log(work.interval);
 
   function yearHandler(e) {
     e.preventDefault()

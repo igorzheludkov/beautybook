@@ -120,10 +120,17 @@ export default function PersonalPage({ user, data }) {
     const data = await response.json()
     console.log(data)
     if (form.social_2 && +form.isBookingActivated) {
-      console.log('booking and telegram nickname added');
+      console.log('booking and telegram nickname fields completed')
       const setNotifications = await fetch('/api/notifications', {
         method: 'POST',
-        body: JSON.stringify({ email: user.email, telegramNickname: form.social_2, apiMethod: 'getUpdates'}),
+        body: JSON.stringify({
+          email: user.email,
+          telegramNickname: form.social_2,
+          apiMethod: 'sendMessage',
+          parseMode: 'HTML',
+          message:
+            'Сповіщення про бронювання активовано.<pre>...</pre>Ви будете отримувати сповіщення про нові бронювання миттєво.',
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
