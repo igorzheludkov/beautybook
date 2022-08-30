@@ -110,8 +110,9 @@ export default function PersonalPage({ user, data }) {
     setSaved(0)
   }
 
-  console.log(+form.isBookingActivated);
-  store.masterInfo && console.log(!(store?.masterInfo?.userData?.isBookingActivated == +form.isBookingActivated));
+  console.log(+form.isBookingActivated)
+  store.masterInfo &&
+    console.log(!(store?.masterInfo?.userData?.isBookingActivated == +form.isBookingActivated))
   async function saveData() {
     const response = await fetch('/api/userdata', {
       method: 'POST',
@@ -122,7 +123,11 @@ export default function PersonalPage({ user, data }) {
     })
     const data = await response.json()
     console.log(data)
-    if (form.social_2 && +form.isBookingActivated && !(store?.masterInfo?.userData?.isBookingActivated == +form.isBookingActivated)) {
+    if (
+      form.social_2 &&
+      +form.isBookingActivated &&
+      !(store?.masterInfo?.userData?.isBookingActivated == +form.isBookingActivated)
+    ) {
       console.log('booking and telegram nickname fields completed')
       const setNotifications = await fetch('/api/notifications', {
         method: 'POST',
@@ -131,8 +136,7 @@ export default function PersonalPage({ user, data }) {
           telegramNickname: form.social_2,
           apiMethod: 'sendMessage',
           parseMode: 'HTML',
-          message:
-            `Сповіщення про бронювання активовано.%0A%0AВи будете отримувати сповіщення про нові бронювання миттєво.`,
+          message: `Сповіщення про бронювання активовано.%0A%0AВи будете отримувати сповіщення про нові бронювання миттєво.`,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -164,227 +168,235 @@ export default function PersonalPage({ user, data }) {
       </Head>
       <Script src='https://upload-widget.cloudinary.com/global/all.js' strategy='afterInteractive' />
 
-      <div className='container'>
-        <div className={s.profile_nav}>
-          {form.userId?.length > 0 ? (
-            <button className={s.nav_button}>
-              <Link href={`/${form.userId}`}>
-                <a>Відкрити вашу сторінку</a>
-              </Link>
-            </button>
-          ) : null}
-          <button className={s.nav_button}>
-            <Link href='/api/auth/signout'>
-              <a
-                onClick={(e) => {
-                  e.preventDefault()
-                  signOut()
+      <div className={s.main_wrapper}>
+        <div className={s.sidebar_left}>
+          <div className='container'>
+            <div className={s.profile_nav}>
+              {form.userId?.length > 0 ? (
+                <button className={s.nav_button}>
+                  <Link href={`/${form.userId}`}>
+                    <a>Відкрити вашу сторінку</a>
+                  </Link>
+                </button>
+              ) : null}
+              <button className={s.nav_button}>
+                <Link href='/api/auth/signout'>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault()
+                      signOut()
+                    }}
+                  >
+                    Вийти з системи
+                  </a>
+                </Link>
+              </button>
+            </div>
+
+            <div className={s.header}>
+              <div className={s.avatar_container}>
+                <Image
+                  className={s.avatar_img}
+                  layout='responsive'
+                  objectFit='cover'
+                  width={150}
+                  height={150}
+                  src={form.photo ? form.photo : '/images/userplaceholder.png'}
+                  alt='avatar'
+                />
+                <Cloudinary uploadHandler={avatarHandler} multiple={false} />
+              </div>
+
+              <div className={s.name_wrapper}>
+                <Input
+                  data={{ id: 'name', tp: 'text', label: ['Ваше ім`я'] }}
+                  inputHandler={inputHandler}
+                  value={form.name}
+                  state={form}
+                />
+                <Input
+                  data={{ id: 'surname', tp: 'text', label: ['Ваше прізвище'] }}
+                  inputHandler={inputHandler}
+                  value={form.surname}
+                  state={form}
+                />
+                <Input
+                  data={{ id: 'phone', tp: 'text', label: ['Ваш номер телефону'] }}
+                  inputHandler={inputHandler}
+                  value={form.phone}
+                  state={form}
+                />
+              </div>
+            </div>
+
+            <div className={s.social_wrapper}>
+              <Input
+                data={{
+                  id: 'social_1',
+                  tp: 'text',
+                  label: ['Ваш нікнейм в instagram без @'],
+                  icon: '/images/instagram.png',
                 }}
-              >
-                Вийти з системи
-              </a>
-            </Link>
-          </button>
-        </div>
-
-        <div className={s.header}>
-          <div className={s.avatar_container}>
-            <Image
-              className={s.avatar_img}
-              layout='responsive'
-              objectFit='cover'
-              width={150}
-              height={150}
-              src={form.photo ? form.photo : '/images/userplaceholder.png'}
-              alt='avatar'
-            />
-            <Cloudinary uploadHandler={avatarHandler} multiple={false} />
-          </div>
-
-          <div className={s.name_wrapper}>
-            <Input
-              data={{ id: 'name', tp: 'text', label: ['Ваше ім`я'] }}
-              inputHandler={inputHandler}
-              value={form.name}
-              state={form}
-            />
-            <Input
-              data={{ id: 'surname', tp: 'text', label: ['Ваше прізвище'] }}
-              inputHandler={inputHandler}
-              value={form.surname}
-              state={form}
-            />
-            <Input
-              data={{ id: 'phone', tp: 'text', label: ['Ваш номер телефону'] }}
-              inputHandler={inputHandler}
-              value={form.phone}
-              state={form}
-            />
-          </div>
-        </div>
-
-        <div className={s.social_wrapper}>
-          <Input
-            data={{
-              id: 'social_1',
-              tp: 'text',
-              label: ['Ваш нікнейм в instagram без @'],
-              icon: '/images/instagram.png',
-            }}
-            inputHandler={inputHandler}
-            value={form.social_1}
-            state={form}
-          />
-          <Input
-            data={{
-              id: 'social_2',
-              tp: 'text',
-              label: ['Ваш нікнейм в telegram без @'],
-              icon: '/images/telegram.png',
-            }}
-            inputHandler={inputHandler}
-            value={form.social_2}
-            state={form}
-          />
-          <span>Нікнейм в telegram необхідний для можливості отримання сповіщень про бронювання</span>
-          <Input
-            data={{
-              id: 'social_3',
-              tp: 'text',
-              label: ['Ваш номер з вайбером у вигляді 380...'],
-              icon: '/images/viber.png',
-            }}
-            inputHandler={inputHandler}
-            value={form.social_3}
-            state={form}
-          />
-        </div>
-        <div className={s.aboutme_wrapper}>
-          <div className={s.aboutme_container}>
-            <Image src={aboutMe.icon} width={20} height={20} alt='social profile' />
-            <span className={s.input_item}>
-              <textarea
-                placeholder={aboutMe.vl}
-                className={s.aboutme_input}
-                id={aboutMe.id}
-                value={form[aboutMe.id]}
-                onChange={inputHandler}
-                type={aboutMe.tp}
+                inputHandler={inputHandler}
+                value={form.social_1}
+                state={form}
               />
-            </span>
+              <Input
+                data={{
+                  id: 'social_2',
+                  tp: 'text',
+                  label: ['Ваш нікнейм в telegram без @'],
+                  icon: '/images/telegram.png',
+                }}
+                inputHandler={inputHandler}
+                value={form.social_2}
+                state={form}
+              />
+              <span>Нікнейм в telegram необхідний для можливості отримання сповіщень про бронювання</span>
+              <Input
+                data={{
+                  id: 'social_3',
+                  tp: 'text',
+                  label: ['Ваш номер з вайбером у вигляді 380...'],
+                  icon: '/images/viber.png',
+                }}
+                inputHandler={inputHandler}
+                value={form.social_3}
+                state={form}
+              />
+            </div>
+            <div className={s.aboutme_wrapper}>
+              <div className={s.aboutme_container}>
+                <Image src={aboutMe.icon} width={20} height={20} alt='social profile' />
+                <span className={s.input_item}>
+                  <textarea
+                    placeholder={aboutMe.vl}
+                    className={s.aboutme_input}
+                    id={aboutMe.id}
+                    value={form[aboutMe.id]}
+                    onChange={inputHandler}
+                    type={aboutMe.tp}
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className='container'>
+            <h4>Додайте робочу адресу</h4>
+            <div className={s.workplace_wrapper}>
+              <Input
+                data={{
+                  id: 'city',
+                  tp: 'text',
+                  label: ['Ваше місто'],
+                  icon: '/images/adress.png',
+                }}
+                inputHandler={inputHandler}
+                value={form.city}
+                state={form}
+              />
+              <Input
+                data={{
+                  id: 'street',
+                  tp: 'text',
+                  label: ['Вулиця'],
+                  icon: '/images/adress.png',
+                }}
+                inputHandler={inputHandler}
+                value={form.city}
+                state={form}
+              />
+              <Input
+                data={{
+                  id: 'location',
+                  tp: 'text',
+                  label: ['Будівля або салон для орієнтиру'],
+                  icon: '/images/adress.png',
+                }}
+                inputHandler={inputHandler}
+                value={form.city}
+                state={form}
+              />
+            </div>
+          </div>
+          <div className={s.scrollbox_wrapper}>
+            <p className={s.paragraph}>Виділіть ваші навики</p>
+            <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
           </div>
         </div>
-      </div>
-      <div className={s.scrollbox_wrapper}>
-        <p className={s.paragraph}>Виділіть ваші навики</p>
-        <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
-      </div>
-      <div className='container'>
-        <h4>Додайте робочу адресу</h4>
-        <div className={s.workplace_wrapper}>
-          <Input
-            data={{
-              id: 'city',
-              tp: 'text',
-              label: ['Ваше місто'],
-              icon: '/images/adress.png',
-            }}
-            inputHandler={inputHandler}
-            value={form.city}
-            state={form}
-          />
-          <Input
-            data={{
-              id: 'street',
-              tp: 'text',
-              label: ['Вулиця'],
-              icon: '/images/adress.png',
-            }}
-            inputHandler={inputHandler}
-            value={form.city}
-            state={form}
-          />
-          <Input
-            data={{
-              id: 'location',
-              tp: 'text',
-              label: ['Будівля або салон для орієнтиру'],
-              icon: '/images/adress.png',
-            }}
-            inputHandler={inputHandler}
-            value={form.city}
-            state={form}
-          />
+        <div className={s.sidebar_right}>
+          
+          
+          <div className={s.settings}>
+            <h2 className={s.title_h2}>Налаштування</h2>
+
+            <p className={s.paragraph}>Відображати сторінку в каталозі?</p>
+            <ToggleButtons
+              data={{
+                label: [
+                  { name: 'Так', value: 1 },
+                  { name: 'Ні', value: 0 },
+                ],
+                id: 'isPageVisibleInCat',
+              }}
+              inputHandler={inputHandler}
+              value={form.isPageVisibleInCat}
+            />
+            <p className={s.paragraph}>Функція бронювання активна?</p>
+            <ToggleButtons
+              data={{
+                label: [
+                  { name: 'Так', value: 1 },
+                  { name: 'Ні', value: 0 },
+                ],
+                id: 'isBookingActivated',
+              }}
+              inputHandler={inputHandler}
+              value={form.isBookingActivated}
+            />
+
+            <p className={s.paragraph}>Виділіть робочі дні</p>
+
+            <CheckboxButtons data={settings} handler={settingsHandler} status={settings} default={0} />
+
+            <p className={s.paragraph}>О котрій годині починаєте працювати?</p>
+            <RadioButtons
+              data={{ label: [8, 9, 10, 11, 12, 13], id: 'work_begin' }}
+              inputHandler={inputHandler}
+              value={form.work_begin}
+            />
+            <p className={s.paragraph}>Коли закінчуєте робочий день?</p>
+            <RadioButtons
+              data={{ label: [16, 17, 18, 19, 20, 21, 22, 23, 24], id: 'work_end' }}
+              inputHandler={inputHandler}
+              value={form.work_end}
+            />
+            <p className={s.paragraph}>На скільки місяців наперед клієнти можуть бронювати?</p>
+            <RadioButtons
+              data={{ label: [1, 3, 12], id: 'horizon' }}
+              inputHandler={inputHandler}
+              value={form.horizon}
+            />
+            <p className={s.paragraph}>Скільки хвилин має бути інтервал між бронюваннями?</p>
+            <RadioButtons
+              data={{ label: [15, 30], id: 'interval' }}
+              inputHandler={inputHandler}
+              value={form.interval}
+            />
+
+            <div className={s.worktime_wrapper}></div>
+          </div>
+
+          <div className={s.button_container}>
+            {unsaved ? (
+              <button onClick={buttonHandler} className={s.submit_btn}>
+                {saved > 0 ? 'Інформацію збережено' : 'Зберегти'}
+              </button>
+            ) : (
+              ''
+            )}
+          </div>
         </div>
-      </div>
-      <div className={s.settings}>
-        <h2 className={s.title_h2}>Налаштування</h2>
-
-        <p className={s.paragraph}>Відображати сторінку в каталозі?</p>
-        <ToggleButtons
-          data={{
-            label: [
-              { name: 'Так', value: 1 },
-              { name: 'Ні', value: 0 },
-            ],
-            id: 'isPageVisibleInCat',
-          }}
-          inputHandler={inputHandler}
-          value={form.isPageVisibleInCat}
-        />
-        <p className={s.paragraph}>Функція бронювання активна?</p>
-        <ToggleButtons
-          data={{
-            label: [
-              { name: 'Так', value: 1 },
-              { name: 'Ні', value: 0 },
-            ],
-            id: 'isBookingActivated',
-          }}
-          inputHandler={inputHandler}
-          value={form.isBookingActivated}
-        />
-
-        <p className={s.paragraph}>Виділіть робочі дні</p>
-
-        <CheckboxButtons data={settings} handler={settingsHandler} status={settings} default={0} />
-
-        <p className={s.paragraph}>О котрій годині починаєте працювати?</p>
-        <RadioButtons
-          data={{ label: [8, 9, 10, 11, 12, 13], id: 'work_begin' }}
-          inputHandler={inputHandler}
-          value={form.work_begin}
-        />
-        <p className={s.paragraph}>Коли закінчуєте робочий день?</p>
-        <RadioButtons
-          data={{ label: [16, 17, 18, 19, 20, 21, 22, 23, 24], id: 'work_end' }}
-          inputHandler={inputHandler}
-          value={form.work_end}
-        />
-        <p className={s.paragraph}>На скільки місяців наперед клієнти можуть бронювати?</p>
-        <RadioButtons
-          data={{ label: [1, 3, 12], id: 'horizon' }}
-          inputHandler={inputHandler}
-          value={form.horizon}
-        />
-        <p className={s.paragraph}>Скільки хвилин має бути інтервал між бронюваннями?</p>
-        <RadioButtons
-          data={{ label: [15, 30], id: 'interval' }}
-          inputHandler={inputHandler}
-          value={form.interval}
-        />
-
-        <div className={s.worktime_wrapper}></div>
-      </div>
-
-      <div className={s.button_container}>
-        {unsaved ? (
-          <button onClick={buttonHandler} className={s.submit_btn}>
-            {saved > 0 ? 'Інформацію збережено' : 'Зберегти'}
-          </button>
-        ) : (
-          ''
-        )}
       </div>
     </>
   )

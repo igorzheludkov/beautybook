@@ -39,7 +39,7 @@ export default function Services({ user }) {
   // const srv = store.services.services
 
   return (
-    <div>
+    <div className={s.serv_wrapper}>
       <div className='container'>
         <div className={s.header}>
           <h1 className={s.title_h2}>Послуги</h1>
@@ -48,9 +48,11 @@ export default function Services({ user }) {
           </Link>
         </div>
       </div>
+      <div className={s.items_list}>
       {srv.map((i) => (
         <ServiceItem key={i._id} data={i} adminPanel={true} />
       ))}
+      </div>
     </div>
   )
 }
