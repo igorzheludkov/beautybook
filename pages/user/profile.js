@@ -109,6 +109,9 @@ export default function PersonalPage({ user, data }) {
     setUnsaved(1)
     setSaved(0)
   }
+
+  console.log(+form.isBookingActivated);
+  store.masterInfo && console.log(!(store?.masterInfo?.userData?.isBookingActivated == +form.isBookingActivated));
   async function saveData() {
     const response = await fetch('/api/userdata', {
       method: 'POST',
@@ -119,7 +122,7 @@ export default function PersonalPage({ user, data }) {
     })
     const data = await response.json()
     console.log(data)
-    if (form.social_2 && +form.isBookingActivated) {
+    if (form.social_2 && +form.isBookingActivated && !(store?.masterInfo?.userData?.isBookingActivated == +form.isBookingActivated)) {
       console.log('booking and telegram nickname fields completed')
       const setNotifications = await fetch('/api/notifications', {
         method: 'POST',
