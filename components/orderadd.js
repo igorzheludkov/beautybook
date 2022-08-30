@@ -13,17 +13,15 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
   const [indexOfServ, setIndexOfServ] = useState(0)
   const [serv, setServ] = useState([])
 
-  function defaultServ () {
+  function defaultServ() {
     setIndexOfServ(serv.services?.findIndex((e) => e.item_1?.name == editOrder.item_1?.name))
   }
-
 
   useEffect(() => {
     if (store.services) {
       setServ(store.services)
     }
   }, [store?.services])
-  console.log(serv)
   useEffect(() => {
     setVisitDateTime({
       ...visitDateTime,
@@ -155,9 +153,8 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
     console.log('statusMessage')
   }
 
-  console.log(indexOfServ)
   return (
-    <div className={s.order_add} style={formVisible ? { left: 5 } : { left: -360 }}>
+    <div className={s.order_add} style={formVisible ? { opacity: 1 } : { opacity: 1 }}>
       <div className={s.daytime}>
         <div className={s.time}>
           {visitDateTime.hour}:{visitDateTime.minute ? visitDateTime.minute : '00'}
@@ -181,23 +178,30 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
           placeholder='Телефон'
           onChange={inputHandler}
         />
-        <select  value={indexOfServ} defaultValue={indexOfServ} className={s.selectServ} onChange={servHandler}>
+        <select
+          value={indexOfServ}
+          defaultValue={indexOfServ}
+          className={s.selectServ}
+          onChange={servHandler}
+        >
           {serv.services?.map((i, index) => (
-            <option  key={i._id} value={index} >
-              {i.item_1.name}, {i.item_1.dur}хв 
+            <option key={i._id} value={index}>
+              {i.item_1.name}, {i.item_1.dur}хв
             </option>
           ))}
         </select>
-        <button className={s.cancel_btn} onClick={cancelHandler} value='cancel'>
-          Відмінити
-        </button>
-        <button className={s.submit_btn} onClick={orderHandler} value='save'>
-          Зберегти
-        </button>
-      </form>
-      <button className={s.add_btn} onClick={formPositionHandler}>
+        
+      </form><div className={s.order_buttons}>
+          <button className={s.cancel_btn} onClick={cancelHandler} value='cancel'>
+            Очистити
+          </button>
+          <button className={s.submit_btn} onClick={orderHandler} value='save'>
+            Зберегти
+          </button>
+        </div>
+      {/* <button className={s.add_btn} onClick={formPositionHandler}>
         {formVisible ? 'Згорнути' : 'Додати'}
-      </button>
+      </button> */}
     </div>
   )
 }

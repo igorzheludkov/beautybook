@@ -92,6 +92,7 @@ export default function DayCalendar({ user }) {
     e.preventDefault(e)
     setEditOrder(...bookedOrders.orders.filter((i) => i._id === e.target.value))
   }
+
   function cancelOrderHandler(e) {
     e?.preventDefault(e)
     setEditOrder('')
@@ -159,7 +160,7 @@ export default function DayCalendar({ user }) {
 
   function generateBaseTime(begin, end, interval) {
     let bufferArr = []
-    for (let i = +begin * 60; i <= +end * 60; i = i + +interval) {
+    for (let i = (+begin - 1) * 60; i <= (+end + 1) * 60; i = i + +interval) {
       let formattedTime = getFormattedTime(i)
       bufferArr.push({
         time: i,
@@ -251,6 +252,9 @@ export default function DayCalendar({ user }) {
     }
   }, [checkDay])
 
+  const showTodayButton = checkDay != currentTime.getDate() ||
+  checkMonth != currentTime.getMonth() ||
+  checkYear != currentTime.getFullYear() 
 
   return (
     <>
@@ -259,6 +263,16 @@ export default function DayCalendar({ user }) {
       </Head>
       <div className={s.calendar_wrapper}>
         <div className={s.monthDay}>
+          {showTodayButton && <button
+                className={s.today}
+                onClick={() => {
+                  currentTimeSet()
+                }}
+              >
+                Сьогодні
+              </button>
+              
+            }
           <form className={s.wrapper_month} ref={scrollMonth}>
             {generatedMonths.map((i) => (
               <label key={i.index} style={monthStyle} className={s.container_month}>
@@ -291,8 +305,8 @@ export default function DayCalendar({ user }) {
           </form>
           <form className={s.wrapper_day} ref={scrollDay}>
             {generatedDays.map((i, index) => (
-              <div key={index}>
-                <label style={dayStyle} className={s.container_day}>
+             
+                <label key={index} style={dayStyle} className={s.container_day}>
                   <input
                     value={i.index}
                     name='radio'
@@ -305,11 +319,12 @@ export default function DayCalendar({ user }) {
                   />
                   <span style={dayStyle} className={s.name_day}>
                     <div className={s.weekday}>{i.weekday} </div>
-                    <div className={s.weekday_num}>{i.number}</div>
+                    {/* <div className={s.weekday_num}>{i.number}</div> */}
+                    <div className={s.weekday_num}>{i.index}</div>
                   </span>
                   <span style={dayStyle} className={s.checkmark_day}></span>
                 </label>
-              </div>
+             
             ))}
           </form>
         </div>
@@ -363,6 +378,7 @@ export default function DayCalendar({ user }) {
             </div>
           ))}
         </form>
+
         {uData.userData && (
           <OrderAdd
             visitTime={visitDateTime}
@@ -374,15 +390,6 @@ export default function DayCalendar({ user }) {
           />
         )}
       </div>
-
-      <button
-        className={s.today}
-        onClick={() => {
-          currentTimeSet()
-        }}
-      >
-        Сьогодні
-      </button>
     </>
   )
 }
