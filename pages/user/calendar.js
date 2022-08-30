@@ -139,14 +139,17 @@ export default function DayCalendar({ user }) {
     return genArr
   }
 
-  const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth, checkDay])
+  const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth, checkDay, orders])
 
   function genDays(month) {
     const type = 'short'
     let countDays = new Date(checkYear, checkMonth + 1, 0).getDate()
     let genArr = []
     for (let i = 1; i <= countDays; i++) {
-      genArr.push({...getFormattedDay(checkYear, month, i, type), ordersQuantity: bookedTime(checkYear, checkMonth, i, orders).length})
+      genArr.push({
+        ...getFormattedDay(checkYear, month, i, type),
+        ordersQuantity: bookedTime(checkYear, checkMonth, i, orders).length,
+      })
     }
     return genArr
   }
@@ -175,7 +178,7 @@ export default function DayCalendar({ user }) {
     () => bookedTime(checkYear, checkMonth, checkDay, orders),
     [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
   )
-console.log(notFreeTime.length);
+  console.log(notFreeTime.length)
 
   function bookedTime(year, month, day, orders) {
     let filteredTime = []
