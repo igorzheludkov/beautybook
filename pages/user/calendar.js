@@ -335,13 +335,13 @@ export default function DayCalendar({ user }) {
                 <>
                   <div
                     className={s.order_card}
-                    style={{ height: `${(i.order.visitDur / 15 + 1) * 24 - 2}px` }}
+                    style={{ height: `${(i.order.visitDur / 15 + 1) * 24 - 5}px` }}
                   >
                     <div
                       className={s.color_identificator}
                       style={{
                         backgroundColor: `${colorPalette[i.free]}`,
-                        height: `${(i.order.visitDur / 15 + 1) * 24 - 2}px`,
+                        height: `${(i.order.visitDur / 15 + 1) * 24 - 5}px`,
                       }}
                     ></div>
                     <div>{i.order.clientName}</div>
