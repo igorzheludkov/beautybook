@@ -92,7 +92,6 @@ export default function DayCalendar({ user }) {
     e.preventDefault(e)
     setEditOrder(...bookedOrders.orders.filter((i) => i._id === e.target.value))
   }
-
   function cancelOrderHandler(e) {
     e?.preventDefault(e)
     setEditOrder('')
@@ -347,8 +346,7 @@ export default function DayCalendar({ user }) {
                     ></div>
                     <div>{i.order.clientName}</div>
                     <div>{i.order.clientPhone}</div>
-                    <div></div>
-                    <div>
+                    <div className={s.serv_name}>
                       {i.order.item_1.name}, {i.order.visitDur} хв
                     </div>
                     <div className={s.edit_buttons}>

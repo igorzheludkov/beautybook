@@ -10,13 +10,20 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
   const formattedDate = getFormattedDay(visitTime.year, visitTime.month, visitTime.day)
   const [formVisible, setFormVisible] = useState(0)
   const [visitDateTime, setVisitDateTime] = useState(visitTime)
+  const [indexOfServ, setIndexOfServ] = useState(0)
   const [serv, setServ] = useState([])
+
+  function defaultServ () {
+    setIndexOfServ(serv.services?.findIndex((e) => e.item_1?.name == editOrder.item_1?.name))
+  }
+
+
   useEffect(() => {
     if (store.services) {
       setServ(store.services)
     }
   }, [store?.services])
-
+  console.log(serv)
   useEffect(() => {
     setVisitDateTime({
       ...visitDateTime,
@@ -38,12 +45,13 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
         clientPhone: editOrder.clientPhone,
         suggestions: editOrder.suggestions,
       })
-      setServData({ ...servData, id: editOrder._id })
+      setServData({ ...servData, id: editOrder._id, item_1: editOrder.item_1 })
       setVisitDateTime({
         ...visitDateTime,
         hour: editOrder.visitDateTime.hour,
         minute: editOrder.visitDateTime.minute,
       })
+      defaultServ()
     }
   }, [editOrder])
 
@@ -74,24 +82,25 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
 
   const [servData, setServData] = useState(servDataInnitialState)
 
-
   useEffect(() => {
-    serv.services && user && setServData({
-      ...servData,
-      photo: user.userData.photo,
-      masterPhone: user.userData.phone,
-      location: user.userData.location,
-      city: user.userData.city,
-      street: user.userData.street,
-      masterName: user.userData.name,
-      masterSurname: user.userData.surname,
-      masterId: user._id,
-      serv_id: serv?.services[0]?._id,
-      item_1: serv?.services[0]?.item_1,
-      masterEmail: user.email,
-      visitDur: serv?.services[0]?.item_1?.dur,
-      orderId: Date.now(),
-    })
+    serv.services &&
+      user &&
+      setServData({
+        ...servData,
+        photo: user.userData.photo,
+        masterPhone: user.userData.phone,
+        location: user.userData.location,
+        city: user.userData.city,
+        street: user.userData.street,
+        masterName: user.userData.name,
+        masterSurname: user.userData.surname,
+        masterId: user._id,
+        serv_id: serv?.services[0]?._id,
+        item_1: serv?.services[0]?.item_1,
+        masterEmail: user.email,
+        visitDur: serv?.services[0]?.item_1?.dur,
+        orderId: Date.now(),
+      })
   }, [serv, user])
 
   function cancelHandler(e) {
@@ -112,10 +121,10 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
       serv_id: serv.services[e.target.value]._id,
       visitDur: serv.services[e.target.value].item_1.dur,
     })
+    setIndexOfServ(e.target.value)
   }
 
   const createdOrder = { ...clientData, ...servData, visitDateTime }
-
 
   function formPositionHandler(e) {
     formVisible === 0 ? setFormVisible(1) : setFormVisible(0)
@@ -146,7 +155,7 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
     console.log('statusMessage')
   }
 
-  // if (!serv.services) return <div className={s.loading}>Loading</div>
+  console.log(indexOfServ)
   return (
     <div className={s.order_add} style={formVisible ? { left: 5 } : { left: -360 }}>
       <div className={s.daytime}>
@@ -172,10 +181,10 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
           placeholder='Телефон'
           onChange={inputHandler}
         />
-        <select className={s.selectServ} onChange={servHandler}>
+        <select  value={indexOfServ} defaultValue={indexOfServ} className={s.selectServ} onChange={servHandler}>
           {serv.services?.map((i, index) => (
-            <option key={i._id} value={index}>
-              {i.item_1.name}, {i.item_1.dur}хв
+            <option  key={i._id} value={index} >
+              {i.item_1.name}, {i.item_1.dur}хв 
             </option>
           ))}
         </select>

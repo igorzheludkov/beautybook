@@ -251,10 +251,13 @@
   font-size: 14px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
-
+.serv_name{
+  line-height: 13px;
+  color: grey;
+}
 .color_identificator {
     width: 4px;
     position: absolute;
