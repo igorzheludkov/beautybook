@@ -129,7 +129,7 @@ export default function PersonalPage({ user, data }) {
           apiMethod: 'sendMessage',
           parseMode: 'HTML',
           message:
-            'Сповіщення про бронювання активовано.<pre>...</pre>Ви будете отримувати сповіщення про нові бронювання миттєво.',
+            `Сповіщення про бронювання активовано.%0A%0AВи будете отримувати сповіщення про нові бронювання миттєво.`,
         }),
         headers: {
           'Content-Type': 'application/json',

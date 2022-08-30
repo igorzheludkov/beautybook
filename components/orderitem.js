@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import Avatar from './avatar'
 import Calendar from './calendar'
 import Link from 'next/link'
-
+import getFormattedDay from '../components/utils/getFormattedDay'
 
 export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   const [booked, setBooked] = useState(0)
@@ -74,6 +74,11 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
     visitDateTime: dayTime,
     orderId: Date.now(),
   }
+
+
+  // Форматування дати та часу для телеграмм-бота
+  const dateMessage = getFormattedDay(dayTime.year, dayTime.month, dayTime.day, 'long')
+
   // orderData - об'єднує інформацію в єдине замовлення
   // Із функції повинна прийти дата бронювання у зручному для конвертації вигляді
   function visitHandler(e) {
@@ -94,7 +99,6 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   function clientContactsHandler(e) {
     setContacts({ ...contacts, [e.target.id]: e.target.value, visitDur: item.item_1.dur })
   }
-console.log(dayTime);
   async function orderHandler(e) {
     e.preventDefault(e)
     if (validate) {
@@ -127,12 +131,12 @@ console.log(dayTime);
         apiMethod: 'sendMessage',
         parseMode: 'HTML',
         message:
-        `<b>У вас нове бронювання</b><pre>...</pre>
-        Ім'я клієнта: ${contacts.clientName}<pre>...</pre>
-        Телефон: ${contacts.clientPhone}<pre>...</pre>
-        Дата: ${dayTime.day}.${+dayTime.month+1}.${dayTime.year}<pre>...</pre>
-        Час: ${dayTime.hour}:${dayTime.minute}<pre>...</pre>
-        <a href="http://krasa.uno/user/calendar/">Перейдіть в кабінет за даним посиланням щоб перенести або відмінити</a>`,
+        `<b>У вас нове бронювання</b>%0A%0A
+        Ім'я клієнта: ${contacts.clientName}%0A
+        Телефон: ${contacts.clientPhone}%0A
+        Дата: ${dateMessage.month} ${dateMessage.year}, ${dateMessage.weekday}%0A
+        Час: ${dayTime.hour}:${dayTime.minute}%0A%0A
+        <a href="http://krasa.uno/user/calendar/">Перейти в кабінет</a>`,
       }),
       headers: {
         'Content-Type': 'application/json',

@@ -8,5 +8,7 @@ export default function getFormattedDay(year, month, day, type) {
   const dayLong = new Intl.DateTimeFormat('uk-UA', options).format(date)
   const optionsNum = { day: 'numeric', month: 'numeric' }
   const dayNum = new Intl.DateTimeFormat('uk-UA', optionsNum).format(date)
-  return { weekday: dayLong, number: dayNum, index: date.getDate(), year: date.getFullYear() }
+  const optionsMonth = { day: 'numeric', month: 'long' }
+  const monthNum = new Intl.DateTimeFormat('uk-UA', optionsMonth).format(date)
+  return { weekday: dayLong, number: dayNum, index: date.getDate(), year: date.getFullYear(), month: monthNum }
 }

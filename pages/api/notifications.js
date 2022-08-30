@@ -24,6 +24,7 @@ export default async function Notifications(req, res) {
   })
   console.log('25', getUpdates);
   const data = await getUpdates.json()
+  console.log('27', data);
   // filter current user from updates list
   const userChatId = await data.result.find((i) => i?.message?.from?.username === telegramNickname)
   console.log('29', userChatId)
