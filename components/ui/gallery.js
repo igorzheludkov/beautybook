@@ -3,7 +3,7 @@ import s from './gallery.module.css'
 import { useState } from 'react'
 
 export default function GallerySlide({ data }) {
-  const imageSize = 40
+  const imageSize = 80
   const [fullView, setFullView] = useState('0')
   const [sliderPosition, setSliderPosition] = useState(0)
   const slideWidth = 300

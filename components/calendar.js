@@ -17,8 +17,15 @@ export default function Calendar({ props }) {
   const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
 
-  const horizonMonths = monthLabel.length - checkMonth
+  const horizonMonths = (horizon) => {
+    if (curYear == checkYear) {
+      return horizon !== 12 ? horizon+1 : 12 - +curMonth
+    } else {
+      return horizon !== 12 ? horizon+1 : 12
+    }
+  }
 
+  console.log(horizonMonths(+user?.userData.horizon))
   const work = {
     startTime: +user?.userData.work_begin * 60 ?? 9 * 60,
     endTime: +user?.userData.work_end * 60 ?? 20 * 60,
@@ -37,13 +44,13 @@ export default function Calendar({ props }) {
   }
 
   useEffect(() => {
- if(yearState === currentTime.getFullYear()) {
-  setStateTime(new Date())
- } else {
-  setStateTime(new Date(`${yearState}-01-01T00:00:00`))
- }
+    if (yearState === currentTime.getFullYear()) {
+      setStateTime(new Date())
+    } else {
+      setStateTime(new Date(`${yearState}-01-01T00:00:00`))
+    }
   }, [yearState])
-  
+
   function monthHandler(e) {
     setCheckMonths(e.target.value)
   }
@@ -55,7 +62,10 @@ export default function Calendar({ props }) {
     setRenderTime(() => generatedClassicTime(timeTransform()))
   }, [checkDay, bookedOrders])
 
-  const generatedMonths = useMemo(() => genMonths(curMonth, horizonMonths), [curYear])
+  const generatedMonths = useMemo(
+    () => genMonths(curMonth, horizonMonths(+user?.userData.horizon)),
+    [curYear]
+  )
   function genMonths(month, horizonMonths) {
     let genArr = []
     for (let i = month; i <= month + horizonMonths - 1; i++) {
@@ -63,11 +73,9 @@ export default function Calendar({ props }) {
     }
     return genArr
   }
-
   const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth, checkDay])
-
   function genDays(month) {
-    let countDays = new Date(checkYear, checkMonth + 1, 0).getDate()
+    let countDays = new Date(checkYear, +checkMonth + 1, 0).getDate()
     let genArr = []
     let i = checkMonth == curMonth ? curDay : 1
     for (i; i <= countDays; i++) {
@@ -91,7 +99,7 @@ export default function Calendar({ props }) {
           add = add + 15
         }
         let sub = 0
-        for (let rem = 0; rem < ((+i.visitDur ?? 40)  ) / 15; rem++) {
+        for (let rem = 0; rem < (+i.visitDur ?? 40) / 15; rem++) {
           testArr.push({ time: timeInMinutes - sub, free: false })
           sub = sub + 15
         }
@@ -201,15 +209,18 @@ export default function Calendar({ props }) {
             <span style={monthStyle} className={s.checkmark_month}></span>
           </label>
         ))}
-        <div className={s.years_wrapper}>
-          <button className={s.years} value='0' onClick={yearHandler}>
-            {'-'}
-          </button>
-          {yearState}
-          <button className={s.years} value='1' onClick={yearHandler}>
-            {'+'}
-          </button>
-        </div>
+        {user?.userData.horizon == 12 ||
+          (12 - curMonth <= user?.userData.horizon  && (
+            <div className={s.years_wrapper}>
+              <button className={s.years} value='0' onClick={yearHandler}>
+                {'-'}
+              </button>
+              {yearState}
+              <button className={s.years} value='1' onClick={yearHandler}>
+                {'+'}
+              </button>
+            </div>
+          ))}
       </form>
       <form className={s.wrapper_day}>
         {generatedDays.map((i, index) => (
