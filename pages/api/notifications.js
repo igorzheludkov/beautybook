@@ -22,12 +22,9 @@ export default async function Notifications(req, res) {
   const getUpdates = await fetch(`https://api.telegram.org/bot${tokenTelegram}/getUpdates`, {
     method: 'POST',
   })
-  console.log('25', getUpdates);
   const data = await getUpdates.json()
-  console.log('27', data);
   // filter current user from updates list
   const userChatId = await data.result.find((i) => i?.message?.from?.username === telegramNickname)
-  console.log('29', userChatId)
 
   // check if db has chat_id prorerty
   const checkChatId = await collection.findOne({
@@ -46,7 +43,6 @@ export default async function Notifications(req, res) {
     )
     await client.close()}
   }
-  console.log('43', checkChatId?.chat_id)
 
   // send message to user from telegram bot
   switch (apiMethod) {
@@ -58,8 +54,8 @@ export default async function Notifications(req, res) {
         }
       )
       const data = await sendMessage.json()
-      console.log(data);
-  }
+
+    }
 
   switch (method) {
     case 'GET':

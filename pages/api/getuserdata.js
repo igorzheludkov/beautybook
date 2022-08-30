@@ -15,7 +15,6 @@ export default async function UserData(req, res) {
     const data = req.body
     const query = req.query.q
 
-    console.log('getuserdata', query);
 
     switch (method) {
         case 'GET':

@@ -24,7 +24,6 @@ export default async function Order(req, res) {
     case 'GET':
       const finded = await collection.find({ masterEmail: query }).toArray()
       await client.close()
-      console.log(finded)
       res.status(200).json({ message: 'finded services:', orders: finded })
       break
 

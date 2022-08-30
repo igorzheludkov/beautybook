@@ -1,4 +1,4 @@
-import s from '../../styles/admincalendar.module.css'
+import s from '../../styles/calendar.module.css'
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { getMonthLabel } from '../../lib/calendarLabels'
 import getFormattedDay from '../../components/utils/getFormattedDay'
@@ -119,12 +119,10 @@ export default function DayCalendar({ user }) {
     })
     const data = await response.json()
     console.log('Sended')
-    console.log(data)
     if (data.result.deletedCount > 0) {
       mutate(`/api/order?q=${user.email}`)
     }
     // if (data.result.deletedCount > 0) return router.push('/user/booking')
-    console.log(data.result.deletedCount > 0)
   }
 
   function yearHandler(e) {
@@ -148,7 +146,7 @@ export default function DayCalendar({ user }) {
     let countDays = new Date(checkYear, checkMonth + 1, 0).getDate()
     let genArr = []
     for (let i = 1; i <= countDays; i++) {
-      genArr.push(getFormattedDay(checkYear, month, i, type))
+      genArr.push({...getFormattedDay(checkYear, month, i, type), ordersQuantity: bookedTime(checkYear, checkMonth, i, orders).length})
     }
     return genArr
   }
@@ -177,6 +175,7 @@ export default function DayCalendar({ user }) {
     () => bookedTime(checkYear, checkMonth, checkDay, orders),
     [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
   )
+console.log(notFreeTime.length);
 
   function bookedTime(year, month, day, orders) {
     let filteredTime = []
@@ -199,9 +198,9 @@ export default function DayCalendar({ user }) {
 
   function renderTime(gTime, nfTime) {
     let baseTime = gTime
-    let baseOrders = nfTime
+    let bookedOrders = nfTime
 
-    baseOrders.forEach((bo, index) => {
+    bookedOrders.forEach((bo, index) => {
       baseTime.forEach((bt) => {
         if (bt.time >= bo.time && bt.time <= bo.time + bo.visitDur) {
           bt.free = index
@@ -252,10 +251,10 @@ export default function DayCalendar({ user }) {
     }
   }, [checkDay])
 
-  const showTodayButton = checkDay != currentTime.getDate() ||
-  checkMonth != currentTime.getMonth() ||
-  checkYear != currentTime.getFullYear() 
-
+  const showTodayButton =
+    checkDay != currentTime.getDate() ||
+    checkMonth != currentTime.getMonth() ||
+    checkYear != currentTime.getFullYear()
   return (
     <>
       <Head>
@@ -263,16 +262,16 @@ export default function DayCalendar({ user }) {
       </Head>
       <div className={s.calendar_wrapper}>
         <div className={s.monthDay}>
-          {showTodayButton && <button
-                className={s.today}
-                onClick={() => {
-                  currentTimeSet()
-                }}
-              >
-                Сьогодні
-              </button>
-              
-            }
+          {showTodayButton && (
+            <button
+              className={s.today}
+              onClick={() => {
+                currentTimeSet()
+              }}
+            >
+              Сьогодні
+            </button>
+          )}
           <form className={s.wrapper_month} ref={scrollMonth}>
             {generatedMonths.map((i) => (
               <label key={i.index} style={monthStyle} className={s.container_month}>
@@ -305,26 +304,24 @@ export default function DayCalendar({ user }) {
           </form>
           <form className={s.wrapper_day} ref={scrollDay}>
             {generatedDays.map((i, index) => (
-             
-                <label key={index} style={dayStyle} className={s.container_day}>
-                  <input
-                    value={i.index}
-                    name='radio'
-                    type='radio'
-                    checked={i.index === checkDay}
-                    // defaultChecked={i.index === checkDay}
-                    onChange={() => setCheckDay(i.index)}
-                    data-type-index={i.index}
-                    data-type-field='day'
-                  />
-                  <span style={dayStyle} className={s.name_day}>
-                    <div className={s.weekday}>{i.weekday} </div>
-                    {/* <div className={s.weekday_num}>{i.number}</div> */}
-                    <div className={s.weekday_num}>{i.index}</div>
-                  </span>
-                  <span style={dayStyle} className={s.checkmark_day}></span>
-                </label>
-             
+              <label key={index} style={dayStyle} className={s.container_day}>
+                <input
+                  value={i.index}
+                  name='radio'
+                  type='radio'
+                  checked={i.index === checkDay}
+                  // defaultChecked={i.index === checkDay}
+                  onChange={() => setCheckDay(i.index)}
+                  data-type-index={i.index}
+                  data-type-field='day'
+                />
+                <span style={dayStyle} className={s.name_day}>
+                  <div className={s.weekday}>{i.weekday} </div>
+                  {i.ordersQuantity > 0 && <div className={s.orders_quantity}>{i.ordersQuantity}</div>}
+                  <div className={s.weekday_num}>{i.index}</div>
+                </span>
+                <span style={dayStyle} className={s.checkmark_day}></span>
+              </label>
             ))}
           </form>
         </div>

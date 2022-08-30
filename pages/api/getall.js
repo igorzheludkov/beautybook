@@ -8,7 +8,6 @@ const client = new MongoClient(url)
 const dbName = 'beautybook'
 
 export default async function GetData(req, res) {
-    console.log(req.query);
 //   if (req.query.q) {
     await client.connect()
     const db = client.db(dbName)

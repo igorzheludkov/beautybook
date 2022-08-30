@@ -11,7 +11,6 @@ const dbName = 'beautybook'
 export default async function GetData(req, res) {
   if (req.query.q) {
     const email = req.query.q
-    console.log(email)
     await client.connect()
     const db = client.db(dbName)
     const collection = db.collection('user_public')

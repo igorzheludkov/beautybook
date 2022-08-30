@@ -22,7 +22,6 @@ export default async function BookingData(req, res) {
         query: { services },
         method,
     } = req
-    console.log('query', data)
     switch (method) {
         case 'GET':
             const finded = await collection.findOne({ _id: new ObjectId(query) })

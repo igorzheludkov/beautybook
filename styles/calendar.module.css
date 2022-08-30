@@ -1,7 +1,6 @@
 .calendar_wrapper {
-    position: relative;
+  position: relative;
 }
-
 
 .wrapper_month {
   display: flex;
@@ -136,11 +135,7 @@
   margin-bottom: 15px;
   transition: 0.3s;
   position: relative;
- 
-
 }
-
-
 
 .wrapper_time::-webkit-scrollbar {
   display: none;
@@ -243,20 +238,20 @@
   transition: 0.5s;
 }
 
-.serv_name{
+.serv_name {
   line-height: 13px;
   color: grey;
 }
 .color_identificator {
-    width: 4px;
-    position: absolute;
-    top: 0;
-    right: 0px;
-    border-radius: 7px;
+  width: 4px;
+  position: absolute;
+  top: 0;
+  right: 0px;
+  border-radius: 7px;
 }
 
-
-.remove_btn, .shift_btn {
+.remove_btn,
+.shift_btn {
   border: none;
   border-radius: 20px;
   height: 20px;
@@ -269,27 +264,26 @@
 }
 
 .monthDay {
- position: sticky;
-top: 60px;
-z-index: 101;
-background-color: white;
+  position: sticky;
+  top: 60px;
+  z-index: 101;
+  background-color: white;
 }
 
 .edit_buttons {
   position: absolute;
   bottom: -5px;
-
 }
 
 .calendar_footer {
   position: sticky;
   bottom: 0;
   display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
-.today{
+.today {
   position: absolute;
   top: 100px;
   left: 0;
@@ -301,23 +295,36 @@ background-color: white;
   z-index: 102;
 }
 
+.orders_quantity{
+  position: absolute;
+  top: -3px;
+  right: -8px;
+  background: #e7f8ff;
+  width: 17px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
 @media (min-width: 768px) {
   .order_card {
     min-width: 330px;
     transition: 0.5s;
   }
 
-  .wrapper_day{
+  .wrapper_day {
     justify-content: space-evenly;
   }
-  .container_day{
+  .container_day {
     padding: 0;
     width: 100%;
   }
 
-  .name_day{
+  .name_day {
     width: inherit;
   }
-  
-  
 }
+
