@@ -25,64 +25,26 @@ export async function getServerSideProps(context) {
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function Notifications({ user, updates }) {
-  console.log(updates)
-  const { data: uData } = useSWR(user ? `/api/userdata?q=${user.email}` : null, fetcher)
-  const token = '5738708196:AAEWAEYsyVbsW3QjXzpG-W0AaECRL1qeEqw'
-
-  const { data: chatsList } = useSWR(`https://api.telegram.org/bot${token}/getUpdates?` ?? null, fetcher)
-  const [store, setStore] = useStoreContext()
-
-  const [message, setMessage] = useState('')
-  const [chatId, setChatId] = useState('')
-
-  useEffect(() => {
-    chatsList &&
-      uData &&
-      setChatId(
-        chatsList.result.find((i) => i.message.from.username === uData.userData.social_2).message.chat.id
-      )
-  }, [uData, chatsList])
-
-  function messageHandler(e) {
-    e.preventDefault(e)
-    sendMessage(chatId, message, token)
-  }
-
-  async function sendMessage(c, m, t) {
-    const chat = c
-    const message = m
-    const token = t
-    const meth = 'sendMessage'
-    const response = await fetch(
-      `https://api.telegram.org/bot${token}/${meth}?chat_id=${chat}&text=${message}`,
-      {
-        method: 'POST',
-        //   body: JSON.stringify({ email: user.email, userNotifications: generateBotKey }),
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-      }
-    )
-    const data = await response.json()
-    console.log(data)
-  }
-
-  console.log(chatId)
-  console.log(chatsList)
-
+export default function Notifications({ user }) {
   return (
     <>
-      <div className={s.bot_link}>
-        <Link href='https://t.me/krasa_uno_bot'>
-          <a target='_blank'>t.me/krasa_uno_bot</a>
-        </Link>
+      <div className='container'>
+        <h2>Підключення сповіщень у telegram</h2>
+        <p>
+          Для підключення сповіщень у telegram необхідно додати свій нікнейм в телеграмі, потім перейти в бот за посиланням нижче і
+          натиснути кнопку /start
+        </p>
+        <button className={s.bot_link}>
+          <Link href='https://t.me/krasa_uno_bot'>
+            <a target='_blank'>t.me/krasa_uno_bot</a>
+          </Link>
+        </button>
+        <p></p>
+        <div className={s.message}>
+          <p>Тепер можна активувати функцію бронювання, після чого прийде сповіщення про успішну активацію.</p>
+          <p>Якщо сповіщення не прийшло, потрібно вимкнути і увімкнути знову функцію бронювання.</p>
+        </div>
       </div>
-      <div className={s.message}>
-        <h2>Повідомлення</h2>
-      </div>
-      <input value={message} onChange={(e) => setMessage(e.target.value)} />
-      <button onClick={messageHandler}>Надіслати</button>
     </>
   )
 }
