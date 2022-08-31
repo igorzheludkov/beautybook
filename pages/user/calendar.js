@@ -248,7 +248,7 @@ export default function DayCalendar({ user }) {
       scrollMonth.current.scrollTo({ left: checkMonth * monthStyle.minWidth + 40, behavior: 'smooth' })
       checkMonth !== stateTime.getMonth() + 1
         ? scrollDay.current.scrollTo({ left: 0, behavior: 'smooth' })
-        : scrollDay.current.scrollTo({ left: checkDay * 49 - 98, behavior: 'smooth' })
+        : scrollDay.current.scrollTo({ left: stateTime.getDate() * 49 - 98, behavior: 'smooth' })
     }, 100)
   }, [checkMonth])
 
