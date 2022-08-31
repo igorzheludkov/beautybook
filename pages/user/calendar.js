@@ -63,7 +63,7 @@ export default function DayCalendar({ user }) {
   const [stateTime, setStateTime] = useState(currentTime)
 
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
-  const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
+  const [checkMonth, setCheckMonths] = useState(stateTime.getMonth()+1)
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
 
   const currentTimeInMinutes = stateTime.getHours() * 60 + stateTime.getMinutes()
@@ -83,7 +83,7 @@ export default function DayCalendar({ user }) {
   }
   useEffect(() => {
     setCheckYear(stateTime.getFullYear())
-    setCheckMonths(stateTime.getMonth())
+    setCheckMonths(stateTime.getMonth()+1)
     setCheckDay(stateTime.getDate())
   }, [stateTime])
 
@@ -134,7 +134,7 @@ export default function DayCalendar({ user }) {
   function genMonths() {
     let genArr = []
     for (let i = 0; i <= 11; i++) {
-      genArr.push({ month: monthLabel[i], index: i })
+      genArr.push({ month: monthLabel[i], index: i+1 })
     }
     return genArr
   }
@@ -143,9 +143,12 @@ export default function DayCalendar({ user }) {
 
   function genDays(month) {
     const type = 'short'
-    let countDays = new Date(checkYear, checkMonth + 1, 0).getDate()
+    let countDays = new Date(checkYear, checkMonth, 0).getDate()
     let genArr = []
-    for (let i = 1; i <= countDays; i++) {
+  console.log('dayTime', checkYear, checkMonth, checkDay)
+  console.log('countDays', countDays)
+
+    for (let i = 1; i <= countDays; i++) { 
       genArr.push({
         ...getFormattedDay(checkYear, month, i, type),
         ordersQuantity: bookedTime(checkYear, checkMonth, i, orders).length,
@@ -153,6 +156,8 @@ export default function DayCalendar({ user }) {
     }
     return genArr
   }
+
+  console.log(generatedDays);
 
   const generatedTime = useMemo(
     () => generateBaseTime(workBegin, workEnd, bookingInterval),
@@ -178,14 +183,13 @@ export default function DayCalendar({ user }) {
     () => bookedTime(checkYear, checkMonth, checkDay, orders),
     [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
   )
-  console.log(notFreeTime.length)
 
   function bookedTime(year, month, day, orders) {
     let filteredTime = []
     orders.forEach((i) => {
       if (
         +i?.visitDateTime?.year == +year &&
-        +i?.visitDateTime?.month == +month &&
+        +i?.visitDateTime?.month == +month-1 &&
         +i?.visitDateTime?.day == +day
       ) {
         let orderTimeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute

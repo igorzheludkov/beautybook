@@ -1,7 +1,7 @@
 import s from './calendar.module.css'
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { getMonthLabel } from '../lib/calendarLabels'
-
+import getFormattedDay from './utils/getFormattedDay'
 export default function Calendar({ props }) {
   const { visitHandler, user, bookedOrders, item } = props
   const monthLabel = getMonthLabel()
@@ -10,13 +10,13 @@ export default function Calendar({ props }) {
   const [stateTime, setStateTime] = useState(currentTime)
   const [yearState, setYearState] = useState(currentTime.getFullYear())
   let curYear = stateTime.getFullYear()
-  let curMonth = stateTime.getMonth()
+  let curMonth = 1+stateTime.getMonth()
   let curDay = stateTime.getDate()
 
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
-  const [checkMonth, setCheckMonths] = useState(stateTime.getMonth())
+  const [checkMonth, setCheckMonths] = useState(curMonth)
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
-
+console.log('checkMonth',checkMonth);
   const horizonMonths = (horizon) => {
     if (curYear == checkYear) {
       return horizon !== 12 ? horizon + 1 : 12 - +curMonth
@@ -51,7 +51,7 @@ export default function Calendar({ props }) {
   }, [yearState])
 
   function monthHandler(e) {
-    setCheckMonths(e.target.value)
+    setCheckMonths(+e.target.value)
   }
   function dayHandler(e) {
     setCheckDay(() => e.target.value)
@@ -67,22 +67,25 @@ export default function Calendar({ props }) {
     [curYear]
   )
   function genMonths(month, horizonMonths) {
-    let genArr = []
-    for (let i = month; i <= month + horizonMonths - 1; i++) {
-      genArr.push({ month: monthLabel[i], index: i })
+    let genMonths = []
+    for (let i = month-1; i <= month + horizonMonths - 1; i++) {
+      genMonths.push({ month: monthLabel[i], index: i+1 })
     }
-    return genArr
+    return genMonths
   }
-  const generatedDays = useMemo(() => genDays(checkMonth), [checkMonth, checkDay])
-  function genDays(month) {
-    let countDays = new Date(checkYear, +checkMonth + 1, 0).getDate()
+  const generatedDays = useMemo(() => genDays(checkMonth, checkYear), [checkMonth, checkDay])
+  function genDays(month, year) {
+    let countDays = new Date(year, +month, 0).getDate()
+    console.log(countDays);
     let genArr = []
-    let i = checkMonth == curMonth ? curDay : 1
+    // let i = 1
+    let i = month == curMonth ? curDay : 1
     for (i; i <= countDays; i++) {
-      genArr.push(getFormatedDay(checkYear, month, i))
+      genArr.push(getFormattedDay(year, +month, i, 'short'))
     }
     return genArr
   }
+
 
   function filteredOrders() {
     let testArr = []
@@ -194,7 +197,6 @@ export default function Calendar({ props }) {
     borderRadius: '7px',
     padding: '0',
   }
-  console.log(generatedDays.length)
   return (
     <>
       <form className={s.wrapper_month}>
@@ -216,8 +218,8 @@ export default function Calendar({ props }) {
             <span style={monthStyle} className={s.checkmark_month}></span>
           </label>
         ))}
-        {user?.userData.horizon == 12 ||
-          (12 - curMonth <= user?.userData.horizon && (
+        {/* {user?.userData.horizon == 12 || */}
+          {/* // (12 - curMonth <= user?.userData.horizon && ( */}
             <div className={s.years_wrapper}>
               <button className={s.years} value='0' onClick={yearHandler}>
                 {'-'}
@@ -227,7 +229,7 @@ export default function Calendar({ props }) {
                 {'+'}
               </button>
             </div>
-          ))}
+          {/* ))} */}
       </form>
       <form className={s.wrapper_day} style={showMore.day ? { flexWrap: 'wrap' } : {}}>
         {generatedDays.length >= 6 && (
@@ -249,8 +251,8 @@ export default function Calendar({ props }) {
                 onClick={dayHandler}
               />
               <span style={dayStyle} className={s.name_day}>
-                <div className={s.weekday}>{i.weekday} </div>
                 <div className={s.weekday_num}>{i.number}</div>
+                <div className={s.weekday}>{i.weekday} </div>
               </span>
               <span style={dayStyle} className={s.checkmark_day}></span>
             </label>

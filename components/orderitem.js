@@ -13,7 +13,7 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   //   booked === 0 ? setShowBooking(1) : setShowBooking(0)
   // }
 
-  const currentTime = new Date()
+  const getTime = new Date()
   const [servData, setServData] = useState({
     photo: '',
     masterPhone: '',
@@ -49,7 +49,7 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   }, [item])
 
   const defaultTime = {
-    year: currentTime.getFullYear(),
+    year: getTime.getFullYear(),
     month: '',
     day: '',
     hour: '',
@@ -63,7 +63,6 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   })
 
   const [dayTime, setDayTime] = useState(defaultTime) // отримано поточну дату у форматі для конвертування у timestamp
-
   const choosenTimeStamp = new Date(
     `${dayTime.year}-${dayTime.month}-${dayTime.day}T${dayTime.hour}:${dayTime.minute}:00`
   ) // конвертує отриманий з календаря час в timestamp
