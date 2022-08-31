@@ -293,7 +293,7 @@ export default function PersonalPage({ user, data }) {
                   icon: '/images/adress.png',
                 }}
                 inputHandler={inputHandler}
-                value={form.city}
+                value={form.street}
               />
               <Input
                 data={{
@@ -303,7 +303,7 @@ export default function PersonalPage({ user, data }) {
                   icon: '/images/adress.png',
                 }}
                 inputHandler={inputHandler}
-                value={form.city}
+                value={form.location}
               />
             </div>
           </div>

@@ -74,7 +74,6 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
     orderId: Date.now(),
   }
 
-console.log(orderData);
   // Форматування дати та часу для телеграмм-бота
   const dateMessage = getFormattedDay(dayTime.year, dayTime.month, dayTime.day, 'long')
 

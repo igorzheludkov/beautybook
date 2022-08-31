@@ -216,8 +216,8 @@ export default function Calendar({ props }) {
             <span style={monthStyle} className={s.checkmark_month}></span>
           </label>
         ))}
-        {/* {user?.userData.horizon == 12 || */}
-          {/* // (12 - curMonth <= user?.userData.horizon && ( */}
+        {user?.userData.horizon == 12 ||
+          (12 - curMonth <= user?.userData.horizon && (
             <div className={s.years_wrapper}>
               <button className={s.years} value='0' onClick={yearHandler}>
                 {'-'}
@@ -227,7 +227,7 @@ export default function Calendar({ props }) {
                 {'+'}
               </button>
             </div>
-          {/* ))} */}
+          ))} 
       </form>
       <form className={s.wrapper_day} style={showMore.day ? { flexWrap: 'wrap' } : {}}>
         {generatedDays.length >= 6 && (
