@@ -1,5 +1,5 @@
 import s from './calendar.module.css'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { getMonthLabel } from '../lib/calendarLabels'
 
 export default function Calendar({ props }) {
@@ -19,13 +19,12 @@ export default function Calendar({ props }) {
 
   const horizonMonths = (horizon) => {
     if (curYear == checkYear) {
-      return horizon !== 12 ? horizon+1 : 12 - +curMonth
+      return horizon !== 12 ? horizon + 1 : 12 - +curMonth
     } else {
-      return horizon !== 12 ? horizon+1 : 12
+      return horizon !== 12 ? horizon + 1 : 12
     }
   }
 
-  console.log(horizonMonths(+user?.userData.horizon))
   const work = {
     startTime: +user?.userData.work_begin * 60 ?? 9 * 60,
     endTime: +user?.userData.work_end * 60 ?? 20 * 60,
@@ -56,6 +55,7 @@ export default function Calendar({ props }) {
   }
   function dayHandler(e) {
     setCheckDay(() => e.target.value)
+    setShowMore({ ...showMore, day: 0 })
   }
 
   useEffect(() => {
@@ -171,6 +171,13 @@ export default function Calendar({ props }) {
     return rminutes > 0 ? { hours: rhours, minutes: rminutes } : { hours: rhours, minutes: 0 }
   }
 
+  const [showMore, setShowMore] = useState({ month: 0, day: 0, time: 0 })
+
+  function showMoreHandler(e) {
+    e.preventDefault(e)
+    setShowMore({ ...showMore, [e.target.value]: showMore[e.target.value] === 0 ? 1 : 0 })
+  }
+
   const monthStyle = {
     height: '25px',
     borderRadius: '20px',
@@ -187,7 +194,7 @@ export default function Calendar({ props }) {
     borderRadius: '7px',
     padding: '0',
   }
-
+  console.log(generatedDays.length)
   return (
     <>
       <form className={s.wrapper_month}>
@@ -210,7 +217,7 @@ export default function Calendar({ props }) {
           </label>
         ))}
         {user?.userData.horizon == 12 ||
-          (12 - curMonth <= user?.userData.horizon  && (
+          (12 - curMonth <= user?.userData.horizon && (
             <div className={s.years_wrapper}>
               <button className={s.years} value='0' onClick={yearHandler}>
                 {'-'}
@@ -222,7 +229,13 @@ export default function Calendar({ props }) {
             </div>
           ))}
       </form>
-      <form className={s.wrapper_day}>
+      <form className={s.wrapper_day} style={showMore.day ? { flexWrap: 'wrap' } : {}}>
+        {generatedDays.length >= 6 && (
+          <button value='day' onClick={showMoreHandler} className={s.showmore_button}>
+            {showMore.day ? 'Приховати дні' : 'Показати всі дні'}
+          </button>
+        )}
+
         {generatedDays.map((i, index) => (
           <div key={index}>
             <label style={dayStyle} className={s.container_day}>
@@ -245,7 +258,7 @@ export default function Calendar({ props }) {
         ))}
       </form>
 
-      <form id='time' className={s.wrapper_time}>
+      <form id='time' className={s.wrapper_time} style={showMore.day ? { flexWrap: 'wrap' } : {}}>
         {renderTime.map((i, index) => (
           <div key={index}>
             <label style={timeStyle} className={s.container_time}>

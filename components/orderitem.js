@@ -160,7 +160,7 @@ export default function OrderItem({ item, bookedOrders, user, showBooking }) {
   return (
     <div
       className={s.orders_wrapper}
-      style={showBooking ? (statusMessage.status ? { height: '60px' } : { height: '300px' }) : { height: 0 }}
+      style={showBooking ? (statusMessage.status ? { height: '60px' } : { height: '600px' }) : { height: 0 }}
     >
       {statusMessage.status === 0 && (
         <>

@@ -295,7 +295,7 @@
   z-index: 102;
 }
 
-.orders_quantity{
+.orders_quantity {
   position: absolute;
   top: -3px;
   right: -8px;
@@ -308,6 +308,8 @@
   border-radius: 50%;
   opacity: 0.8;
 }
+
+
 
 @media (min-width: 768px) {
   .order_card {
@@ -327,4 +329,3 @@
     width: inherit;
   }
 }
-

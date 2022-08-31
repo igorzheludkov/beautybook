@@ -10,6 +10,8 @@
 }
 
 .title_h2 {
+  padding-top: 0;
+  margin-top: 0;
   font-size: 22px;
   font-weight: 600;
   text-decoration: 3px underline #fcdcff;
@@ -161,4 +163,22 @@
 
 .bookmark_text {
   margin-left: 5px;
+}
+
+.services{
+  max-width: 680px;
+}
+
+
+@media (min-width: 768px) {
+.main_wrapper {
+  display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+}
+
+@media (min-width: 768px) and (max-width:1024px) {
+  .services{
+    max-width: 445px;
+  }
 }

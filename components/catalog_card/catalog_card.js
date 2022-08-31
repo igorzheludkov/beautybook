@@ -7,7 +7,9 @@ export default function CatalogCard({ item }) {
   const masterInfo = {
     display: 'grid',
     gridTemplateColumns: '1fr 4fr',
-    padding: '10px'
+    padding: '10px',
+    maxWidth: '340px'
+
   }
 console.log(item);
   return (

@@ -71,6 +71,7 @@
 .wrapper_day {
   display: flex;
   overflow-x: auto;
+  align-items: center;
 }
 
 .container_day {
@@ -146,15 +147,17 @@
 /* ------------- styles for time --------------------- */
 
 .wrapper_time {
-  /* display: flex; */
-  display: grid;
-  grid-template-rows: 50px 50px;
-  grid-auto-flow: column;
+  display: flex;
+  flex-wrap: wrap;
+  /* display: grid; */
+  /* grid-template-rows: 50px 50px; */
+  /* grid-template-rows: 45px 45px 45px 45px; */
+  /* grid-auto-flow: column; */
   margin-bottom: 15px;
   transition: 0.3s;
-  overflow-x: scroll;
-  height: 100px;
-  justify-content: start;
+  /* overflow-x: scroll; */
+  /* height: 100px; */
+  /* justify-content: start; */
 }
 
 .wrapper_time::-webkit-scrollbar {
@@ -232,7 +235,6 @@
   display: flex;
   align-items: center;
   font-size: 14px;
-
 }
 .years {
   border: none;
@@ -242,4 +244,19 @@
   width: 25px;
   height: 25px;
   margin: 0 5px;
+}
+
+
+
+.showmore_button {
+  border: none;
+  height: 40px;
+  width: 125px;
+  border-radius: 5px;
+}
+
+@media (max-width: 1024px) {
+  .showmore_button {
+    display: none;
+  }
 }
