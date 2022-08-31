@@ -180,7 +180,6 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
         />
         <select
           value={indexOfServ}
-          defaultValue={indexOfServ}
           className={s.selectServ}
           onChange={servHandler}
         >

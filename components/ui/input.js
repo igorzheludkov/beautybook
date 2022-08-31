@@ -1,9 +1,9 @@
 // import s from './checkboxbuttons.module.css'
-import { useState, useEffect, useCallback } from 'react'
 import s from './input.module.css'
 import Image from 'next/image'
 
-export default function Input({ data, inputHandler, value, state }) {
+export default function Input({ data, inputHandler, value }) {
+  const inputValue = value ?? ''
   return (
     <div>
       <form className={s.input_wrapper}>
@@ -18,7 +18,7 @@ export default function Input({ data, inputHandler, value, state }) {
                 name='work_begin'
                 id={data.id}
                 checked={value == i ? true : false}
-                value={state[data.id]}
+                value={inputValue}
                 type={data.tp}
                 onChange={inputHandler}
                 placeholder={data.label}

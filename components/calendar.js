@@ -16,7 +16,6 @@ export default function Calendar({ props }) {
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
   const [checkMonth, setCheckMonths] = useState(curMonth)
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
-console.log('checkMonth',checkMonth);
   const horizonMonths = (horizon) => {
     if (curYear == checkYear) {
       return horizon !== 12 ? horizon + 1 : 12 - +curMonth
@@ -76,7 +75,6 @@ console.log('checkMonth',checkMonth);
   const generatedDays = useMemo(() => genDays(checkMonth, checkYear), [checkMonth, checkDay])
   function genDays(month, year) {
     let countDays = new Date(year, +month, 0).getDate()
-    console.log(countDays);
     let genArr = []
     // let i = 1
     let i = month == curMonth ? curDay : 1

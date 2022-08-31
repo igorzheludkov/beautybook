@@ -235,7 +235,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  transition: 0.5s;
+  transition: 2s;
+  opacity: 1;
 }
 
 .serv_name {
@@ -314,7 +315,7 @@
 @media (min-width: 768px) {
   .order_card {
     min-width: 330px;
-    transition: 0.5s;
+    
   }
 
   .wrapper_day {

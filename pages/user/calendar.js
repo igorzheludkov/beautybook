@@ -63,7 +63,7 @@ export default function DayCalendar({ user }) {
   const [stateTime, setStateTime] = useState(currentTime)
 
   const [checkYear, setCheckYear] = useState(stateTime.getFullYear())
-  const [checkMonth, setCheckMonths] = useState(stateTime.getMonth()+1)
+  const [checkMonth, setCheckMonths] = useState(stateTime.getMonth() + 1)
   const [checkDay, setCheckDay] = useState(stateTime.getDate())
 
   const currentTimeInMinutes = stateTime.getHours() * 60 + stateTime.getMinutes()
@@ -83,7 +83,7 @@ export default function DayCalendar({ user }) {
   }
   useEffect(() => {
     setCheckYear(stateTime.getFullYear())
-    setCheckMonths(stateTime.getMonth()+1)
+    setCheckMonths(stateTime.getMonth() + 1)
     setCheckDay(stateTime.getDate())
   }, [stateTime])
 
@@ -108,6 +108,7 @@ export default function DayCalendar({ user }) {
     })
   }, [checkYear, checkMonth, checkDay, checkTime])
 
+
   async function removeHandler(e) {
     e.preventDefault(e)
     const response = await fetch('/api/booking_api', {
@@ -122,8 +123,10 @@ export default function DayCalendar({ user }) {
     if (data.result.deletedCount > 0) {
       mutate(`/api/order?q=${user.email}`)
     }
+
     // if (data.result.deletedCount > 0) return router.push('/user/booking')
   }
+
 
   function yearHandler(e) {
     e.preventDefault()
@@ -134,7 +137,7 @@ export default function DayCalendar({ user }) {
   function genMonths() {
     let genArr = []
     for (let i = 0; i <= 11; i++) {
-      genArr.push({ month: monthLabel[i], index: i+1 })
+      genArr.push({ month: monthLabel[i], index: i + 1 })
     }
     return genArr
   }
@@ -145,10 +148,8 @@ export default function DayCalendar({ user }) {
     const type = 'short'
     let countDays = new Date(checkYear, checkMonth, 0).getDate()
     let genArr = []
-  console.log('dayTime', checkYear, checkMonth, checkDay)
-  console.log('countDays', countDays)
 
-    for (let i = 1; i <= countDays; i++) { 
+    for (let i = 1; i <= countDays; i++) {
       genArr.push({
         ...getFormattedDay(checkYear, month, i, type),
         ordersQuantity: bookedTime(checkYear, checkMonth, i, orders).length,
@@ -157,8 +158,6 @@ export default function DayCalendar({ user }) {
     return genArr
   }
 
-  console.log(generatedDays);
-
   const generatedTime = useMemo(
     () => generateBaseTime(workBegin, workEnd, bookingInterval),
     [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
@@ -166,7 +165,7 @@ export default function DayCalendar({ user }) {
 
   function generateBaseTime(begin, end, interval) {
     let bufferArr = []
-    for (let i = (+begin - 1) * 60; i <= (+end + 1) * 60; i = i + +interval) {
+    for (let i = (+begin - 1) * 60; i <= +end * 60; i = i + +interval) {
       let formattedTime = getFormattedTime(i)
       bufferArr.push({
         time: i,
@@ -183,13 +182,12 @@ export default function DayCalendar({ user }) {
     () => bookedTime(checkYear, checkMonth, checkDay, orders),
     [bookedOrders, workGraphic, checkYear, checkMonth, checkDay]
   )
-
   function bookedTime(year, month, day, orders) {
     let filteredTime = []
     orders.forEach((i) => {
       if (
         +i?.visitDateTime?.year == +year &&
-        +i?.visitDateTime?.month == +month-1 &&
+        +i?.visitDateTime?.month == +month &&
         +i?.visitDateTime?.day == +day
       ) {
         let orderTimeInMinutes = +i.visitDateTime.hour * 60 + +i.visitDateTime.minute
@@ -245,6 +243,14 @@ export default function DayCalendar({ user }) {
       scrollDay.current.scrollTo({ left: checkDay * 49 - 98, behavior: 'smooth' })
     }, 100)
   }, [checkDay])
+  useEffect(() => {
+    setTimeout(() => {
+      scrollMonth.current.scrollTo({ left: checkMonth * monthStyle.minWidth + 40, behavior: 'smooth' })
+      checkMonth !== stateTime.getMonth() + 1
+        ? scrollDay.current.scrollTo({ left: 0, behavior: 'smooth' })
+        : scrollDay.current.scrollTo({ left: checkDay * 49 - 98, behavior: 'smooth' })
+    }, 100)
+  }, [checkMonth])
 
   useEffect(() => {
     if (stateTime.getDate() === checkDay) {

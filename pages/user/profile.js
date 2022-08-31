@@ -110,9 +110,6 @@ export default function PersonalPage({ user, data }) {
     setSaved(0)
   }
 
-  console.log(+form.isBookingActivated)
-  store.masterInfo &&
-    console.log(!(store?.masterInfo?.userData?.isBookingActivated == +form.isBookingActivated))
   async function saveData() {
     const response = await fetch('/api/userdata', {
       method: 'POST',
@@ -212,19 +209,16 @@ export default function PersonalPage({ user, data }) {
                   data={{ id: 'name', tp: 'text', label: ['Ваше ім`я'] }}
                   inputHandler={inputHandler}
                   value={form.name}
-                  state={form}
                 />
                 <Input
                   data={{ id: 'surname', tp: 'text', label: ['Ваше прізвище'] }}
                   inputHandler={inputHandler}
                   value={form.surname}
-                  state={form}
                 />
                 <Input
                   data={{ id: 'phone', tp: 'text', label: ['Ваш номер телефону'] }}
                   inputHandler={inputHandler}
                   value={form.phone}
-                  state={form}
                 />
               </div>
             </div>
@@ -239,7 +233,6 @@ export default function PersonalPage({ user, data }) {
                 }}
                 inputHandler={inputHandler}
                 value={form.social_1}
-                state={form}
               />
               <Input
                 data={{
@@ -250,7 +243,6 @@ export default function PersonalPage({ user, data }) {
                 }}
                 inputHandler={inputHandler}
                 value={form.social_2}
-                state={form}
               />
               <span>Нікнейм в telegram необхідний для можливості отримання сповіщень про бронювання</span>
               <Input
@@ -262,7 +254,6 @@ export default function PersonalPage({ user, data }) {
                 }}
                 inputHandler={inputHandler}
                 value={form.social_3}
-                state={form}
               />
             </div>
             <div className={s.aboutme_wrapper}>
@@ -293,7 +284,6 @@ export default function PersonalPage({ user, data }) {
                 }}
                 inputHandler={inputHandler}
                 value={form.city}
-                state={form}
               />
               <Input
                 data={{
@@ -304,7 +294,6 @@ export default function PersonalPage({ user, data }) {
                 }}
                 inputHandler={inputHandler}
                 value={form.city}
-                state={form}
               />
               <Input
                 data={{
@@ -315,7 +304,6 @@ export default function PersonalPage({ user, data }) {
                 }}
                 inputHandler={inputHandler}
                 value={form.city}
-                state={form}
               />
             </div>
           </div>
