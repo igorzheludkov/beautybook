@@ -10,11 +10,12 @@ import Cloudinary from '../../../lib/cloudinary'
 import { server } from '../../../config/index'
 import ScrollBox from '../../../components/scrollbox'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function ServicesEditPage({ user, category }) {
+  const { mutate } = useSWRConfig()
   const router = useRouter()
   const { data: uData } = useSWR(user ? `/api/user/${user.email}` : null, fetcher)
   const [newService, setNewService] = useState(false)
@@ -39,7 +40,7 @@ export default function ServicesEditPage({ user, category }) {
     setServ({ ...serv, owner_id: uData?._id })
   }, [uData])
 
-console.log(serv);
+  console.log(user)
   useEffect(() => {
     if (router.query.serviceid !== 'serviceadd') {
       fetch(`/api/services_api?q=${router.query.serviceid}`, {
@@ -112,7 +113,10 @@ console.log(serv);
     })
     const data = await response.json()
     console.log('Sended')
-    if (data.result.acknowledged) return router.push('/user/services')
+    if (data.result.acknowledged) {
+      mutate(`/api/services/${user.email}`)
+      router.push('/user/services')
+    }
     console.log(data)
   }
 
@@ -127,7 +131,11 @@ console.log(serv);
     })
     const data = await response.json()
     console.log('Sended')
-    if (data.result.deletedCount > 0) return router.push('/user/services')
+
+    if (data.result.deletedCount > 0) {
+      mutate(`/api/services/${user.email}`)
+      router.push('/user/services')
+    }
     console.log(data.result.deletedCount > 0)
   }
 
