@@ -28,7 +28,10 @@ export default function BookingAdd({ user }) {
         })
         const data = await response.json()
         console.log('Sended')
-        if (data.result.deletedCount > 0) return router.push('/user/booking')
+        if (data.result.deletedCount > 0) {
+            mutate(`/api/order?q=${user.email}`)
+            router.push('/user/booking')
+        }
         console.log(data.result.deletedCount > 0)
     }
     
