@@ -19,7 +19,6 @@ export default function ServicesEditPage({ user, category }) {
   const router = useRouter()
   const { data: uData } = useSWR(user ? `/api/user/${user.email}` : null, fetcher)
   const [newService, setNewService] = useState(false)
-  console.log(category)
 
   const servicesModel = {
     owner_id: '',
@@ -40,7 +39,6 @@ export default function ServicesEditPage({ user, category }) {
     setServ({ ...serv, owner_id: uData?._id })
   }, [uData])
 
-  console.log(user)
   useEffect(() => {
     if (router.query.serviceid !== 'serviceadd') {
       fetch(`/api/services_api?q=${router.query.serviceid}`, {
