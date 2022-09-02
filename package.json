@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "author": "Ihor Zheludkov <500griven@gmail.com>",
   "dependencies": {
     "@next-auth/mongodb-adapter": "^1.0.4",
     "cloudinary": "^1.30.1",
