@@ -29,7 +29,7 @@ export default function OrderAdd({ user, client, visitTime, editOrder, cancelOrd
       month: visitTime.month,
       day: visitTime.day,
       hour: visitTime.hour,
-      minute: visitTime.minute,
+      minute: '00',
     })
   }, [visitTime])
 

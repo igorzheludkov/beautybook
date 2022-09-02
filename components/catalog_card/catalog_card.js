@@ -16,7 +16,7 @@ console.log(item);
     <>
       <div style={masterInfo}>
         <Avatar w={100} h={100} src={user.photo} />
-        <PersonalInfo props={[user.name, user.surname, user.categories, user.street, user.location, item._id]} />
+        <PersonalInfo props={[user.name, user.surname, user.categories, user.street, user.location, item._id, user.city]} />
       </div>
     </>
   )

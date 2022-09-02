@@ -45,6 +45,7 @@ export default function PersonalInfo({ props }) {
           <Image src='/images/adress.png' width={15} height={15} alt='navicon'/>
         </div>
         <div style={{paddingLeft: '5px'}}>
+          <div style={streetStyle}>{props[6]}</div>
           <div style={streetStyle}>{props[3]}</div>
           <div style={locationStyle}>{props[4]}</div>
         </div>

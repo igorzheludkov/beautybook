@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import s from '../styles/landing.module.css'
 import { signIn } from 'next-auth/react'
+import Catalog from './catalog'
 
 export default function Landing() {
   return (
@@ -17,23 +18,9 @@ export default function Landing() {
         <h2 className={s.title_h2}>Інтуїтивна система онлайн-бронювання</h2>
         <Image src='/images/profile.png' width={80} height={80} alt='personal site' />
         <h2 className={s.title_h2}>Публікація в каталозі спеціалістів</h2>
-        <h3>
-          Подивитись як виглядає заповнений профіль можна{' '}
-          <Link href='/62e6840acf4d88a22c64aeed'>
-            <a style={{ color: 'blue' }}>тут</a>
-          </Link>
-        </h3>
-        {/* <div style={{width: '100%', height: '500px'}}><Image
-          layout='responsive'
-          sizes="(min-width: 75em) 33vw,
-          (min-width: 48em) 50vw,
-          100vw"
-          // objectFit='fixed'
-          src='/images/first-screen.png'
-          width='100'
-          height='100'
-          alt='first-screen'
-        /></div> */}
+        <h4>Подивитись як виглядають заповнені сторінки спеціалістів можна нижче</h4>
+        <Catalog />
+
         <br></br>
 
         <button
@@ -46,6 +33,8 @@ export default function Landing() {
         >
           Зареєструватись та увійти
         </button>
+        <br></br>
+        <br></br>
       </div>
     </>
   )
