@@ -51,3 +51,27 @@ export const EditButton = ({ children, onClick, id }) => {
     </button>
   )
 }
+
+export const DefaultButton = ({ value, onClick, id }) => {
+  return (
+    <a
+      href={`/user/services/`}
+      style={{
+        fontSize: 12,
+        whiteSpace: 'nowrap',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0 8px',
+        margin: '2px',
+        height: 25,
+        borderRadius: 8,
+        border: 'none',
+        background: '#E1F4FF',
+      }}
+      onClick={onClick}
+    >
+      {value.short_name}
+    </a>
+  )
+}

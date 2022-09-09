@@ -1,0 +1,15 @@
+.hero {
+    padding: 30px 10px;
+    border: 2px solid pink;
+    border-radius: 50px;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 10px;
+    max-width: 550px;
+}
+
+.bullet {
+    color: grey;
+    font-size: 14px;
+    margin: 10px 30px;
+}

@@ -47,11 +47,8 @@ export default function ServicesEditPage({ user, category }) {
         .then((res) => res.json())
         .then((data) => {
           if (data.result === null) {
-            console.log(data.result === null)
-            console.log('new service')
             setServ(servicesModel)
           } else {
-            console.log('existing service')
             setNewService(false)
             setServ({
               id: data.result._id,
@@ -96,7 +93,6 @@ export default function ServicesEditPage({ user, category }) {
   }
 
   function photoDeleteHandler(e) {
-    console.log(e)
     setServ({ ...serv, pic: serv.pic.filter((_, index) => index !== +e.target.id) })
   }
 
@@ -198,10 +194,7 @@ export default function ServicesEditPage({ user, category }) {
                   alt='serv_pic'
                 />
                 <button className={s.button_rempicture} onClick={photoDeleteHandler}>
-                  {/* x */}
-                  <div>
-                    <Image id={index} src='/images/remove.png' width={20} height={20} alt='remove' />
-                  </div>
+                  <Image id={index} src='/images/remove.png' width={20} height={20} alt='remove' />
                 </button>
               </div>
             ))}

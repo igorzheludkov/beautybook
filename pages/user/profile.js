@@ -18,7 +18,6 @@ import { useStoreContext } from '../../context/store'
 
 export default function PersonalPage({ user, data }) {
   const [store, setStore] = useStoreContext()
-
   const { mutate } = useSWRConfig()
 
   const categories = data.categories
