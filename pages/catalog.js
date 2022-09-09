@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/catalog.module.css'
 import s from '../styles/catalog.module.css'
 import { server } from '../config/index'
 import useSWR from 'swr'
@@ -17,7 +17,7 @@ export default function Home() {
   allusers && console.log(allusers)
 
   return (
-    <div className={styles.container}>
+    <div >
       <Head>
         <title>BeautyBook</title>
         <meta name='description' content="Каталог майстрів сфери краси та здоров'я" />
