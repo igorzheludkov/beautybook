@@ -23,7 +23,7 @@ export default function Catalog({data}) {
         <meta name='description' content="Каталог майстрів сфери краси та здоров'я" />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-        <h2>Каталог</h2>
+        <h2 style={{padding: 5}}>Каталог</h2>
       <div className={s.catalog_wrapper}>
         {data.map((i) => (
           <div key={i._id}>

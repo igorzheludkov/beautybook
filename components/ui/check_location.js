@@ -38,7 +38,7 @@ export default function CheckLocation({ geo, handler, state }) {
       <div className={s.setsettlement}>
         <div className={s.geolist}>
           {geoList.map((i) => (
-            <div key={i.obl_name}>
+            <div className={s.oblname} key={i.obl_name}>
               <div onClick={() => setSettlement(i.settlement)}>{i.obl_name}</div>
             </div>
           ))}
@@ -46,7 +46,7 @@ export default function CheckLocation({ geo, handler, state }) {
 
         <div className={s.settlement}>
           {settlement.map((i) => (
-            <button key={i.id} onClick={settlementHandler} value={i.id}>
+            <button className={s.settl_item} key={i.id} onClick={settlementHandler} value={i.id}>
               {i.name}
             </button>
           ))}
