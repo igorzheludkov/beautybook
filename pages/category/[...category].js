@@ -29,11 +29,11 @@ export default function Category(props) {
     setResults(data.user)
   }
 
-  // useEffect(() => {
-  //   filterUsers()
-  // }, [filter])
+  useEffect(() => {
+    filterUsers()
+  }, [filter])
 
-  useMemo(() => filterUsers(), [filter])
+  // useMemo(() => filterUsers(), [filter])
 
   console.log('filter', filter)
   console.log('results', results)
