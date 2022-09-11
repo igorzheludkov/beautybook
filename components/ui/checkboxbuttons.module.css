@@ -26,29 +26,30 @@
   .container_category {
     display: block;
     max-width: 300px;
-    width: 85px;
+    /* width: 85px; */
 
     position: relative;
     padding: 5px 0;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     /* height: var(--category-height); */
     margin: 5px;
-    color: rgb(148, 148, 148);
+    color: rgb(68, 68, 68);
   }
   
   .name_category {
-    width: 85px;
+    /* width: 85px; */
     position: relative;
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px 5px;
+    padding: 0 10px;
+    white-space: nowrap;
   }
   
   /* Hide the browser's default checkbox */
@@ -80,10 +81,10 @@
   
   /* When the checkbox is checked, add a blue background */
   .container_category input:checked ~ .checkmark_category {
-    /* background-color: #f1f1f1; */
-    border: 3px solid #a6eaff;
+    /* background-color: #E1F4FF; */
+    border: 3px solid #78CEFF;
     height: 100%;
-    border-radius: 5px;
+    border-radius: 8px;
   }
   
   

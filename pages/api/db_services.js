@@ -14,10 +14,34 @@ export default async function Services(req, res) {
       main_name: 'Масаж',
       prof_name: 'Масажист',
       serv_types: [
-        { id: 'massage_1', url: 'classic-massage', full_name: 'Масаж класичний', short_name: 'Класичний' },
-        { id: 'massage_2', url: 'likuvalnyi-massage', full_name: 'Масаж лікувальний', short_name: 'Лікувальний' },
-        { id: 'massage_3', url: 'dutiachui-massage', full_name: 'Масаж дитячий', short_name: 'Дитячий' },
-        { id: 'massage_4', url: 'massage-vagitnym', full_name: 'Масаж для вагітних', short_name: 'Для вагітних' },
+        {
+          type: 'poslugi',
+          id: 'massage_1',
+          url: 'classic-massage',
+          full_name: 'Масаж класичний',
+          short_name: 'Класичний',
+        },
+        {
+          type: 'poslugi',
+          id: 'massage_2',
+          url: 'likuvalnyi-massage',
+          full_name: 'Масаж лікувальний',
+          short_name: 'Лікувальний',
+        },
+        {
+          type: 'poslugi',
+          id: 'massage_3',
+          url: 'dutiachui-massage',
+          full_name: 'Масаж дитячий',
+          short_name: 'Дитячий',
+        },
+        {
+          type: 'poslugi',
+          id: 'massage_4',
+          url: 'massage-vagitnym',
+          full_name: 'Масаж для вагітних',
+          short_name: 'Для вагітних',
+        },
       ],
     },
     {
@@ -27,10 +51,28 @@ export default async function Services(req, res) {
       main_name: 'Стрижки',
       prof_name: 'Масажист',
       serv_types: [
-        { id: 'hair_1', url: 'cholovichi-stryzhky', full_name: 'Стрижки чоловічі', short_name: 'Чоловічі' },
-        { id: 'hair_2', url: 'zhinochi-stryzky', full_name: 'Стрижки жіночі', short_name: 'Жіночі' },
-        { id: 'hair_3', url: 'naroschyvanna-volossia', full_name: 'Нарощування волосся', short_name: 'Нарощування волосся' },
-        { id: 'hair_4', url: 'kosychky', full_name: 'Косички', short_name: 'Косички' },
+        {
+          type: 'volossia',
+          id: 'hair_1',
+          url: 'cholovichi-stryzhky',
+          full_name: 'Стрижки чоловічі',
+          short_name: 'Чоловічі',
+        },
+        {
+          type: 'volossia',
+          id: 'hair_2',
+          url: 'zhinochi-stryzky',
+          full_name: 'Стрижки жіночі',
+          short_name: 'Жіночі',
+        },
+        {
+          type: 'volossia',
+          id: 'hair_3',
+          url: 'naroschyvanna-volossia',
+          full_name: 'Нарощування волосся',
+          short_name: 'Нарощування волосся',
+        },
+        { type: 'volossia', id: 'hair_4', url: 'kosychky', full_name: 'Косички', short_name: 'Косички' },
       ],
     },
     {
@@ -39,12 +81,70 @@ export default async function Services(req, res) {
       pic: `/images/cat_images/nails.png`,
       main_name: 'Нігті',
       serv_types: [
-        { id: 'nails_1', url: 'manikur', full_name: 'Манікюр', short_name: 'Манікюр' },
-        { id: 'nails_2', url: 'naroschyvanna-nigtiv', full_name: 'Нарощування нігтів', short_name: 'Нарощування' },
-        { id: 'nails_3', url: 'pedykur', full_name: 'Педикюр', short_name: 'Педикюр' },
+        { type: 'nigti', id: 'nails_1', url: 'manikur', full_name: 'Манікюр', short_name: 'Манікюр' },
+        {
+          type: 'nigti',
+          id: 'nails_2',
+          url: 'naroschyvanna-nigtiv',
+          full_name: 'Нарощування нігтів',
+          short_name: 'Нарощування',
+        },
+        { type: 'nigti', id: 'nails_3', url: 'pedykur', full_name: 'Педикюр', short_name: 'Педикюр' },
       ],
     },
   ]
+  const location = [
+    { type: 'location', id: 'vdoma', short_name: 'Вдома', url: 'vdoma' },
+    { type: 'location', id: 'kabitet', short_name: 'Кабінет', url: 'kabinet' },
+    { type: 'location', id: 'salon', short_name: 'Салон', url: 'salon' },
+    { type: 'location', id: 'vyizd', short_name: 'На виїзд', url: 'vyizd' },
+  ]
 
-  res.status(200).json({ poslugi })
+  const geo = [
+    {
+      obl_center: 'Вінниця',
+      obl_name: 'Вінницька',
+      obl_id: '21000',
+      settlement: [
+        { id: '21012', type: 'м', name: 'Вінниця' },
+        { id: '23310', type: 'м', name: 'Гнівань' },
+        { id: '23000', type: 'м', name: 'Бар' },
+        { id: '24400', type: 'м', name: 'Бершадь' },
+        { id: '23700', type: 'м', name: 'Гайсин' },
+        { id: '23100', type: 'м', name: 'Жмеринка' },
+        { id: '22400', type: 'м', name: 'Калинівка' },
+        { id: '22100', type: 'м', name: 'Козятин' },
+        { id: '22800', type: 'м', name: 'Немирів' },
+        { id: '22200', type: 'м', name: 'Погребище' },
+        { id: '23600', type: 'м', name: 'Тульчин' },
+        { id: '22000', type: 'м', name: 'Хмільник' },
+        { id: '24500', type: 'м', name: 'Ямпіль' },
+      ],
+      villages: [
+        { id: '23211', type: 'смт', name: 'Стрижавка' },
+        { id: '19525', type: 'село', name: 'Стадниця' },
+        { id: '23206', type: 'село', name: 'Щітки' },
+        { id: '23205', type: 'село', name: 'Писарівка' },
+        { id: '23234', type: 'село', name: 'Лука Мелешківська' },
+        { id: '23227', type: 'смт', name: 'Агрономічне' },
+        { id: '23223', type: 'село', name: 'Зарванці' },
+        { id: '23316', type: 'село', name: 'Селище' },
+        { id: '23222', type: 'село', name: 'Якушинці' },
+      ],
+    },
+    {
+      obl_center: 'Київ',
+      obl_name: 'Київська',
+      obl_id: '01000',
+      settlement: [
+        { id: '01001', type: 'м', name: 'Київ' },
+        { id: '07300', type: 'м', name: 'Вишгород' },
+       
+      ],
+      villages: [
+        { id: '08114', type: 'село', name: 'Гореничі' },
+      ],
+    },
+  ]
+  res.status(200).json({ poslugi, location, geo })
 }

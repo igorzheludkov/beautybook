@@ -54,7 +54,7 @@ export const EditButton = ({ children, onClick, id }) => {
 
 export const DefaultButton = ({ value, onClick, id }) => {
   return (
-    <Link href={{pathname: `/category/${value.url}`, query: {parent_cat: id}}}>
+    <Link href={{pathname: `/category/${id}/${value.url}`}}>
       <a
         style={{
           fontSize: 12,

@@ -6,11 +6,11 @@ const client = new MongoClient(url)
 const dbName = 'beautybook'
 
 export default async function Location(req, res) {
-  const location = [
+  const geo = [
     {
       obl_center: 'Вінниця',
       obl_name: 'Вінницька',
-      cities: [
+      location: [
         {id: 21012, type: 'м', name: 'Вінниця' },
         {id: 23310, type: 'м', name: 'Гнівань' },
         {id: 23000, type: 'м', name: 'Бар' },
@@ -39,5 +39,5 @@ export default async function Location(req, res) {
     },
   ]
 
-  res.status(200).json({ location })
+  res.status(200).json({ geo })
 }
