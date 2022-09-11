@@ -15,12 +15,13 @@ import ToggleButtons from '../../components/ui/togglebuttons'
 import Input from '../../components/ui/input'
 import useSWR, { useSWRConfig } from 'swr'
 import { useStoreContext } from '../../context/store'
+import CheckLocation from '../../components/ui/check_location'
+import CheckServices from '../../components/ui/check_services'
+
 
 export default function PersonalPage({ user, data }) {
   const [store, setStore] = useStoreContext()
   const { mutate } = useSWRConfig()
-
-  const categories = data.categories
 
   const [saved, setSaved] = useState(0)
   const [unsaved, setUnsaved] = useState(0)
@@ -48,6 +49,8 @@ export default function PersonalPage({ user, data }) {
     isPageVisibleInCat: 0,
     isBookingActivated: 0,
   })
+
+  console.log(form);
   const settingsInitialState = {
     mon: { labelShort: 'Пн', label: 'Понеділок', checked: true, id: 'mon' },
     tue: { labelShort: 'Вт', label: 'Вівторок', checked: true, id: 'tue' },
@@ -274,16 +277,8 @@ export default function PersonalPage({ user, data }) {
           <div className='container'>
             <h4>Додайте робочу адресу</h4>
             <div className={s.workplace_wrapper}>
-              <Input
-                data={{
-                  id: 'city',
-                  tp: 'text',
-                  label: ['Ваше місто'],
-                  icon: '/images/adress.png',
-                }}
-                inputHandler={inputHandler}
-                value={form.city}
-              />
+              <CheckLocation geo={data.geo} handler={inputHandler} state={form.city}/>
+              
               <Input
                 data={{
                   id: 'street',
@@ -308,7 +303,8 @@ export default function PersonalPage({ user, data }) {
           </div>
           <div className={s.scrollbox_wrapper}>
             <p className={s.paragraph}>Виділіть ваші навики</p>
-            <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} />
+            <CheckServices data={data.poslugi} checkboxToggle={checkboxToggle} checkStatus={form.categories}/>
+            {/* <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} /> */}
           </div>
         </div>
         <div className={s.sidebar_right}>
@@ -396,7 +392,7 @@ export async function getServerSideProps(context) {
     context.res.end()
     return {}
   }
-  const res = await fetch(`${server}/api/categories`, {
+  const res = await fetch(`${server}/api/db_services`, {
     method: 'GET',
   })
   const cat = await res.json()

@@ -3,16 +3,47 @@ import { CheckboxPublicButtons } from '../../components/ui/checkboxbuttons'
 import { server } from '../../config/index'
 import s from '../../styles/category.module.css'
 import CheckLocation from '../../components/ui/check_location'
+import Catalog from '../catalog'
+
+import { useState, useEffect, useMemo, useCallback } from 'react'
 
 export default function Category(props) {
-  console.log(props)
-
   const categoryData = props.poslugi.find((i) => i.url === props.category[0])
-  console.log(categoryData)
+
+  const initialFilterState = {category: categoryData.id, city: '21000'}
+
+  const [filter, setFilter] = useState(initialFilterState)
+  const [results, setResults] = useState([])
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(filter),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+
+  async function filterUsers() {
+    const response = await fetch(`${server}/api/getall`, options)
+    const data = await response.json()
+    setResults(data.user)
+  }
+
+  // useEffect(() => {
+  //   filterUsers()
+  // }, [filter])
+
+  useMemo(() => filterUsers(), [filter])
+
+  console.log('filter', filter)
+  console.log('results', results)
 
   function filterHandler(e) {
     console.log(e.target.value)
+    console.log(e.target.id)
+    setFilter({...filter, [e.target.id]:e.target.value})
   }
+
 
   return (
     <>
@@ -22,9 +53,10 @@ export default function Category(props) {
       </div>
       <p className={s.p}>Вид послуги</p>
 
-      <CheckboxPublicButtons data={categoryData.serv_types} handler={filterHandler} />
+      <CheckboxPublicButtons data={categoryData.serv_types} handler={filterHandler} boxType={'checkbox'}/>
       <p className={s.p}>Місце надання послуги</p>
-      <CheckboxPublicButtons data={[...props.location]} handler={filterHandler} />
+      <CheckboxPublicButtons data={[...props.location]} handler={filterHandler} boxType={'checkbox'}/>
+      <Catalog data={results} />
     </>
   )
 }

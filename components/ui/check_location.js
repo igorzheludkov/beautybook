@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
+import s from './check_location.module.css'
 
-export default function CheckLocation({ geo, handler }) {
+export default function CheckLocation({ geo, handler, state }) {
   const [geoList, setGeoList] = useState([])
   const [settlement, setSettlement] = useState([])
-  const [selectedSettlement, setSelectedSettlement] = useState({ id: '01000', type: 'м', name: 'Київ' })
+
+  const initialSettlement = { id: '21000', type: 'м', name: 'Вінниця' }
+  const [selectedSettlement, setSelectedSettlement] = useState(initialSettlement)
 
   function settlementHandler(e) {
     setSelectedSettlement(settlement.find((i) => i.id === e.target.value))
@@ -13,30 +16,41 @@ export default function CheckLocation({ geo, handler }) {
   }
 
   useEffect(() => {
-    handler({ target: { value: 'city', id: selectedSettlement.id } })
-  }, [selectedSettlement, handler])
-const cityCheckStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-} 
+    handler({ target: { id: 'city', value: selectedSettlement.id } })
+  }, [selectedSettlement])
+  
+  function profileValue(geo) {
+    const targetRegion = geo.find((i) => i.settlement.find((i) => i.id === state))
+    const targetCity = targetRegion?.settlement.find((i) => i.id === state)
+    setSelectedSettlement(targetCity ?? initialSettlement)
+  }
+
+  const profileValueMemo = useMemo(() => profileValue(geo), [state])
+
   return (
-    <div>
-      <div style={cityCheckStyle} onClick={() => setGeoList(geo)}>
-        <div>{selectedSettlement.type}. {selectedSettlement.name}</div>
+    <div className={s.wrapper}>
+      <div className={s.city} onClick={() => setGeoList(geo)}>
+        <div className={s.city__title}>
+          {selectedSettlement.type}. {selectedSettlement.name}
+        </div>
         <Image src={'/images/dropdown.png'} width={20} height={20} alt='dropdown' />
       </div>
-      {geoList.map((i) => (
-        <div key={i.obl_name}>
-          <div onClick={() => setSettlement(i.settlement)}>{i.obl_name}</div>
+      <div className={s.setsettlement}>
+        <div className={s.geolist}>
+          {geoList.map((i) => (
+            <div key={i.obl_name}>
+              <div onClick={() => setSettlement(i.settlement)}>{i.obl_name}</div>
+            </div>
+          ))}
         </div>
-      ))}
-      <div>
-        {settlement.map((i) => (
-          <button key={i.id} onClick={settlementHandler} value={i.id}>
-            {i.name}
-          </button>
-        ))}
+
+        <div className={s.settlement}>
+          {settlement.map((i) => (
+            <button key={i.id} onClick={settlementHandler} value={i.id}>
+              {i.name}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

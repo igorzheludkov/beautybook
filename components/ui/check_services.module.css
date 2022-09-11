@@ -1,0 +1,91 @@
+.wrapper {
+    overflow-x: auto;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .wrapper_category {
+    display: flex;
+    flex-wrap: wrap;
+    /* margin-bottom: 5px; */
+    width:700px;
+    max-width:700px;
+    /* overflow-x: scroll; */
+    margin: 0;
+    padding: 0;
+    /* height: 100px; */
+  }
+  
+  /* .container_category:focus-within {
+    color: white;
+  } */
+  
+  .container_category::-webkit-scrollbar {
+    display: none;
+  }
+  .container_category {
+    display: block;
+    position: relative;
+    /* padding: 0 5px; */
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* height: var(--category-height); */
+    margin: 5px;
+    color: rgb(148, 148, 148);
+  }
+  
+  .name_category {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 5px;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container_category input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark_category {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* height:var(--category-height); */
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    /* border-radius: var(--category-border-radius); */
+    border: 1px solid rgb(255, 255, 255);
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container_category:hover input ~ .checkmark_category {
+    /* background-color: rgb(235, 235, 235); */
+    /* border: 2px solid grey; */
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container_category input:checked ~ .checkmark_category {
+    /* background-color: #7bc3ff; */
+    border: 2px solid #a6eaff;
+    height: 100%;
+    border-radius: 5px;
+  }
+  
+  
+  @media (min-width: 400px) {
+    .wrapper_category {
+      width: 100%;
+    }
+  }
+  

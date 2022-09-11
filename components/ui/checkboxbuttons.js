@@ -19,31 +19,30 @@ export default function CheckboxButtons({ data, handler, status }) {
             <span className={s.checkmark_category}></span>
           </label>
         ))}
-       
       </div>
     </div>
   )
 }
-export function CheckboxPublicButtons({ data, handler, status }) {
-  console.log(data);
+export function CheckboxPublicButtons({ data, handler, boxType }) {
   return (
     <div className={s.wrapper}>
       <div className={s.wrapper_category}>
-        {data.map((i) => (
-          <label key={i.id} className={s.container_category}>
-            <input
-              name={i.url}
-              id={i.id}
-              value={i.type}
-              // checked={i.checked}
-              type='checkbox'
-              onChange={handler}
-            />
-            <span className={s.name_category}>{i.short_name}</span>
-            <span className={s.checkmark_category}></span>
-          </label>
-        ))}
-       
+        {/* <form> */}
+          {data.map((i) => (
+            <label key={i.id} className={s.container_category}>
+              <input
+                name={i.url}
+                id={i.type}
+                value={i.id}
+                // checked={i.checked}
+                type={boxType}
+                onChange={handler}
+              />
+              <span className={s.name_category}>{i.short_name}</span>
+              <span className={s.checkmark_category}></span>
+            </label>
+          ))}
+        {/* </form> */}
       </div>
     </div>
   )

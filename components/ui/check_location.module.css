@@ -1,0 +1,23 @@
+.wrapper {
+    position: relative;
+}
+
+.setsettlement {
+    position: absolute;
+    top: 50px;
+    right: 5px;
+    width: 300px;
+    background: #e7e7e7;
+    z-index: 102;
+    border-radius: 8px;
+}
+
+.city {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.city__title {
+    margin-right: 10px;
+}

@@ -9,12 +9,12 @@ import CatalogCard from '../components/catalog_card/catalog_card'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function Home() {
-  const { data: allusers } = useSWR(`/api/getall`, fetcher)
+export default function Catalog({data}) {
+  // const { data: allusers } = useSWR(`/api/getall`, fetcher)
 
-  if (!allusers) return <div>Loading</div>
+  // if (!allusers) return <div>Loading</div>
 
-  allusers && console.log(allusers)
+  // allusers && console.log(allusers)
 
   return (
     <div >
@@ -25,7 +25,7 @@ export default function Home() {
       </Head>
         <h2>Каталог</h2>
       <div className={s.catalog_wrapper}>
-        {allusers.user.map((i) => (
+        {data.map((i) => (
           <div key={i._id}>
             <CatalogCard item={i} />
           </div>

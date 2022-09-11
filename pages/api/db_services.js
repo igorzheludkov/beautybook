@@ -95,7 +95,7 @@ export default async function Services(req, res) {
   ]
   const location = [
     { type: 'location', id: 'vdoma', short_name: 'Вдома', url: 'vdoma' },
-    { type: 'location', id: 'kabitet', short_name: 'Кабінет', url: 'kabinet' },
+    { type: 'location', id: 'kabinet', short_name: 'Кабінет', url: 'kabinet' },
     { type: 'location', id: 'salon', short_name: 'Салон', url: 'salon' },
     { type: 'location', id: 'vyizd', short_name: 'На виїзд', url: 'vyizd' },
   ]
@@ -106,7 +106,7 @@ export default async function Services(req, res) {
       obl_name: 'Вінницька',
       obl_id: '21000',
       settlement: [
-        { id: '21012', type: 'м', name: 'Вінниця' },
+        { id: '21000', type: 'м', name: 'Вінниця' },
         { id: '23310', type: 'м', name: 'Гнівань' },
         { id: '23000', type: 'м', name: 'Бар' },
         { id: '24400', type: 'м', name: 'Бершадь' },
