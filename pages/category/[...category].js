@@ -24,7 +24,7 @@ export default function Category(props) {
   }
 
   async function filterUsers() {
-    const response = await fetch(`${server}/api/getall`, options)
+    const response = await fetch(`/api/getall`, options)
     const data = await response.json()
     setResults(data.user)
   }
