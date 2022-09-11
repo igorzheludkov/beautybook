@@ -25,7 +25,7 @@ export default function Catalog({data}) {
       </Head>
         <h2>Каталог</h2>
       <div className={s.catalog_wrapper}>
-        {data?.map((i) => (
+        {data.map((i) => (
           <div key={i._id}>
             <CatalogCard item={i} />
           </div>

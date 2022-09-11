@@ -56,7 +56,7 @@ export default function Category(props) {
       <CheckboxPublicButtons data={categoryData.serv_types} handler={filterHandler} boxType={'checkbox'}/>
       <p className={s.p}>Місце надання послуги</p>
       <CheckboxPublicButtons data={[...props.location]} handler={filterHandler} boxType={'checkbox'}/>
-      <Catalog data={results} />
+      {results.length > 0 && <Catalog data={results} />}
     </>
   )
 }
