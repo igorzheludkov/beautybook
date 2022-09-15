@@ -25,7 +25,6 @@ export default function GallerySlide({ data }) {
     }
   }
 
-
   function scrollHandler(e) {
     e.target.id === 'right' && sliderPosition > minPosition
       ? setSliderPosition(sliderPosition - slideWidth)
@@ -34,7 +33,8 @@ export default function GallerySlide({ data }) {
       : ''
   }
 
-  const view = fullView === '1' ? { width: '300px', height: '300px' } : { width: imageSize, height: imageSize }
+  const view =
+    fullView === '1' ? { width: '300px', height: '300px' } : { width: imageSize, height: imageSize }
   if (data.length < 2) return ''
   return (
     <div className={s.gallery_wrapper}>
