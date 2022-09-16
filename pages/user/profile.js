@@ -17,7 +17,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { useStoreContext } from '../../context/store'
 import CheckLocation from '../../components/ui/check_location'
 import CheckServices from '../../components/ui/check_services'
-
+import { CheckboxPublicButtons } from '../../components/ui/checkboxbuttons'
 
 export default function PersonalPage({ user, data }) {
   const [store, setStore] = useStoreContext()
@@ -38,6 +38,7 @@ export default function PersonalPage({ user, data }) {
     social_2: '',
     social_3: '',
     categories: [],
+    work_place: [],
     main_category: '',
     street: '',
     surname: '',
@@ -48,10 +49,10 @@ export default function PersonalPage({ user, data }) {
     url: '',
     work_days: '',
     isPageVisibleInCat: 0,
-    isBookingActivated: 0,
+    isBookingActivated: 0
   })
 
-  console.log(form.categories);
+  // console.log(form.categories);
   const settingsInitialState = {
     mon: { labelShort: 'Пн', label: 'Понеділок', checked: true, id: 'mon' },
     tue: { labelShort: 'Вт', label: 'Вівторок', checked: true, id: 'tue' },
@@ -59,7 +60,7 @@ export default function PersonalPage({ user, data }) {
     thu: { labelShort: 'Чт', label: 'Четвер', checked: true, id: 'thu' },
     fri: { labelShort: 'Пт', label: 'П`ятниця', checked: true, id: 'fri' },
     sat: { labelShort: 'Сб', label: 'Субота', checked: false, id: 'sat' },
-    sun: { labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' },
+    sun: { labelShort: 'Нд', label: 'Неділя', checked: false, id: 'sun' }
   }
 
   const [settings, setSettings] = useState(settingsInitialState)
@@ -81,7 +82,7 @@ export default function PersonalPage({ user, data }) {
   async function settingsHandler(e) {
     const update = {
       ...settings,
-      [e.target.id]: { ...settings[e.target.id], checked: e.target.checked },
+      [e.target.id]: { ...settings[e.target.id], checked: e.target.checked }
     }
     setSettings(update)
     setUnsaved(1)
@@ -96,7 +97,7 @@ export default function PersonalPage({ user, data }) {
   }
 
   function checkboxToggle(e) {
-    console.log(e.target.value);
+    console.log(e.target.value)
     if (form.categories) {
       e.target.checked
         ? setForm({ ...form, categories: [...form.categories, e.target.value] })
@@ -107,6 +108,20 @@ export default function PersonalPage({ user, data }) {
     setUnsaved(1)
     setSaved(0)
   }
+
+  function workplaceToggle(e) {
+
+    if (form.work_place) {
+      e.target.checked
+        ? setForm({ ...form, work_place: [...form.work_place, e.target.value] })
+        : setForm({ ...form, work_place: form.work_place.filter((i) => i !== e.target.value) })
+    } else {
+      setForm({ ...form, work_place: [e.target.value] })
+    }
+    setUnsaved(1)
+    setSaved(0)
+  }
+  console.log(form.work_place);
 
   function avatarHandler(result) {
     setForm(() => ({ ...form, photo: result.secure_url }))
@@ -119,8 +134,8 @@ export default function PersonalPage({ user, data }) {
       method: 'POST',
       body: JSON.stringify({ email: user.email, userData: form, userSettings: settings }),
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'application/json'
+      }
     })
     const data = await response.json()
     console.log(data)
@@ -137,11 +152,11 @@ export default function PersonalPage({ user, data }) {
           telegramNickname: form.social_2,
           apiMethod: 'sendMessage',
           parseMode: 'HTML',
-          message: `Сповіщення про бронювання активовано.%0A%0AВи будете отримувати сповіщення про нові бронювання миттєво.`,
+          message: `Сповіщення про бронювання активовано.%0A%0AВи будете отримувати сповіщення про нові бронювання миттєво.`
         }),
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json'
+        }
       })
       const notificationsStatus = await setNotifications.json()
       console.log(notificationsStatus)
@@ -157,7 +172,7 @@ export default function PersonalPage({ user, data }) {
     id: 'about_me',
     tp: 'text',
     vl: 'Розкажіть коротко про себе. Це речення буде на головній сторінці біля фото',
-    icon: '/images/profile.png',
+    icon: '/images/profile.png'
   }
 
   if (!form) return <div>Loading...</div>
@@ -233,7 +248,7 @@ export default function PersonalPage({ user, data }) {
                   id: 'social_1',
                   tp: 'text',
                   label: ['Ваш нікнейм в instagram без @'],
-                  icon: '/images/instagram.png',
+                  icon: '/images/instagram.png'
                 }}
                 inputHandler={inputHandler}
                 value={form.social_1}
@@ -243,7 +258,7 @@ export default function PersonalPage({ user, data }) {
                   id: 'social_2',
                   tp: 'text',
                   label: ['Ваш нікнейм в telegram без @'],
-                  icon: '/images/telegram.png',
+                  icon: '/images/telegram.png'
                 }}
                 inputHandler={inputHandler}
                 value={form.social_2}
@@ -254,7 +269,7 @@ export default function PersonalPage({ user, data }) {
                   id: 'social_3',
                   tp: 'text',
                   label: ['Ваш номер з вайбером у вигляді 380...'],
-                  icon: '/images/viber.png',
+                  icon: '/images/viber.png'
                 }}
                 inputHandler={inputHandler}
                 value={form.social_3}
@@ -279,14 +294,14 @@ export default function PersonalPage({ user, data }) {
           <div className='container'>
             <h4>Додайте робочу адресу</h4>
             <div className={s.workplace_wrapper}>
-              <CheckLocation geo={data.geo} handler={inputHandler} state={form.city}/>
-              
+              <CheckLocation geo={data.geo} handler={inputHandler} state={form.city} />
+
               <Input
                 data={{
                   id: 'street',
                   tp: 'text',
                   label: ['Вулиця'],
-                  icon: '/images/adress.png',
+                  icon: '/images/adress.png'
                 }}
                 inputHandler={inputHandler}
                 value={form.street}
@@ -296,7 +311,7 @@ export default function PersonalPage({ user, data }) {
                   id: 'location',
                   tp: 'text',
                   label: ['Будівля або салон для орієнтиру'],
-                  icon: '/images/adress.png',
+                  icon: '/images/adress.png'
                 }}
                 inputHandler={inputHandler}
                 value={form.location}
@@ -305,13 +320,25 @@ export default function PersonalPage({ user, data }) {
           </div>
           <div className={s.scrollbox_wrapper}>
             <p className={s.paragraph}>Виділіть ваші навики</p>
-            <CheckServices data={data.poslugi} checkboxToggle={checkboxToggle} checkStatus={form.categories}/>
-            {/* <ScrollBox data={categories} checkboxToggle={checkboxToggle} checkStatus={form.categories} /> */}
+            <CheckServices
+              data={data.poslugi}
+              checkboxToggle={checkboxToggle}
+              checkStatus={form.categories}
+            />
+          </div>
+          <div className={s.scrollbox_wrapper}>
+            <p className={s.paragraph}>Виберіть місця, де приймаєте людей</p>
+            <CheckboxPublicButtons
+              data={data.location}
+              handler={workplaceToggle}
+              boxType={'checkbox'}
+              type='work_place'
+              checkStatus={form.work_place}
+            />
+            {/* <CheckServices data={data.location} checkboxToggle={checkboxToggle} checkStatus={form.work_place}/> */}
           </div>
         </div>
         <div className={s.sidebar_right}>
-          
-          
           <div className={s.settings}>
             <h2 className={s.title_h2}>Налаштування</h2>
 
@@ -320,9 +347,9 @@ export default function PersonalPage({ user, data }) {
               data={{
                 label: [
                   { name: 'Так', value: 1 },
-                  { name: 'Ні', value: 0 },
+                  { name: 'Ні', value: 0 }
                 ],
-                id: 'isPageVisibleInCat',
+                id: 'isPageVisibleInCat'
               }}
               inputHandler={inputHandler}
               value={form.isPageVisibleInCat}
@@ -332,9 +359,9 @@ export default function PersonalPage({ user, data }) {
               data={{
                 label: [
                   { name: 'Так', value: 1 },
-                  { name: 'Ні', value: 0 },
+                  { name: 'Ні', value: 0 }
                 ],
-                id: 'isBookingActivated',
+                id: 'isBookingActivated'
               }}
               inputHandler={inputHandler}
               value={form.isBookingActivated}
@@ -395,13 +422,13 @@ export async function getServerSideProps(context) {
     return {}
   }
   const res = await fetch(`${server}/api/db_services`, {
-    method: 'GET',
+    method: 'GET'
   })
   const cat = await res.json()
   return {
     props: {
       user: session.user,
-      data: cat,
-    },
+      data: cat
+    }
   }
 }

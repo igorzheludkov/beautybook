@@ -9,7 +9,6 @@ export default function CatalogCard({ item }) {
     padding: '10px',
     maxWidth: '340px',
   }
-  console.log(item)
   return (
     <>
       <div style={masterInfo}>

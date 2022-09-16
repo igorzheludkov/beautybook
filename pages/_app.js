@@ -4,14 +4,18 @@ import '../styles/variables.css'
 import Layout from '../components/layout'
 import { StoreProvider } from '../context/store'
 
+import { ChakraProvider } from '@chakra-ui/react'
+
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
-    return (
-        <SessionProvider session={session}>
-            <StoreProvider>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
-            </StoreProvider>
-        </SessionProvider>
-    )
+  return (
+    <ChakraProvider>
+      <SessionProvider session={session}>
+        <StoreProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </StoreProvider>
+      </SessionProvider>
+    </ChakraProvider>
+  )
 }

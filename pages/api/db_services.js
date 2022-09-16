@@ -20,7 +20,9 @@ export default async function Services(req, res) {
           id: 'massage_1',
           url: 'classic-massage',
           full_name: 'Масаж класичний',
-          short_name: 'Класичний'
+          short_name: 'Класичний',
+      pic: `/images/cat_images/massage.png`,
+
         },
         {
           parent_id: 'massage_0',
@@ -28,7 +30,8 @@ export default async function Services(req, res) {
           id: 'massage_2',
           url: 'likuvalnyi-massage',
           full_name: 'Масаж лікувальний',
-          short_name: 'Лікувальний'
+      pic: `/images/cat_images/massage.png`,
+      short_name: 'Лікувальний',
         },
         {
           parent_id: 'massage_0',
@@ -36,7 +39,8 @@ export default async function Services(req, res) {
           id: 'massage_3',
           url: 'dutiachui-massage',
           full_name: 'Масаж дитячий',
-          short_name: 'Дитячий'
+      pic: `/images/cat_images/massage.png`,
+      short_name: 'Дитячий',
         },
         {
           parent_id: 'massage_0',
@@ -44,7 +48,8 @@ export default async function Services(req, res) {
           id: 'massage_4',
           url: 'massage-vagitnym',
           full_name: 'Масаж для вагітних',
-          short_name: 'Для вагітних'
+      pic: `/images/cat_images/massage.png`,
+      short_name: 'Для вагітних',
         }
       ]
     },

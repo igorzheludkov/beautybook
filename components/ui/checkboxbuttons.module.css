@@ -10,7 +10,7 @@
     /* margin-bottom: 5px; */
     /* width:700px; */
     /* max-width:700px; */
-    overflow-x: auto;
+    /* overflow-x: auto; */
     margin: 0;
     /* padding: 0; */
     /* height: 100px; */
@@ -44,7 +44,7 @@
   .name_category {
     /* width: 85px; */
     position: relative;
-    z-index: 100;
+    /* z-index: 100; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,7 +68,7 @@
     left: 0;
     /* height:var(--category-height); */
     width: 100%;
-    background-color: rgb(255, 255, 255);
+    /* background-color: rgb(255, 255, 255); */
     /* border-radius: var(--category-border-radius); */
     border: 1px solid rgb(255, 255, 255);
   }
