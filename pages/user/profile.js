@@ -38,6 +38,7 @@ export default function PersonalPage({ user, data }) {
     social_2: '',
     social_3: '',
     categories: [],
+    main_category: '',
     street: '',
     surname: '',
     work_begin: '9',
@@ -50,7 +51,7 @@ export default function PersonalPage({ user, data }) {
     isBookingActivated: 0,
   })
 
-  console.log(form);
+  console.log(form.categories);
   const settingsInitialState = {
     mon: { labelShort: 'Пн', label: 'Понеділок', checked: true, id: 'mon' },
     tue: { labelShort: 'Вт', label: 'Вівторок', checked: true, id: 'tue' },
@@ -95,6 +96,7 @@ export default function PersonalPage({ user, data }) {
   }
 
   function checkboxToggle(e) {
+    console.log(e.target.value);
     if (form.categories) {
       e.target.checked
         ? setForm({ ...form, categories: [...form.categories, e.target.value] })
