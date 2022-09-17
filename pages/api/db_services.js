@@ -148,30 +148,19 @@ export default async function Services(req, res) {
       obl_name: 'Вінницька',
       obl_id: '21000',
       settlement: [
-        { id: '21000', type: 'м', name: 'Вінниця' },
-        { id: '23310', type: 'м', name: 'Гнівань' },
-        { id: '23000', type: 'м', name: 'Бар' },
-        { id: '24400', type: 'м', name: 'Бершадь' },
-        { id: '23700', type: 'м', name: 'Гайсин' },
-        { id: '23100', type: 'м', name: 'Жмеринка' },
-        { id: '22400', type: 'м', name: 'Калинівка' },
-        { id: '22100', type: 'м', name: 'Козятин' },
-        { id: '22800', type: 'м', name: 'Немирів' },
-        { id: '22200', type: 'м', name: 'Погребище' },
-        { id: '23600', type: 'м', name: 'Тульчин' },
-        { id: '22000', type: 'м', name: 'Хмільник' },
-        { id: '24500', type: 'м', name: 'Ямпіль' }
-      ],
-      villages: [
-        { id: '23211', type: 'смт', name: 'Стрижавка' },
-        { id: '19525', type: 'село', name: 'Стадниця' },
-        { id: '23206', type: 'село', name: 'Щітки' },
-        { id: '23205', type: 'село', name: 'Писарівка' },
-        { id: '23234', type: 'село', name: 'Лука Мелешківська' },
-        { id: '23227', type: 'смт', name: 'Агрономічне' },
-        { id: '23223', type: 'село', name: 'Зарванці' },
-        { id: '23316', type: 'село', name: 'Селище' },
-        { id: '23222', type: 'село', name: 'Якушинці' }
+        { id: '21000', url: 'vinnytsia', type: 'м', name: 'Вінниця' },
+        { id: '23310', url: 'hnivan', type: 'м', name: 'Гнівань' },
+        { id: '23000', url: 'bar', type: 'м', name: 'Бар' },
+        { id: '24400', url: 'bershad', type: 'м', name: 'Бершадь' },
+        { id: '23700', url: 'hajsyn', type: 'м', name: 'Гайсин' },
+        { id: '23100', url: 'zhmerynka', type: 'м', name: 'Жмеринка' },
+        { id: '22400', url: 'kalynivka', type: 'м', name: 'Калинівка' },
+        { id: '22100', url: 'kozyatyn', type: 'м', name: 'Козятин' },
+        { id: '22800', url: 'nemyriv', type: 'м', name: 'Немирів' },
+        { id: '22200', url: 'pohrebyshhe', type: 'м', name: 'Погребище' },
+        { id: '23600', url: 'tulchyn', type: 'м', name: 'Тульчин' },
+        { id: '22000', url: 'khmilnyk', type: 'м', name: 'Хмільник' },
+        { id: '24500', url: 'yampil', type: 'м', name: 'Ямпіль' }
       ]
     },
     {
@@ -179,10 +168,9 @@ export default async function Services(req, res) {
       obl_name: 'Київська',
       obl_id: '01000',
       settlement: [
-        { id: '01001', type: 'м', name: 'Київ' },
-        { id: '07300', type: 'м', name: 'Вишгород' }
+        { id: '01001', url: 'kyiv', type: 'м', name: 'Київ' },
+        { id: '07300', url: 'vyshgorod', type: 'м', name: 'Вишгород' }
       ],
-      villages: [{ id: '08114', type: 'село', name: 'Гореничі' }]
     }
   ]
   res.status(200).json({ poslugi, location, geo })

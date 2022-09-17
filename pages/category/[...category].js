@@ -24,12 +24,12 @@ export default function Category({ location, poslugi, geo, category }) {
   const [results, setResults] = useState([])
   const [filteredResults, setFilteredResults] = useState([])
 
+
   useEffect(() => {
     setRequest(initialRequestState)
     setFilter(initialFilterState)
   }, [category[0]])
 
-  console.log(category[0])
 
   useEffect(() => {
     if (filter.subCategory) {
@@ -64,6 +64,7 @@ export default function Category({ location, poslugi, geo, category }) {
       setFilteredResults(data.user)
     }
     findUsers()
+    setFilter(initialFilterState)
   }, [request])
 
   function filterHandler(e) {
@@ -106,7 +107,7 @@ export default function Category({ location, poslugi, geo, category }) {
           </MenuList>
         </Menu>
         <Spacer />
-        <CheckLocation geo={geo} handler={requestHandler} />
+        <CheckLocation data={geo} handler={requestHandler} state={category[1]}/>
       </Flex>
 
       <Box mt={2}>
@@ -116,6 +117,8 @@ export default function Category({ location, poslugi, geo, category }) {
           boxType={'radio'}
           type='subCategory'
           checkStatus={filter.subCategory}
+          defaultElementName='Вид послуги'
+
         />
       </Box>
       <Box mb={2}>
@@ -125,6 +128,7 @@ export default function Category({ location, poslugi, geo, category }) {
           boxType={'radio'}
           type='location'
           checkStatus={filter.location}
+          defaultElementName='Локація'
         />
       </Box>
 

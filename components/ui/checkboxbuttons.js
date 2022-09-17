@@ -23,7 +23,7 @@ export default function CheckboxButtons({ data, handler, status }) {
     </div>
   )
 }
-export function CheckboxPublicButtons({ data, handler, boxType, type, checkStatus = [] }) {
+export function CheckboxPublicButtons({ data, handler, boxType, type, checkStatus = [], defaultElementName }) {
   console.log(checkStatus)
   return (
     <div className={s.wrapper}>
@@ -39,7 +39,7 @@ export function CheckboxPublicButtons({ data, handler, boxType, type, checkStatu
             checked={!checkStatus}
           />
           
-          <span className={s.name_category}>Всі варіанти</span>
+          <span className={s.name_category}>{defaultElementName}</span>
             <span className={s.checkmark_category}></span>
         </label>
         {data.map((i) => (

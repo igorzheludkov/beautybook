@@ -121,7 +121,6 @@ export default function PersonalPage({ user, data }) {
     setUnsaved(1)
     setSaved(0)
   }
-  console.log(form.work_place);
 
   function avatarHandler(result) {
     setForm(() => ({ ...form, photo: result.secure_url }))
@@ -138,7 +137,6 @@ export default function PersonalPage({ user, data }) {
       }
     })
     const data = await response.json()
-    console.log(data)
     if (
       form.social_2 &&
       +form.isBookingActivated &&
