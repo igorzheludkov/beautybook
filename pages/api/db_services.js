@@ -21,35 +21,43 @@ export default async function Services(req, res) {
           url: 'classic-massage',
           full_name: 'Масаж класичний',
           short_name: 'Класичний',
-      pic: `/images/cat_images/massage.png`,
-
+          pic: `/images/cat_images/massage.png`
         },
         {
           parent_id: 'massage_0',
           type: 'poslugi',
           id: 'massage_2',
-          url: 'likuvalnyi-massage',
-          full_name: 'Масаж лікувальний',
-      pic: `/images/cat_images/massage.png`,
-      short_name: 'Лікувальний',
+          url: 'classic-massage',
+          full_name: 'Масаж спортивний',
+          short_name: 'Спортивний',
+          pic: `/images/cat_images/massage.png`
         },
         {
           parent_id: 'massage_0',
           type: 'poslugi',
           id: 'massage_3',
-          url: 'dutiachui-massage',
-          full_name: 'Масаж дитячий',
-      pic: `/images/cat_images/massage.png`,
-      short_name: 'Дитячий',
+          url: 'likuvalnyi-massage',
+          full_name: 'Масаж лікувальний',
+          pic: `/images/cat_images/massage.png`,
+          short_name: 'Лікувальний'
         },
         {
           parent_id: 'massage_0',
           type: 'poslugi',
           id: 'massage_4',
+          url: 'dutiachui-massage',
+          full_name: 'Масаж дитячий',
+          pic: `/images/cat_images/massage.png`,
+          short_name: 'Дитячий'
+        },
+        {
+          parent_id: 'massage_0',
+          type: 'poslugi',
+          id: 'massage_5',
           url: 'massage-vagitnym',
           full_name: 'Масаж для вагітних',
-      pic: `/images/cat_images/massage.png`,
-      short_name: 'Для вагітних',
+          pic: `/images/cat_images/massage.png`,
+          short_name: 'Для вагітних'
         }
       ]
     },

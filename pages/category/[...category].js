@@ -6,24 +6,7 @@ import CheckLocation from '../../components/ui/check_location'
 import Catalog from '../catalog'
 import RadioCard from '../../components/ui/radioCard'
 import { HScrollWrapper } from '../../components/wrappers/horizontalScrollWrapper'
-import {
-  Image,
-  Box,
-  Menu,
-  MenuButton,
-  Button,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  useRadioGroup,
-  getRootProps,
-  getRadioProps,
-  RadioGroup,
-  HStack
-} from '@chakra-ui/react'
+import { Image, Box, Menu, MenuButton, Button, MenuList, MenuItem, Flex, Spacer } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
 
@@ -40,35 +23,48 @@ export default function Category({ location, poslugi, geo, category }) {
   const [request, setRequest] = useState(initialRequestState)
   const [results, setResults] = useState([])
   const [filteredResults, setFilteredResults] = useState([])
-  console.log(filter)
-  const options = {
-    method: 'POST',
-    body: JSON.stringify(request),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
 
   useEffect(() => {
-    const result = results.filter(
-      (e) =>
-        e.userData.categories.includes(filter.subCategory) && e.userData.work_place.includes(filter.location)
-    )
-    setFilteredResults(result)
+    setRequest(initialRequestState)
+    setFilter(initialFilterState)
+  }, [category[0]])
+
+  console.log(category[0])
+
+  useEffect(() => {
+    if (filter.subCategory) {
+      setFilteredResults(results.filter((e) => e.userData.categories.includes(filter.subCategory)))
+    }
+    if (filter.location) {
+      setFilteredResults(results.filter((e) => e.userData.work_place.includes(filter.location)))
+    }
+    if (filter.location && filter.subCategory) {
+      setFilteredResults(
+        results.filter(
+          (e) =>
+            e.userData.work_place.includes(filter.location) &&
+            e.userData.categories.includes(filter.subCategory)
+        )
+      )
+    }
+    if (!filter.location && !filter.subCategory) {
+      setFilteredResults(results)
+    }
   }, [filter])
 
-  console.log(filter)
-  console.log(filteredResults)
-  async function filterUsers() {
-    const response = await fetch(`/api/getall`, options)
-    const data = await response.json()
-    setResults(data.user)
-    setFilteredResults(data.user)
-  }
-
   useEffect(() => {
-    filterUsers()
-  }, [])
+    async function findUsers() {
+      const response = await fetch(`/api/getall`, {
+        method: 'POST',
+        body: JSON.stringify(request),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      const data = await response.json()
+      setResults(data.user)
+      setFilteredResults(data.user)
+    }
+    findUsers()
+  }, [request])
 
   function filterHandler(e) {
     setFilter({ ...filter, [e.target.id]: e.target.value })
@@ -79,14 +75,21 @@ export default function Category({ location, poslugi, geo, category }) {
 
   return (
     <>
-      <div className={s.heading}>
+      <Flex my='20px'>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
             {categoryData.main_name}
           </MenuButton>
           <MenuList>
             {poslugi.map((e) => (
-              <MenuItem key={e.id} minH='48px'>
+              <Link  key={e.id}href={e.url}><a>
+                <MenuItem
+                style={categoryData.id === e.id ? { background: '#e1e1e1' } : { background: 'transparent' }}
+                selected={categoryData.id === e.id}
+               
+                value={e.id}
+                minH='48px'
+              >
                 <Image
                   boxSize='2rem'
                   borderRadius='full'
@@ -95,17 +98,18 @@ export default function Category({ location, poslugi, geo, category }) {
                   alt={e.main_name}
                   mr='12px'
                 />
-                <Link href={e.url}>
-                  <a>{e.main_name}</a>
+                
+                  {e.main_name}
+              </MenuItem></a>
                 </Link>
-              </MenuItem>
             ))}
           </MenuList>
         </Menu>
+        <Spacer />
         <CheckLocation geo={geo} handler={requestHandler} />
-      </div>
+      </Flex>
 
-      <Box my={2}>
+      <Box mt={2}>
         <CheckboxPublicButtons
           data={categoryData.serv_types}
           handler={filterHandler}
@@ -121,7 +125,6 @@ export default function Category({ location, poslugi, geo, category }) {
           boxType={'radio'}
           type='location'
           checkStatus={filter.location}
-
         />
       </Box>
 

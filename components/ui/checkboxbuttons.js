@@ -29,6 +29,19 @@ export function CheckboxPublicButtons({ data, handler, boxType, type, checkStatu
     <div className={s.wrapper}>
       <div className={s.wrapper_category}>
         {/* <form> */}
+        <label className={s.container_category}>
+          <input
+            type={boxType}
+            // style={{ fontSize: '12px', whiteSpace: 'nowrap' }}
+            onChange={handler}
+            id={type}
+            value={''}
+            checked={!checkStatus}
+          />
+          
+          <span className={s.name_category}>Всі варіанти</span>
+            <span className={s.checkmark_category}></span>
+        </label>
         {data.map((i) => (
           <label key={i.id} className={s.container_category}>
             <input
